@@ -35,7 +35,10 @@ class SceneManager {
     };
 
     update() {
-        PARAMS.DEBUG = document.getElementById("debug").checked;
+
+        //  PARAMS.DEBUG = document.getElementById("debug").checked;
+        // //TODO REMOVE THIS LINE
+        PARAMS.DEBUG = false;
 
         let midpoint = PARAMS.CANVAS_WIDTH/2 - PARAMS.BLOCKWIDTH / 2;
 

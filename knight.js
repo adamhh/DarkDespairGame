@@ -7,6 +7,7 @@ class Knight {
 
         // spritesheet
         this.spritesheet = ASSET_MANAGER.getAsset("./sprites/knight/knight_attack.png");
+        //this.spritesheet = ASSET_MANAGER.getAsset("./sprites/knight/knight_attackFIXED.png");
         this.spritesheet2 = ASSET_MANAGER.getAsset("./sprites/dragon/dragon_attack.png");
         this.spritesheet3 = ASSET_MANAGER.getAsset("./sprites/princess/princess_idle.png");
 
@@ -23,7 +24,7 @@ class Knight {
 
         this.updateBB();
         //added line below TODO delete
-        this.animation = new Animator(this.spritesheet, 5, 35, 135, 105, 5, 0.15, 15, false, true);
+        this.animation = new Animator(this.spritesheet, 5, 35, 135, 105, 4, 0.10, 15, false, true);
         this.animation2 = new Animator(this.spritesheet2, 5, 24, 92, 58, 4, 0.15, 8, false, true);
         this.animation3 = new Animator(this.spritesheet3, 25, 2, 50, 95, 4, 0.15, 50, false, true);
 
@@ -278,7 +279,7 @@ class Knight {
         // TODO delete below
         //this.knightX = this.knightX + 5;
         this.animation.drawFrame(this.game.clockTick, ctx, this.knightX, this.knightY, 1.7);
-        this.animation2.drawFrame(this.game.clockTick, ctx, 620, 653, 2.5);
+        this.animation2.drawFrame(this.game.clockTick, ctx, 630, 653, 2.5);
         this.animation3.drawFrame(this.game.clockTick, ctx, 620, 520, 1);
 
         // if (this.dead) {

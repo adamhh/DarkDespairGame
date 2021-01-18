@@ -5,6 +5,7 @@ ASSET_MANAGER.queueDownload("./sprites/dragon/dragon_attack.png");
 ASSET_MANAGER.queueDownload("./sprites/dragon/dragon_idle.png");
 ASSET_MANAGER.queueDownload("./sprites/dragon/dragon_walk.png");
 ASSET_MANAGER.queueDownload("./sprites/knight/knight_attack.png");
+ASSET_MANAGER.queueDownload("./sprites/knight/knight_attackFIXED.png");
 ASSET_MANAGER.queueDownload("./sprites/knight/knight_idle.png");
 ASSET_MANAGER.queueDownload("./sprites/knight/knight_walk.png");
 ASSET_MANAGER.queueDownload("./sprites/princess/princess_idle.png");
