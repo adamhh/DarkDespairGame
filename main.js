@@ -11,7 +11,7 @@ ASSET_MANAGER.queueDownload("./sprites/princess/princess_idle.png");
 
 ASSET_MANAGER.downloadAll(function () {
 	var gameEngine = new GameEngine();
-
+	PARAMS.DEBUG = true;
 	PARAMS.BLOCKWIDTH = PARAMS.BITWIDTH * PARAMS.SCALE;
 
 	var canvas = document.getElementById('gameWorld');
