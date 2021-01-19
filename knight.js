@@ -4,7 +4,7 @@ class Knight {
         this.game.knight = this;
 
         // spritesheet
-        this.spritesheet = ASSET_MANAGER.getAsset("./sprites/knight.png");
+        this.spritesheet = ASSET_MANAGER.getAsset("./sprites/knightTEST.png");
 
 
         // knights's state variables
@@ -20,10 +20,12 @@ class Knight {
         // knights's animations
         this.animations = [];
         this.loadAnimations();
+        //this.animation = new Animator(this.spritesheet, 2167, 400, 148, 117, 9,
+         //   0.1, 2, false, true);
     };
 
     loadAnimations() {
-        for (var i = 0; i < 3; i++) {  //3 States: 0 = idle, 1 = walk, 2 = attack, 3 = falling, 4 = jumping
+        for (var i = 0; i < 4; i++) {  //3 States: 0 = idle, 1 = walk, 2 = attack, 3 = jumping, 4 = falling?
             this.animations.push([]);
             for (var j = 0; j < 2; j++) { //2 directions: 0 = right, 1 = left
                 this.animations[i].push([]);
@@ -56,7 +58,13 @@ class Knight {
         this.animations[2][1] = new Animator(this.spritesheet, 164, 26, 148, 117, 13,
                                             0.03, 2, true, true);
 
-
+        //jumping
+        // facing right
+        this.animations[3][0] = new Animator(this.spritesheet, 2167, 400, 148, 117, 9,
+                                            0.8, 2, false, true);
+        //facing left
+        this.animations[3][1] =  new Animator(this.spritesheet, 2167, 400, 148, 117, 9,
+                                            0.07, 2, false, true);
     };
 
     updateBB() {
@@ -72,7 +80,7 @@ class Knight {
         //         this.BB = new BoundingBox(this.x , this.y - 57, 148, 117)
         //         break;
         // }
-        if (this.facing == 0) {
+        if (this.facing === 0) {
             this.BB = new BoundingBox(this.x + 20, this.y + 60, 60, 60);
         } else {
             this.BB = new BoundingBox(this.x + 10, this.y + 60, 60, 60);
@@ -162,7 +170,21 @@ class Knight {
                 this.state = 2;
                 this.velocity.x = 0;
             }
+            if (this.game.B) {
 
+                if (this.velocity.y === 0) {
+                    this.velocity.y += -250;
+                    this.fallAcc = STOP_FALL / 2;
+                } else if (this.velocity.y < -500) {
+                    // this.velocity.y += 50;
+                    // this.fallAcc = STOP_FALL/2;
+
+                }
+
+            }
+            // } else if (this.game.B && this.facing === 1 && this.velocity.y === 0) {
+            //     this.state = 3;
+            // }
 
             // // update velocity
             //     // ground physics
@@ -267,7 +289,7 @@ class Knight {
 
 
     draw(ctx) {
-
+        //this.animation.drawFrame(this.game.clockTick, ctx, 300, 300, 3);
         if (this.dead) {
             this.deadAnim.drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, PARAMS.SCALE);
         } else if (this.facing === 0) {  //facing right, need to offset

@@ -13,6 +13,7 @@ class GameEngine {
         this.down = false;
         this.A = false;
         this.B = false;
+        this.Bup = false;
     };
 
     init(ctx) { // called after page has loaded
@@ -84,6 +85,7 @@ class GameEngine {
                 case "KeyZ":
                 case "Comma":
                     that.B = false;
+                    that.Bup = true;
                     break;
                 case "KeyX":
                 case "Period":

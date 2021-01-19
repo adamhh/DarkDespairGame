@@ -8,6 +8,7 @@ ASSET_MANAGER.queueDownload("./sprites/ground_brick.png");
 ASSET_MANAGER.queueDownload("./sprites/floating_brick1.png");
 ASSET_MANAGER.queueDownload("./sprites/floating_bridge.png");
 ASSET_MANAGER.queueDownload("./sprites/knight.png");
+ASSET_MANAGER.queueDownload("./sprites/knightTEST.png");
 ASSET_MANAGER.queueDownload("./sprites/knight/knight_idle.png");
 ASSET_MANAGER.queueDownload("./sprites/knight/knight_walk.png");
 ASSET_MANAGER.queueDownload("./sprites/princess/princess_idle.png");
