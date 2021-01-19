@@ -23,7 +23,7 @@ class Knight {
     };
 
     loadAnimations() {
-        for (var i = 0; i < 3; i++) {  //3 States: 0 = idle, 1 = walk, 2 = attack
+        for (var i = 0; i < 3; i++) {  //3 States: 0 = idle, 1 = walk, 2 = attack, 3 = falling, 4 = jumping
             this.animations.push([]);
             for (var j = 0; j < 2; j++) { //2 directions: 0 = right, 1 = left
                 this.animations[i].push([]);
@@ -75,7 +75,7 @@ class Knight {
         if (this.facing == 0) {
             this.BB = new BoundingBox(this.x + 20, this.y + 60, 60, 60);
         } else {
-            this.BB = new BoundingBox(this.x + 60, this.y + 60, 60, 60);
+            this.BB = new BoundingBox(this.x + 10, this.y + 60, 60, 60);
         }
     };
 
@@ -125,7 +125,8 @@ class Knight {
                 if (this.facing === 0) {
                     this.state = 0;
                     if (this.velocity.x > 0) {
-                        this.velocity.x -= DEC_SKID * TICK;
+                        // this.velocity.x -= DEC_SKID * TICK; skid stop
+                        this.velocity.x = 0;
                     } else {
                         this.velocity.x = 0;
                     }
@@ -211,7 +212,7 @@ class Knight {
         this.game.entities.forEach( function (entity) {
             if (entity.BB && that.BB.collide(entity.BB)) {
                 if (that.velocity.y > 0) { //falling
-                    if ((entity instanceof Ground)) {
+                    if ((entity instanceof Ground || entity instanceof Bridge)) {
                         that.y = entity.BB.top - that.BB.height - 53 ;
                         that.velocity.y = 0;
 
@@ -269,16 +270,16 @@ class Knight {
 
         if (this.dead) {
             this.deadAnim.drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, PARAMS.SCALE);
-        } else if (this.state == 12) {
+        } else if (this.facing === 0) {  //facing right, need to offset
             this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x,
-                this.y - 57 , PARAMS.SCALE / 3);
+                this.y - this.game.camera.y , PARAMS.SCALE / 3);
         } else {
-            this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x,
-                                                               this.y, PARAMS.SCALE / 3);
+            this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x - 50,
+                                                               this.y - this.game.camera.y, PARAMS.SCALE / 3);
         }
         if (PARAMS.DEBUG) {
             ctx.strokeStyle = 'Red';
-            ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y, this.BB.width, this.BB.height);
+            ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y - this.game.camera.y, this.BB.width, this.BB.height);
         }
     }
 };

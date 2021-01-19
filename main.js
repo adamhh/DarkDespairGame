@@ -6,6 +6,7 @@ ASSET_MANAGER.queueDownload("./sprites/dragon/dragon_idle.png");
 ASSET_MANAGER.queueDownload("./sprites/dragon/dragon_walk.png");
 ASSET_MANAGER.queueDownload("./sprites/ground_brick.png");
 ASSET_MANAGER.queueDownload("./sprites/floating_brick1.png");
+ASSET_MANAGER.queueDownload("./sprites/floating_bridge.png");
 ASSET_MANAGER.queueDownload("./sprites/knight.png");
 ASSET_MANAGER.queueDownload("./sprites/knight/knight_idle.png");
 ASSET_MANAGER.queueDownload("./sprites/knight/knight_walk.png");
@@ -20,6 +21,7 @@ ASSET_MANAGER.downloadAll(function () {
 	var ctx = canvas.getContext('2d');
 
 	PARAMS.CANVAS_WIDTH = canvas.width;
+	PARAMS.CANVAS_HEIGHT = canvas.height;
 
 	gameEngine.init(ctx);
 

@@ -25,9 +25,16 @@ class SceneManager {
 
     loadLevelOne() {
         this.x = 0;
-//404 198
-//         let ground = new Ground(this.game, -1450, 700, 500);
-//         this.game.addEntity(ground);
+        this.y = 0;
+        //404 198
+
+        let ground = new Ground(this.game, -150, 200, 400);
+        this.game.addEntity(ground);
+        ground = new Ground(this.game, 500, 1200, 400);
+        this.game.addEntity(ground);
+
+        let bridge = new Bridge(this.game, 290, 300, 250);
+        this.game.addEntity(bridge);
 //         ground = new Ground(this.game, -1290, 700, 345);
 //         this.game.addEntity(ground);
 //         ground = new Ground(this.game, -990, 700, 345);
@@ -36,8 +43,7 @@ class SceneManager {
         // this.game.addEntity(ground);
         // ground = new Ground(this.game, -330, 700, 345);
         // this.game.addEntity(ground);
-        let ground = new Ground(this.game, -150, 200, 400);
-        this.game.addEntity(ground);
+
         // ground = new Ground(this.game, 335, 700, 345);
         // this.game.addEntity(ground);
         // ground = new Ground(this.game, 670, 700, 345);
@@ -68,12 +74,12 @@ class SceneManager {
 
 
         let midpoint = PARAMS.CANVAS_WIDTH/2 - 60;
-        let midpointY = PARAMS.CANVAS_WIDTH/2 - 60;
+        let midpointY = PARAMS.CANVAS_HEIGHT/2 - 60;
 
         // if (this.x < this.knight.x - midpoint) this.x = this.knight.x - midpoint;
         //always start center
         this.x = this.knight.x - midpoint;
-        this.y = this.knight.y - midpoint;
+        this.y = this.knight.y - midpointY;
 
         if (this.knight.dead && this.knight.y > PARAMS.BLOCKWIDTH * 16) {
             this.clearEntities();
@@ -86,10 +92,10 @@ class SceneManager {
         ctx.font = PARAMS.BLOCKWIDTH/2 + 'px "Press Start 2P"';
         ctx.fillStyle = "Black";
         ctx.fillText("SCORE", .2 * PARAMS.BLOCKWIDTH, 1 * PARAMS.BLOCKWIDTH);
-        ctx.fillText((this.score + "").padStart(6,"0"), .2 * PARAMS.BLOCKWIDTH, 1.5 * PARAMS.BLOCKWIDTH);
+        ctx.fillText(("TODO"), .2 * PARAMS.BLOCKWIDTH, 1.5 * PARAMS.BLOCKWIDTH);
         ctx.fillText("HEALTH", 3 * PARAMS.BLOCKWIDTH, 1 * PARAMS.BLOCKWIDTH);
-        ctx.fillText(this.health, 3 * PARAMS.BLOCKWIDTH, 1.5 * PARAMS.BLOCKWIDTH);
-        this.score++;
+        ctx.fillText("TODO", 3 * PARAMS.BLOCKWIDTH, 1.5 * PARAMS.BLOCKWIDTH);
+
         if (this.health === parseInt(this.health,10)) {
             this.health--;
         }
