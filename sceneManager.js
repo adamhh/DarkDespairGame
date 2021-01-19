@@ -3,14 +3,11 @@ class SceneManager {
         this.game = game;
         this.game.camera = this;
         this.x = 0;
+        this.y = 0;
         this.score = 0;
         this.health = 100;
         this.coins = 0;
         this.lives = 3;
-
-        this.coinAnimation = new Animator(ASSET_MANAGER.getAsset("./sprites/coins.png"), 0, 160, 8, 8, 4, 0.2, 0, false, true);
-
-        this.minimap = new Minimap(this.game, 1.5 * PARAMS.BLOCKWIDTH, 3.5 * PARAMS.BLOCKWIDTH, 224 * PARAMS.SCALE);
 
         this.loadLevelOne();
     };
@@ -28,21 +25,55 @@ class SceneManager {
 
     loadLevelOne() {
         this.x = 0;
+//404 198
+//         let ground = new Ground(this.game, -1450, 700, 500);
+//         this.game.addEntity(ground);
+//         ground = new Ground(this.game, -1290, 700, 345);
+//         this.game.addEntity(ground);
+//         ground = new Ground(this.game, -990, 700, 345);
+//         this.game.addEntity(ground);
+        // ground = new Ground(this.game, -650, 700, 345);
+        // this.game.addEntity(ground);
+        // ground = new Ground(this.game, -330, 700, 345);
+        // this.game.addEntity(ground);
+        let ground = new Ground(this.game, -150, 200, 400);
+        this.game.addEntity(ground);
+        // ground = new Ground(this.game, 335, 700, 345);
+        // this.game.addEntity(ground);
+        // ground = new Ground(this.game, 670, 700, 345);
+        // this.game.addEntity(ground);
+        // ground = new Ground(this.game, 970, 700, 345);
+        // this.game.addEntity(ground);
+        // ground = new Ground(this.game, 1290, 700, 345);
+        // this.game.addEntity(ground);
+        // ground = new Ground(this.game, 1500, 700, 345);
+        // this.game.addEntity(ground);
+        // ground = new Ground(this.game, 2070, 750, 345);
+        // this.game.addEntity(ground);
+        // ground = new Ground(this.game, 2415, 750, 345);
+        // this.game.addEntity(ground);
+        // ground = new Ground(this.game, 2760, 750, 345);
+        // this.game.addEntity(ground);
+        // ground = new Ground(this.game, 3105, 750, 345);
+        // this.game.addEntity(ground);
 
-        this.knight = new Knight(this.game, 2.5 * PARAMS.BLOCKWIDTH, 0 * PARAMS.BLOCKWIDTH);
+        this.knight = new Knight(this.game, 0, 0);
         this.game.addEntity(this.knight);
 
     };
 
     update() {
 
-        //  PARAMS.DEBUG = document.getElementById("debug").checked;
-        // //TODO REMOVE THIS LINE
-        PARAMS.DEBUG = false;
+         PARAMS.DEBUG = document.getElementById("debug").checked;
 
-        let midpoint = PARAMS.CANVAS_WIDTH/2 - PARAMS.BLOCKWIDTH / 2;
 
-        if (this.x < this.knight.x - midpoint) this.x = this.knight.x - midpoint;
+        let midpoint = PARAMS.CANVAS_WIDTH/2 - 60;
+        let midpointY = PARAMS.CANVAS_WIDTH/2 - 60;
+
+        // if (this.x < this.knight.x - midpoint) this.x = this.knight.x - midpoint;
+        //always start center
+        this.x = this.knight.x - midpoint;
+        this.y = this.knight.y - midpoint;
 
         if (this.knight.dead && this.knight.y > PARAMS.BLOCKWIDTH * 16) {
             this.clearEntities();

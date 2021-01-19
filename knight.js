@@ -1,21 +1,15 @@
 class Knight {
-    constructor(game, x, y, luigi) {
+    constructor(game, x, y) {
         Object.assign(this, { game, x, y });
-        this.knightX = 420;
-        this.knightY = 620;
         this.game.knight = this;
 
         // spritesheet
-        this.spritesheet = ASSET_MANAGER.getAsset("./sprites/knight/knight_attack.png");
-        //this.spritesheet = ASSET_MANAGER.getAsset("./sprites/knight/knight_attackFIXED.png");
-        this.spritesheet2 = ASSET_MANAGER.getAsset("./sprites/dragon/dragon_attack.png");
-        this.spritesheet3 = ASSET_MANAGER.getAsset("./sprites/princess/princess_idle.png");
+        this.spritesheet = ASSET_MANAGER.getAsset("./sprites/knight.png");
 
 
         // knights's state variables
-        this.size = 0; // 0 = little, 1 = big, 2 = super, 3 = little invincible, 4 = big invincible, 5 = super invincible
         this.facing = 0; // 0 = right, 1 = left
-        this.state = 0; // 0 = idle, 1 = walking, 2 = running, 3 = skidding, 4 = jumping/falling, 5 = ducking
+        this.state = 0;  // 0 idle, 1, walking , 3 attacking
         this.dead = false;
 
 
@@ -23,27 +17,65 @@ class Knight {
         this.fallAcc = 562.5;
 
         this.updateBB();
-        //added line below TODO delete
-        this.animation = new Animator(this.spritesheet, 5, 35, 135, 105, 4, 0.10, 15, false, true);
-        this.animation2 = new Animator(this.spritesheet2, 5, 24, 92, 58, 4, 0.15, 8, false, true);
-        this.animation3 = new Animator(this.spritesheet3, 25, 2, 50, 95, 4, 0.15, 50, false, true);
-
-        // mario's animations
+        // knights's animations
         this.animations = [];
         this.loadAnimations();
     };
 
     loadAnimations() {
-        //TODO build Knight animations
+        for (var i = 0; i < 3; i++) {  //3 States: 0 = idle, 1 = walk, 2 = attack
+            this.animations.push([]);
+            for (var j = 0; j < 2; j++) { //2 directions: 0 = right, 1 = left
+                this.animations[i].push([]);
+            }
+        }
+
+        //idle animation for state 0
+        // facing right
+        this.animations[0][0] = new Animator(this.spritesheet, 2165, 273, 148, 117, 14,
+                                            0.1, 2, false, true);
+
+        // facing left
+        this.animations[0][1] = new Animator(this.spritesheet, 14, 270, 148, 117, 14,
+                                            0.1, 2, true, true);
+
+        //walking animation for state 1
+        // facing right
+        this.animations[1][0] = new Animator(this.spritesheet, 2165, 150, 148, 117, 12,
+                                            0.1, 2, false, true);
+        // facing left
+        this.animations[1][1] = new Animator(this.spritesheet, 312, 145, 148, 117, 12,
+                                            0.1, 2, true, true);
+
+
+        //attacking animation
+        // facing right
+        this.animations[2][0] = new Animator(this.spritesheet, 2164, 26, 148, 117, 13,
+                                            0.03, 2, false, true);
+        // facing left
+        this.animations[2][1] = new Animator(this.spritesheet, 164, 26, 148, 117, 13,
+                                            0.03, 2, true, true);
+
+
     };
 
     updateBB() {
         this.lastBB = this.BB;
-        if (this.size === 0 || this.size === 3) {
-            this.BB = new BoundingBox(this.x, this.y, PARAMS.BLOCKWIDTH, PARAMS.BLOCKWIDTH);
-        }
-        else {
-            this.BB = new BoundingBox(this.x, this.y, PARAMS.BLOCKWIDTH, PARAMS.BLOCKWIDTH * 2);
+        // switch (this.state) {
+        //     case 0:
+        //         this.BB = new BoundingBox(this.x, this.y, 125, 68)
+        //         break;
+        //     case 1:
+        //         this.BB = new BoundingBox(this.x, this.y, 125, 70)
+        //         break;
+        //     default:
+        //         this.BB = new BoundingBox(this.x , this.y - 57, 148, 117)
+        //         break;
+        // }
+        if (this.facing == 0) {
+            this.BB = new BoundingBox(this.x + 20, this.y + 60, 60, 60);
+        } else {
+            this.BB = new BoundingBox(this.x + 60, this.y + 60, 60, 60);
         }
     };
 
@@ -79,94 +111,138 @@ class Knight {
         const MAX_FALL = 270;
 
 
+
         if (this.dead) {
             this.velocity.y += RUN_FALL * TICK;
             this.y += this.velocity.y * TICK * PARAMS.SCALE;
         } else {
-
-
-            // update velocity
-
-            if (this.state < 4) { // not jumping
-                // ground physics
-                if (Math.abs(this.velocity.x) < MIN_WALK) {  // slower than a walk // starting, stopping or turning around
-                    this.velocity.x = 0;
-                    this.state = 0;
-                    if (this.game.left) {
-                        this.velocity.x -= MIN_WALK;
-                    }
-                    if (this.game.right) {
-                        this.velocity.x += MIN_WALK;
-                    }
-                }
-                else if (Math.abs(this.velocity.x) >= MIN_WALK) {  // faster than a walk // accelerating or decelerating
-                    if (this.facing === 0) {
-                        if (this.game.right && !this.game.left) {
-                            if (this.game.B) {
-                                this.velocity.x += ACC_RUN * TICK;
-                            } else this.velocity.x += ACC_WALK * TICK;
-                        } else if (this.game.left && !this.game.right) {
-                            this.velocity.x -= DEC_SKID * TICK;
-                            this.state = 3;
-                        } else {
-                            this.velocity.x -= DEC_REL * TICK;
-                        }
-                    }
-                    if (this.facing === 1) {
-                        if (this.game.left && !this.game.right) {
-                            if (this.game.B) {
-                                this.velocity.x -= ACC_RUN * TICK;
-                            } else this.velocity.x -= ACC_WALK * TICK;
-                        } else if (this.game.right && !this.game.left) {
-                            this.velocity.x += DEC_SKID * TICK;
-                            this.state = 3;
-                        } else {
-                            this.velocity.x += DEC_REL * TICK;
-                        }
-                    }
-                }
-
-                this.velocity.y += this.fallAcc * TICK;
-
-                if (this.game.A) { // jump
-                    if (Math.abs(this.velocity.x) < 16) {
-                        this.velocity.y = -240;
-                        this.fallAcc = STOP_FALL;
-                    }
-                    else if (Math.abs(this.velocity.x) < 40) {
-                        this.velocity.y = -240;
-                        this.fallAcc = WALK_FALL;
-                    }
-                    else {
-                        this.velocity.y = -300;
-                        this.fallAcc = RUN_FALL;
-                    }
-                    this.state = 4;
-                }
-            } else {
-                // air physics
-                // vertical physics
-                if (this.velocity.y < 0 && this.game.A) { // holding A while jumping jumps higher
-                    if (this.fallAcc === STOP_FALL) this.velocity.y -= (STOP_FALL - STOP_FALL_A) * TICK;
-                    if (this.fallAcc === WALK_FALL) this.velocity.y -= (WALK_FALL - WALK_FALL_A) * TICK;
-                    if (this.fallAcc === RUN_FALL) this.velocity.y -= (RUN_FALL - RUN_FALL_A) * TICK;
-                }
-                this.velocity.y += this.fallAcc * TICK;
-
-                // horizontal physics
-                if (this.game.right && !this.game.left) {
-                    if (Math.abs(this.velocity.x) > MAX_WALK) {
-                        this.velocity.x += ACC_RUN * TICK;
-                    } else this.velocity.x += ACC_WALK * TICK;
-                } else if (this.game.left && !this.game.right) {
-                    if (Math.abs(this.velocity.x) > MAX_WALK) {
-                        this.velocity.x -= ACC_RUN * TICK;
-                    } else this.velocity.x -= ACC_WALK * TICK;
-                } else {
-                    // do nothing
-                }
-
+            if (this.game.right) {
+                this.facing = 0;
+            } else if (this.game.left) {
+                this.facing = 1;
             }
+            if (!this.game.right && !this.game.left) {
+                if (this.facing === 0) {
+                    this.state = 0;
+                    if (this.velocity.x > 0) {
+                        this.velocity.x -= DEC_SKID * TICK;
+                    } else {
+                        this.velocity.x = 0;
+                    }
+                } if (this.facing === 1) {
+                    this.state = 0;
+                    if (this.velocity.x > 0) {
+                        this.velocity.x -= DEC_SKID * TICK;
+                    } else {
+                        this.velocity.x = 0;
+                    }
+                }
+            }
+            if (this.facing === 0) {
+                if (this.game.right && !this.game.left) {
+                    this.state = 1;
+                    this.velocity.x += ACC_WALK * TICK;
+                } else if (!this.game.right && this.game.left) {
+                    this.velocity.x -= DEC_SKID * TICK;
+                    this.state = 1;
+                }
+            } else if(this.facing === 1) {
+                if (!this.game.right && this.game.left) {
+                    this.state = 1;
+                    this.velocity.x -= ACC_WALK * TICK;
+                } else if (this.game.right && !this.game.left) {
+                    this.velocity.x += DEC_SKID * TICK;
+                    this.state = 1;
+                }
+            } if (this.game.A && this.facing === 0) {
+                this.state = 2;
+                this.velocity.x = 0;
+            } else if (this.game.A && this.facing === 1) {
+                this.state = 2;
+                this.velocity.x = 0;
+            }
+
+
+            // // update velocity
+            //     // ground physics
+            //     if (Math.abs(this.velocity.x) < MIN_WALK) {  // slower than a walk // starting, stopping or turning around
+            //         this.velocity.x = 0;
+            //         this.state = 0;
+            //         if (this.game.left) {
+            //             this.velocity.x -= MIN_WALK;
+            //         }
+            //         if (this.game.right) {
+            //             this.velocity.x += MIN_WALK;
+            //         }
+            //     } else if (Math.abs(this.velocity.x) >= MIN_WALK) {  // faster than a walk // accelerating or decelerating
+            //         if (this.facing === 0) {
+            //             if (this.game.right && !this.game.left) {
+            //                 if (this.game.B) {
+            //                     this.velocity.x += ACC_RUN * TICK;
+            //                 } else this.velocity.x += ACC_WALK * TICK;
+            //             } else if (this.game.left && !this.game.right) {
+            //                 this.velocity.x -= DEC_SKID * TICK;
+            //                 this.state = 3;
+            //             } else {
+            //                 this.velocity.x -= DEC_REL * TICK;
+            //             }
+            //         }
+            //         if (this.facing === 1) {
+            //             if (this.game.left && !this.game.right) {
+            //                 if (this.game.B) {
+            //                     this.velocity.x -= ACC_RUN * TICK;
+            //                 } else this.velocity.x -= ACC_WALK * TICK;
+            //             } else if (this.game.right && !this.game.left) {
+            //                 this.velocity.x += DEC_SKID * TICK;
+            //                 //this.state = 1;
+            //             } else {
+            //                 this.velocity.x += DEC_REL * TICK;
+            //             }
+            //         }
+            //     }
+            //
+                this.velocity.y += this.fallAcc * TICK;
+
+
+
+         }
+        // collision
+        var that = this;
+        this.game.entities.forEach( function (entity) {
+            if (entity.BB && that.BB.collide(entity.BB)) {
+                if (that.velocity.y > 0) { //falling
+                    if ((entity instanceof Ground)) {
+                        that.y = entity.BB.top - that.BB.height - 53 ;
+                        that.velocity.y = 0;
+
+                    }
+                }
+            }
+        });
+
+        // this.game.entities.forEach(function (entity) {
+        //     if (entity.BB && that.BB.collide(entity.BB)) {
+        //         if (that.velocity.y > 0) { // falling
+        //             if ((entity instanceof Ground) // landing
+        //                 && (that.lastBB.bottom) <= entity.BB.top) { // was above last tick
+        //                 that.velocity.y === 0;
+        //                 that.y = entity.BB.top - that.BB.height;
+        //
+        //             }
+        //         }
+        //
+        //         // if ((entity instanceof Ground) && that.BB.bottom > entity.BB.top) {
+        //         //     if (that.BB.collide(entity.leftBB)) {
+        //         //         that.x = entity.BB.left - PARAMS.BLOCKWIDTH;
+        //         //         if (that.velocity.x > 0) that.velocity.x = 0;
+        //         //     } else {
+        //         //         that.x = entity.BB.right;
+        //         //         if (that.velocity.x < 0) that.velocity.x = 0;
+        //         //     }
+        //         //     that.updateBB();
+        //         // }
+        //     }
+        // });
 
             // max speed calculation
             if (this.velocity.y >= MAX_FALL) this.velocity.y = MAX_FALL;
@@ -183,113 +259,26 @@ class Knight {
             this.y += this.velocity.y * TICK * PARAMS.SCALE;
             this.updateBB();
 
-            // if mario fell of the map he's dead
-            if (this.y > PARAMS.BLOCKWIDTH * 16) this.die();
-
-            // // collision
-            // var that = this;
-            // this.game.entities.forEach(function (entity) {
-            //     if (entity.BB && that.BB.collide(entity.BB)) {
-            //         if (that.velocity.y > 0) { // falling
-            //             if ((entity instanceof Ground || entity instanceof Brick || entity instanceof Block || entity instanceof Tube) // landing
-            //                 && (that.lastBB.bottom) <= entity.BB.top) { // was above last tick
-            //                 if (that.size === 0 || that.size === 3) { // small
-            //                     that.y = entity.BB.top - PARAMS.BLOCKWIDTH;
-            //                 } else { // big
-            //                     that.y = entity.BB.top - 2 * PARAMS.BLOCKWIDTH;
-            //                 }
-            //                 that.velocity.y === 0;
-            //
-            //                 if(that.state === 4) that.state = 0; // set state to idle
-            //                 that.updateBB();
-            //             }
-            //             if ((entity instanceof Goomba || entity instanceof Koopa) // squish Goomba
-            //                 && (that.lastBB.bottom) <= entity.BB.top // was above last tick
-            //                 && !entity.dead) { // can't squish an already squished Goomba
-            //                 entity.dead = true;
-            //                 that.velocity.y = -240; // bounce
-            //             }
-            //         }
-            //         if (that.velocity.y < 0) { // jumping
-            //             if ((entity instanceof Brick) // hit ceiling
-            //                 && (that.lastBB.top) >= entity.BB.bottom // was below last tick
-            //                 && that.BB.collide(entity.leftBB) && that.BB.collide(entity.rightBB)) { // collide with the center point of the brick
-            //                 entity.bounce = true;
-            //                 that.velocity.y = 0;
-            //             }
-            //         }
-            //         if (entity instanceof Brick && entity.type // hit a visible brick
-            //             && that.BB.collide(entity.topBB) && that.BB.collide(entity.bottomBB)) { // hit the side
-            //             if (that.BB.collide(entity.leftBB)) {
-            //                 that.x = entity.BB.left - PARAMS.BLOCKWIDTH;
-            //                 if (that.velocity.x > 0) that.velocity.x = 0;
-            //             } else if (that.BB.collide(entity.rightBB)) {
-            //                 that.x = entity.BB.right;
-            //                 if (that.velocity.x < 0) that.velocity.x = 0;
-            //             }
-            //             that.updateBB();
-            //         }
-            //         if ((entity instanceof Tube || entity instanceof Block || entity instanceof Ground) && that.BB.bottom > entity.BB.top) {
-            //             if (that.BB.collide(entity.leftBB)) {
-            //                 that.x = entity.BB.left - PARAMS.BLOCKWIDTH;
-            //                 if (that.velocity.x > 0) that.velocity.x = 0;
-            //             } else {
-            //                 that.x = entity.BB.right;
-            //                 if (that.velocity.x < 0) that.velocity.x = 0;
-            //             }
-            //             that.updateBB();
-            //         }
-            //         if (entity instanceof Mushroom && !entity.emerging) {
-            //             entity.removeFromWorld = true;
-            //             if (entity.type === 'Growth') {
-            //                 that.y -= PARAMS.BLOCKWIDTH;
-            //                 that.size = 1;
-            //                 that.game.addEntity(new Score(that.game, that.x, that.y, 1000));
-            //             } else {
-            //                 that.game.camera.lives++;
-            //             }
-            //         }
-            //     }
-            // });
 
 
-            // update state
-            if (this.state < 3) {
-                if (Math.abs(this.velocity.x) > MAX_WALK) this.state = 2;
-                else if (Math.abs(this.velocity.x) >= MIN_WALK) this.state = 1;
-                else this.state = 0;
-            } else {
 
-            }
-
-            // update direction
-            if (this.velocity.x < 0) this.facing = 1;
-            if (this.velocity.x > 0) this.facing = 0;
-        }
     };
 
-    drawMinimap(ctx, mmX, mmY) {
-        // ctx.fillStyle = "Red";
-        // ctx.fillRect(mmX + this.x / PARAMS.BITWIDTH, mmY + this.y / PARAMS.BITWIDTH, PARAMS.SCALE, PARAMS.SCALE * Math.min(this.size + 1, 2));
-    }
 
     draw(ctx) {
-        // draws static mario line below TODO delete below
-        //  ctx.drawImage(this.spritesheet, 209, 52, 16, 32, 0, 0, 48, 96);
-        // TODO delete below
-        //this.knightX = this.knightX + 5;
-        this.animation.drawFrame(this.game.clockTick, ctx, this.knightX, this.knightY, 1.7);
-        this.animation2.drawFrame(this.game.clockTick, ctx, 630, 653, 2.5);
-        this.animation3.drawFrame(this.game.clockTick, ctx, 620, 520, 1);
 
-        // if (this.dead) {
-        //     this.deadAnim.drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, PARAMS.SCALE);
-        // } else {
-        //     this.animations[this.state][this.size][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, PARAMS.SCALE);
-        // }
-        // if (PARAMS.DEBUG) {
-        //     ctx.strokeStyle = 'Red';
-        //     ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y, this.BB.width, this.BB.height);
-        // }
-    };
+        if (this.dead) {
+            this.deadAnim.drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, PARAMS.SCALE);
+        } else if (this.state == 12) {
+            this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x,
+                this.y - 57 , PARAMS.SCALE / 3);
+        } else {
+            this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x,
+                                                               this.y, PARAMS.SCALE / 3);
+        }
+        if (PARAMS.DEBUG) {
+            ctx.strokeStyle = 'Red';
+            ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y, this.BB.width, this.BB.height);
+        }
+    }
 };
