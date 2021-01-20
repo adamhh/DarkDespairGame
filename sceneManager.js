@@ -28,12 +28,24 @@ class SceneManager {
         this.y = 0;
         //404 198
 
-        let ground = new Ground(this.game, -150, 200, 400);
+        let ground = new Ground(this.game, 0, 200, 400);
         this.game.addEntity(ground);
-        ground = new Ground(this.game, 500, 1200, 400);
+        ground = new Ground(this.game, -400, 200, 400);
+        this.game.addEntity(ground);
+        ground = new Ground(this.game, 400, 200, 400);
+        this.game.addEntity(ground);
+        ground = new Ground(this.game, -800, 200, 400);
+        this.game.addEntity(ground);
+        ground = new Ground(this.game, 800, 200, 400);
+        this.game.addEntity(ground);
+        ground = new Ground(this.game, 1300, 600, 400);
         this.game.addEntity(ground);
 
-        let bridge = new Bridge(this.game, 290, 300, 250);
+
+
+
+
+        let bridge = new Bridge(this.game, 400, 1200, 250);
         this.game.addEntity(bridge);
 //         ground = new Ground(this.game, -1290, 700, 345);
 //         this.game.addEntity(ground);
