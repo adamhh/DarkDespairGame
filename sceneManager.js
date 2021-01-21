@@ -26,19 +26,47 @@ class SceneManager {
     loadLevelOne() {
         this.x = 0;
         this.y = 0;
-        //404 198
 
-        let ground = new Ground(this.game, 0, 200, 400);
+        // let cloud = new Cloud(this.game,-10, 750, 1);
+        // this.game.addEntity(cloud);
+        // cloud = new Cloud(this.game,-40, 800, 3);
+        // this.game.addEntity(cloud);
+        // cloud = new Cloud(this.game,111, 750, 2);
+        // this.game.addEntity(cloud);
+        // cloud = new Cloud(this.game,400, 750, 3);
+        // this.game.addEntity(cloud);
+        // cloud = new Cloud(this.game,200, 740, 3);
+        // this.game.addEntity(cloud);
+        // cloud = new Cloud(this.game,600, 750, 4);
+        // this.game.addEntity(cloud);
+        // cloud = new Cloud(this.game,800, 750, 5);
+        // this.game.addEntity(cloud);
+        //
+        // cloud = new Cloud(this.game,800, 700, 3);
+        // this.game.addEntity(cloud);
+        // cloud = new Cloud(this.game,400, 660, 2);
+        // this.game.addEntity(cloud);
+        // cloud = new Cloud(this.game,111, 680, 3);
+        // this.game.addEntity(cloud);
+        // cloud = new Cloud(this.game,600, 670, 3);
+        // this.game.addEntity(cloud);
+        // cloud = new Cloud(this.game,200, 690, 4);
+        // this.game.addEntity(cloud);
+        // cloud = new Cloud(this.game,-40, 650, 5);
+        // this.game.addEntity(cloud);
+
+
+        let ground = new Ground(this.game, 0, 200, 300);
         this.game.addEntity(ground);
-        ground = new Ground(this.game, -400, 200, 400);
+        ground = new Ground(this.game, -400, 200, 300);
         this.game.addEntity(ground);
-        ground = new Ground(this.game, 400, 200, 400);
+        ground = new Ground(this.game, 400, 200, 300);
         this.game.addEntity(ground);
-        ground = new Ground(this.game, -800, 200, 400);
+        ground = new Ground(this.game, -800, 200, 300);
         this.game.addEntity(ground);
-        ground = new Ground(this.game, 800, 200, 400);
+        ground = new Ground(this.game, 800, 200, 300);
         this.game.addEntity(ground);
-        ground = new Ground(this.game, 1300, 600, 400);
+        ground = new Ground(this.game, 1300, 600, 300);
         this.game.addEntity(ground);
 
 
@@ -93,27 +121,27 @@ class SceneManager {
         this.x = this.knight.x - midpoint;
         this.y = this.knight.y - midpointY;
 
-        if (this.knight.dead && this.knight.y > PARAMS.BLOCKWIDTH * 16) {
-            this.clearEntities();
-            this.loadLevelOne();
-        };
+        // if (this.knight.dead && this.knight.y > PARAMS.BLOCKWIDTH * 16) {
+        //     this.clearEntities();
+        //     this.loadLevelOne();
+        // };
     };
 
     draw(ctx) {
-
-        ctx.font = PARAMS.BLOCKWIDTH/2 + 'px "Press Start 2P"';
-        ctx.fillStyle = "Black";
-        ctx.fillText("SCORE", .2 * PARAMS.BLOCKWIDTH, 1 * PARAMS.BLOCKWIDTH);
-        ctx.fillText(("TODO"), .2 * PARAMS.BLOCKWIDTH, 1.5 * PARAMS.BLOCKWIDTH);
-        ctx.fillText("HEALTH", 3 * PARAMS.BLOCKWIDTH, 1 * PARAMS.BLOCKWIDTH);
-        ctx.fillText("TODO", 3 * PARAMS.BLOCKWIDTH, 1.5 * PARAMS.BLOCKWIDTH);
-
-        if (this.health === parseInt(this.health,10)) {
-            this.health--;
-        }
-        if (this.health == 0) {
-            this.health = "DEAD?"
-        }
+        //
+        // ctx.font = PARAMS.BLOCKWIDTH/2 + 'px "Press Start 2P"';
+        // ctx.fillStyle = "Black";
+        // ctx.fillText("SCORE", .2 * PARAMS.BLOCKWIDTH, 1 * PARAMS.BLOCKWIDTH);
+        // ctx.fillText(("TODO"), .2 * PARAMS.BLOCKWIDTH, 1.5 * PARAMS.BLOCKWIDTH);
+        // ctx.fillText("HEALTH", 3 * PARAMS.BLOCKWIDTH, 1 * PARAMS.BLOCKWIDTH);
+        // ctx.fillText("TODO", 3 * PARAMS.BLOCKWIDTH, 1.5 * PARAMS.BLOCKWIDTH);
+        //
+        // if (this.health === parseInt(this.health,10)) {
+        //     this.health--;
+        // }
+        // if (this.health == 0) {
+        //     this.health = "DEAD?"
+        // }
 
 
         // if (PARAMS.DEBUG) {
@@ -164,20 +192,20 @@ class SceneManager {
     };
 };
 
-class Minimap {
-    constructor(game, x, y, w) {
-        Object.assign(this, { game, x, y, w });
-    };
-
-    update() {
-
-    };
-
-    draw(ctx) {
-        ctx.strokeStyle = "Black";
-        ctx.strokeRect(this.x, this.y, this.w, PARAMS.BLOCKWIDTH);
-        for (var i = 0; i < this.game.entities.length; i++) {
-            this.game.entities[i].drawMinimap(ctx, this.x, this.y);
-        }
-    };
-};
+// class Minimap {
+//     constructor(game, x, y, w) {
+//         Object.assign(this, { game, x, y, w });
+//     };
+//
+//     update() {
+//
+//     };
+//
+//     draw(ctx) {
+//         ctx.strokeStyle = "Black";
+//         ctx.strokeRect(this.x, this.y, this.w, PARAMS.BLOCKWIDTH);
+//         for (var i = 0; i < this.game.entities.length; i++) {
+//             this.game.entities[i].drawMinimap(ctx, this.x, this.y);
+//         }
+//     };
+// };
