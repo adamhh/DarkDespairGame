@@ -323,6 +323,7 @@ class Knight {
         if (this.velocity.y <= -MAX_FALL) this.velocity.y = -MAX_FALL;
 
         this.x += this.velocity.x * TICK * PARAMS.SCALE;
+        //test comment
 
         this.updateBB();
 
