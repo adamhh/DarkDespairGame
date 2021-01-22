@@ -27,83 +27,57 @@ class SceneManager {
         this.x = 0;
         this.y = 0;
 
-        // let cloud = new Cloud(this.game,-10, 750, 1);
-        // this.game.addEntity(cloud);
-        // cloud = new Cloud(this.game,-40, 800, 3);
-        // this.game.addEntity(cloud);
-        // cloud = new Cloud(this.game,111, 750, 2);
-        // this.game.addEntity(cloud);
-        // cloud = new Cloud(this.game,400, 750, 3);
-        // this.game.addEntity(cloud);
-        // cloud = new Cloud(this.game,200, 740, 3);
-        // this.game.addEntity(cloud);
-        // cloud = new Cloud(this.game,600, 750, 4);
-        // this.game.addEntity(cloud);
-        // cloud = new Cloud(this.game,800, 750, 5);
-        // this.game.addEntity(cloud);
-        //
-        // cloud = new Cloud(this.game,800, 700, 3);
-        // this.game.addEntity(cloud);
-        // cloud = new Cloud(this.game,400, 660, 2);
-        // this.game.addEntity(cloud);
-        // cloud = new Cloud(this.game,111, 680, 3);
-        // this.game.addEntity(cloud);
-        // cloud = new Cloud(this.game,600, 670, 3);
-        // this.game.addEntity(cloud);
-        // cloud = new Cloud(this.game,200, 690, 4);
-        // this.game.addEntity(cloud);
-        // cloud = new Cloud(this.game,-40, 650, 5);
-        // this.game.addEntity(cloud);
+        //ground
+        //section 1
+        let land = new Land(this.game, 0, 200, 300);
+        this.game.addEntity(land);
+        land = new Land(this.game, -300, 200, 300);
+        this.game.addEntity(land);
+        land = new Land(this.game, -600, 200, 300);
+        this.game.addEntity(land);
+        land = new Land(this.game, 300, 200, 300);
+        this.game.addEntity(land);
+        let landend = new LandEnd(this.game, 600, 200, 200, 0);
+        this.game.addEntity(landend);
+        landend = new LandEnd(this.game, -800, 200, 200, 1);
+        this.game.addEntity(landend);
 
+        //section 2
+        landend = new LandEnd(this.game, 2300, -300, 200, 1);
+        this.game.addEntity(landend);
+        land = new Land(this.game, 2500, -300, 300);
+        this.game.addEntity(land);
+        land = new Land(this.game, 2800, -300, 300);
+        this.game.addEntity(land);
+        landend = new LandEnd(this.game, 3100, -300, 200, 0);
+        this.game.addEntity(landend);
 
-        let ground = new Ground(this.game, 0, 200, 300);
-        this.game.addEntity(ground);
-        ground = new Ground(this.game, -400, 200, 300);
-        this.game.addEntity(ground);
-        ground = new Ground(this.game, 400, 200, 300);
-        this.game.addEntity(ground);
-        ground = new Ground(this.game, -800, 200, 300);
-        this.game.addEntity(ground);
-        ground = new Ground(this.game, 800, 200, 300);
-        this.game.addEntity(ground);
-        ground = new Ground(this.game, 1300, 600, 300);
-        this.game.addEntity(ground);
-
-
-
-
-
-        let bridge = new Bridge(this.game, 400, 1200, 250);
+        //bridges
+        let bridge = new Bridge(this.game, 1350, 0, 500);
         this.game.addEntity(bridge);
-//         ground = new Ground(this.game, -1290, 700, 345);
-//         this.game.addEntity(ground);
-//         ground = new Ground(this.game, -990, 700, 345);
-//         this.game.addEntity(ground);
-        // ground = new Ground(this.game, -650, 700, 345);
-        // this.game.addEntity(ground);
-        // ground = new Ground(this.game, -330, 700, 345);
-        // this.game.addEntity(ground);
+        // bridge = new Bridge(this.game, 1800, 600, 250);
+        // this.game.addEntity(bridge);
 
-        // ground = new Ground(this.game, 335, 700, 345);
-        // this.game.addEntity(ground);
-        // ground = new Ground(this.game, 670, 700, 345);
-        // this.game.addEntity(ground);
-        // ground = new Ground(this.game, 970, 700, 345);
-        // this.game.addEntity(ground);
-        // ground = new Ground(this.game, 1290, 700, 345);
-        // this.game.addEntity(ground);
-        // ground = new Ground(this.game, 1500, 700, 345);
-        // this.game.addEntity(ground);
-        // ground = new Ground(this.game, 2070, 750, 345);
-        // this.game.addEntity(ground);
-        // ground = new Ground(this.game, 2415, 750, 345);
-        // this.game.addEntity(ground);
-        // ground = new Ground(this.game, 2760, 750, 345);
-        // this.game.addEntity(ground);
-        // ground = new Ground(this.game, 3105, 750, 345);
-        // this.game.addEntity(ground);
+        //layout clouds
+        let cloud = new Cloud(this.game,950, 0, 1, -500, 500, true, 3);
+        this.game.addEntity(cloud);
+        cloud = new Cloud(this.game,1980, 0, 1, -500, 100, true, 3);
+        this.game.addEntity(cloud);
+        // cloud = new Cloud(this.game,1750, 0, 1, 0, 700, true, 3);
+        // this.game.addEntity(cloud);
+        // cloud = new Cloud(this.game,1950, 200, 1, 1950, 2100, false, 2);
+        // this.game.addEntity(cloud);
 
-        this.knight = new Knight(this.game, 0, 0);
+
+
+        // cloud = new Cloud(this.game,1750, 200, 1, 1000, 400, true, 4);
+        // this.game.addEntity(cloud);
+
+
+
+
+
+        this.knight = new Knight(this.game,0, 0);
         this.game.addEntity(this.knight);
 
     };
@@ -113,8 +87,9 @@ class SceneManager {
          PARAMS.DEBUG = document.getElementById("debug").checked;
 
 
-        let midpoint = PARAMS.CANVAS_WIDTH/2 - 60;
+        let midpoint = PARAMS.CANVAS_WIDTH/3 - 60;
         let midpointY = PARAMS.CANVAS_HEIGHT/2 - 60;
+        // let midpointY = PARAMS.CANVAS_HEIGHT/2 - 60;
 
         // if (this.x < this.knight.x - midpoint) this.x = this.knight.x - midpoint;
         //always start center

@@ -7,12 +7,14 @@ ASSET_MANAGER.queueDownload("./sprites/dragon/dragon_walk.png");
 ASSET_MANAGER.queueDownload("./sprites/ground_brick.png");
 ASSET_MANAGER.queueDownload("./sprites/floating_brick1.png");
 ASSET_MANAGER.queueDownload("./sprites/floating_bridge.png");
+ASSET_MANAGER.queueDownload("./sprites/landblock.png");
+ASSET_MANAGER.queueDownload("./sprites/landendR.png");
+ASSET_MANAGER.queueDownload("./sprites/landendL.png");
 ASSET_MANAGER.queueDownload("./sprites/cloud1.png");
+ASSET_MANAGER.queueDownload("./sprites/cloud2.png");
 ASSET_MANAGER.queueDownload("./sprites/cloud2.png");
 ASSET_MANAGER.queueDownload("./sprites/cloud3.png");
 ASSET_MANAGER.queueDownload("./sprites/cloud4.png");
-ASSET_MANAGER.queueDownload("./sprites/cloud5.png");
-
 ASSET_MANAGER.queueDownload("./sprites/knight.png");
 ASSET_MANAGER.queueDownload("./sprites/knightTEST.png");
 ASSET_MANAGER.queueDownload("./sprites/knight/knight_idle.png");

@@ -11,6 +11,9 @@ class Knight {
         this.facing = 0; // 0 = right, 1 = left
         this.state = 0;  // 0 idle, 1, walking , 3 attacking
         this.dead = false;
+
+        //boolean flag for double jump
+        this.jump = false;
         //maybe delete below, was tring to make bounding box dynamically scale but running into issues
         this.yOffset = 50 * PARAMS.SCALE;
         this.xOffset = 15 * PARAMS.SCALE;
@@ -94,7 +97,7 @@ class Knight {
     update() {
         //TODO refactor for knight
         const TICK = this.game.clockTick;
-
+        console.log("(this.game, " + Math.ceil(this.x) +  ", " + Math.ceil(this.y) + ")");
         // I used this page to approximate my constants
         // https://web.archive.org/web/20130807122227/http://i276.photobucket.com/albums/kk21/jdaster64/smb_playerphysics.png
         // I converted these values from hex and into units of pixels and seconds.
@@ -124,26 +127,27 @@ class Knight {
         let yOff = 50 * PARAMS.SCALE;
         let xOff = 15 * PARAMS.SCALE;
         // collision
-        let str = null;
         var that = this;
         let canFall = true;
+        let othThanCloud = false;
         this.game.entities.forEach( function (entity) {
             if ((entity.BB && that.BB.collide(entity.BB))
-                && (entity instanceof Ground || entity instanceof Bridge)) {
-                //console.log("HEARD");
-                if (entity instanceof Knight) {
-                    str = 'ground';
-                }
-                if (entity instanceof Bridge) {
-                    str = 'bridge';
-                }
-                if (that.velocity.y > 0) { //falling
-                    if ((entity instanceof Ground || entity instanceof Bridge)) {
-                        if (that.BB.bottom >= entity.BB.top && (that.BB.bottom - entity.BB.top) < 10) {
-                            that.y = entity.BB.top - that.BB.height - yOff +1;
-                            that.velocity.y = 0;
-                            canFall = false;
-                        }
+                && (entity instanceof Ground || entity instanceof Bridge || entity instanceof Land || entity instanceof LandEnd || entity instanceof Cloud)) {
+                othThanCloud = entity instanceof Ground || entity instanceof Bridge || entity instanceof Land || entity instanceof LandEnd;
+                if (that.velocity.y > 0 && othThanCloud) { //falling
+                    if (that.BB.bottom >= entity.BB.top && (that.BB.bottom - entity.BB.top) < 10) {
+                        that.y = entity.BB.top - that.BB.height - yOff +1;
+                        that.velocity.y = 0;
+                        canFall = false;
+
+                    }
+
+                } else if (entity instanceof Cloud) {
+                    if (that.BB.bottom >= entity.BB.top && (that.BB.bottom - entity.BB.top) < 10) {
+                        that.y = entity.BB.top - that.BB.height - yOff + 5;
+                        that.velocity.y = 0;
+                        canFall = false;
+
                     }
 
                 } else if (that.BB.bottom >= entity.BB.top && (that.BB.bottom - entity.BB.top)){
@@ -152,7 +156,7 @@ class Knight {
                     canFall = true;
                 }
 
-                if ((entity instanceof Bridge || entity instanceof Ground)) {
+                if ((entity instanceof Bridge || entity instanceof Ground || entity instanceof Land) || entity instanceof LandEnd || entity instanceof Cloud) {
                     if (that.BB.right > entity.BB.left && (that.BB.left - entity.BB.left) < 100) {  //for collisions ->
 
                         if (that.BB.bottom > (entity.BB.top + 20)) {
@@ -175,7 +179,6 @@ class Knight {
 
         });
         let yVel = Math.abs(this.velocity.y);
-        console.log(this.y);
         //this physics will need a fine tuning;
         if (this.dead) { //TODO
             this.velocity.y += RUN_FALL * TICK;
@@ -253,32 +256,50 @@ class Knight {
                 this.state = 2;
                 if (this.velocity.x < 0) this.velocity.x++;
             }
-            if (this.game.B && this.facing === 0) {
+
+            if (this.game.B) {
                 canFall = true;
-                if (this.velocity.y === 0) {
-                    this.state = 3;
+                if (this.velocity.y == 0) { // add double jump later
+                    this.jump = true;
                     this.velocity.y -= JUMP_ACC;
-                    this.fallAcc = STOP_FALL/3;
-                } else if (this.velocity.y < -500) {
-                    this.velocity.y += 50;
-                    this.fallAcc = STOP_FALL/2;
-
+                    this.fallAcc = STOP_FALL;
                 }
-
-            } else if (this.game.B && this.facing === 1) {
-                canFall = true;
-                if (this.velocity.y === 0) {
-                    this.state = 3;
-                    this.velocity.y -= JUMP_ACC;
-                    this.fallAcc = STOP_FALL/3;
-                } else if (this.velocity.y < -500) {
-                    this.state = 3;
-                    this.velocity.y += 50;
-                    this.fallAcc = STOP_FALL/2;
-
-                }
-
+                // else if (this.velocity.y < -400) {
+                //     console.log("HEARD v= " + this.velocity.y);
+                //     this.velocity.y = -800;
+                //     //this.fallAcc = STOP_FALL;
+                // } else if (this.velocity.y > 500) {
+                //
+                // }
+                //if (this.fallAcc === WALK_FALL) this.velocity.y -= (WALK_FALL - WALK_FALL_A) * TICK;
+                //if (this.fallAcc === RUN_FALL) this.velocity.y -= (RUN_FALL - RUN_FALL_A) * TICK;
             }
+            //jummping works below
+            // if (this.game.B && this.facing === 0) {
+            //     canFall = true;
+            //     if (this.velocity.y === 0) {
+            //         this.velocity.y -= JUMP_ACC;
+            //         this.fallAcc = STOP_FALL/3;
+            //     } else if (this.velocity.y < -500) {
+            //         this.velocity.y += 50;
+            //         this.fallAcc = STOP_FALL/2;
+            //
+            //     }
+            //
+            // } else if (this.game.B && this.facing === 1) { //jumping
+            //     canFall = true;
+            //     if (this.velocity.y === 0) {
+            //
+            //         this.velocity.y -= JUMP_ACC;
+            //         this.fallAcc = STOP_FALL/3;
+            //     } else if (this.velocity.y < -500) {
+            //
+            //         this.velocity.y += 50;
+            //         this.fallAcc = STOP_FALL/2;
+            //
+            //     }
+            //
+            // }
 
 
 
