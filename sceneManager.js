@@ -43,25 +43,35 @@ class SceneManager {
         this.game.addEntity(landend);
 
         //section 2
-        landend = new LandEnd(this.game, 2300, -300, 200, 1);
+        landend = new LandEnd(this.game, 2500, -300, 200, 1);
         this.game.addEntity(landend);
-        land = new Land(this.game, 2500, -300, 300);
+        land = new Land(this.game, 2700, -300, 300);
         this.game.addEntity(land);
-        land = new Land(this.game, 2800, -300, 300);
+        land = new Land(this.game, 3000, -300, 300);
         this.game.addEntity(land);
-        landend = new LandEnd(this.game, 3100, -300, 200, 0);
+        landend = new LandEnd(this.game, 3300, -300, 200, 0);
+        this.game.addEntity(landend);
+
+        //section 3
+        landend = new LandEnd(this.game, 3800, -250, 200, 1);
+        this.game.addEntity(landend);
+        land = new Land(this.game, 4000, -250, 300);
+        this.game.addEntity(land);
+        land = new Land(this.game, 4300, -250, 300);
+        this.game.addEntity(land);
+        landend = new LandEnd(this.game, 4600, -250, 200, 0);
         this.game.addEntity(landend);
 
         //bridges
-        let bridge = new Bridge(this.game, 1350, 0, 500);
+        let bridge = new Bridge(this.game, 1550, 0, 500);
         this.game.addEntity(bridge);
         // bridge = new Bridge(this.game, 1800, 600, 250);
         // this.game.addEntity(bridge);
 
         //layout clouds
-        let cloud = new Cloud(this.game,950, 0, 1, -500, 500, true, 3);
+        let cloud = new Cloud(this.game,1150, 0, 1, -500, 500, true, 3);
         this.game.addEntity(cloud);
-        cloud = new Cloud(this.game,1980, 0, 1, -500, 100, true, 3);
+        cloud = new Cloud(this.game,2180, 0, 1, -500, 100, true, 3);
         this.game.addEntity(cloud);
         // cloud = new Cloud(this.game,1750, 0, 1, 0, 700, true, 3);
         // this.game.addEntity(cloud);
@@ -77,7 +87,7 @@ class SceneManager {
 
 
 
-        this.knight = new Knight(this.game,0, 0);
+        this.knight = new Knight(this.game,0, -400);
         this.game.addEntity(this.knight);
 
     };
@@ -87,8 +97,8 @@ class SceneManager {
          PARAMS.DEBUG = document.getElementById("debug").checked;
 
 
-        let midpoint = PARAMS.CANVAS_WIDTH/3 - 60;
-        let midpointY = PARAMS.CANVAS_HEIGHT/2 - 60;
+        let midpoint = PARAMS.CANVAS_WIDTH/4 - 60;
+        let midpointY = PARAMS.CANVAS_HEIGHT/1.2 - 160;
         // let midpointY = PARAMS.CANVAS_HEIGHT/2 - 60;
 
         // if (this.x < this.knight.x - midpoint) this.x = this.knight.x - midpoint;

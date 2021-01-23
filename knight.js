@@ -11,9 +11,12 @@ class Knight {
         this.facing = 0; // 0 = right, 1 = left
         this.state = 0;  // 0 idle, 1, walking , 3 attacking
         this.dead = false;
+        this.testTimer = new Timer();
+        this.time1 = this.testTimer.getTime();
+        this.time2 = this.time1;
 
         //boolean flag for double jump
-        this.jump = false;
+        this.jumpFlag = false;
         //maybe delete below, was tring to make bounding box dynamically scale but running into issues
         this.yOffset = 50 * PARAMS.SCALE;
         this.xOffset = 15 * PARAMS.SCALE;
@@ -64,7 +67,7 @@ class Knight {
         this.animations[2][0] = new Animator(this.spritesheet, 2164, 26, 148, 117, 13,
             0.03, 2, false, true);
         // facing left
-        this.animations[2][1] = new Animator(this.spritesheet, 164, 26, 148, 117, 13,
+        this.animations[2][1] = new Animator(this.spritesheet, 168, 26, 148, 117, 13,
             0.03, 2, true, true);
 
         //jumping
@@ -95,9 +98,10 @@ class Knight {
     };
 
     update() {
+        this.time2 = this.testTimer.getTime();
         //TODO refactor for knight
         const TICK = this.game.clockTick;
-        console.log("(this.game, " + Math.ceil(this.x) +  ", " + Math.ceil(this.y) + ")");
+        //console.log("(this.game, " + Math.ceil(this.x) +  ", " + Math.ceil(this.y) + ")");
         // I used this page to approximate my constants
         // https://web.archive.org/web/20130807122227/http://i276.photobucket.com/albums/kk21/jdaster64/smb_playerphysics.png
         // I converted these values from hex and into units of pixels and seconds.
@@ -184,6 +188,9 @@ class Knight {
             this.velocity.y += RUN_FALL * TICK;
             this.y += this.velocity.y * TICK * PARAMS.SCALE;
         } else { //set facing state field
+            if (!this.game.B) {
+                this.jumpFlag = false;
+            }
             if (this.game.right) {
                 this.facing = 0;
                 this.state = 1;
@@ -194,23 +201,24 @@ class Knight {
                 this.state = 2;
             } else if (this.game.B) {
                 this.state = 3;
+
             } else if (!this.game.A && !this.game.B && !this.game.right && !this.game.left) {
                 this.state = 0;
             }
-
+            console.log(this.jumpFlag);
             //turn slide face left
-            if(this.game.left && this.velocity.x > 0) {
+            if(this.game.left && this.velocity.x > 0 && yVel < 20) {
                 this.velocity.x -= TURN_SKID;
             }
             //turn slide face right
-            if(this.game.right && this.velocity.x < 0) {
+            if(this.game.right && this.velocity.x < 0 && yVel < 20) {
                 this.velocity.x += TURN_SKID;
             }
             //if you unpress left/right while moving
             if (!this.game.right && !this.game.left) {
                 if (this.facing === 0) { //moving right
                     if (yVel > 50 && Math.abs(this.velocity.x) > 50) {
-                        this.velocity.x --;
+                        //this.velocity.x --;
                     } else if (this.velocity.x > 0) {
                         this.velocity.x -= DEC_SKID * TICK;
                     } else {
@@ -218,7 +226,7 @@ class Knight {
                     }
                 } else { //moving left
                     if (yVel > 50 && Math.abs(this.velocity.x) > 50) {
-                        this.velocity.x++;
+                        //this.velocity.x++;
                     } else if (this.velocity.x < 0) {
                         this.velocity.x += DEC_SKID * TICK;
                     } else {
@@ -229,39 +237,37 @@ class Knight {
             //if you are facing right and press right
             if (this.facing === 0) {
                 if (this.game.right && !this.game.left) {
-                    this.state = 1;
                     if (yVel < 10 && !this.game.B) {
                         this.velocity.x += ACC_RUN * TICK;
                     }
 
                 } else if (!this.game.right && this.game.left) { //if you're facing right and press left
                     this.velocity.x -= DEC_SKID * TICK;
-                    //this.state = 1;
                 }
             } else if(this.facing === 1) { //if you are facing left and press left
                 if (!this.game.right && this.game.left) {
-                    //this.state = 1;
+
                     if (yVel < 10 && !this.game.B) {  //so you cant move in the air
                         this.velocity.x -= ACC_RUN * TICK;
                     }
                 } else if (this.game.right && !this.game.left) { //if you are facing left and press right
                     this.velocity.x += DEC_SKID*3 * TICK;
-                    //this.state = 1;
                 }
-            }
-            if (this.game.A && this.facing === 0) {
-                this.state = 2;
-                if (this.velocity.x > 0) this.velocity.x --;
-            } else if (this.game.A && this.facing === 1) {
-                this.state = 2;
-                if (this.velocity.x < 0) this.velocity.x++;
             }
 
             if (this.game.B) {
                 canFall = true;
+
+
+                let timeDiff = this.time2 - this.time1;
+                console.log(timeDiff);
                 if (this.velocity.y == 0) { // add double jump later
-                    this.jump = true;
+                    this.time1 = this.testTimer.getTime();
                     this.velocity.y -= JUMP_ACC;
+                    this.fallAcc = STOP_FALL;
+                    this.jumpFlag = true;
+                } else if (!this.jumpFlag && timeDiff > 100 && timeDiff < 200) {
+                    this.velocity.y -= JUMP_ACC/2;
                     this.fallAcc = STOP_FALL;
                 }
                 // else if (this.velocity.y < -400) {
@@ -305,6 +311,7 @@ class Knight {
 
 
         }
+
 
 
         // max speed calculation

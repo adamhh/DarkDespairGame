@@ -16,4 +16,8 @@ class Timer {
         this.gameTime += gameDelta;
         return gameDelta;
     };
+
+    getTime() {
+        return this.now = Date.now();
+    }
 };
