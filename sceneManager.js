@@ -69,7 +69,7 @@ class SceneManager {
         // this.game.addEntity(bridge);
 
         //layout clouds
-        let cloud = new Cloud(this.game,1150, 0, 1, -500, 500, true, 3);
+        let cloud = new Cloud(this.game,1100, 0, 1, -500, 500, true, 3);
         this.game.addEntity(cloud);
         cloud = new Cloud(this.game,2180, 0, 1, -500, 100, true, 3);
         this.game.addEntity(cloud);

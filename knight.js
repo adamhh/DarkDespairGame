@@ -106,24 +106,22 @@ class Knight {
         // https://web.archive.org/web/20130807122227/http://i276.photobucket.com/albums/kk21/jdaster64/smb_playerphysics.png
         // I converted these values from hex and into units of pixels and seconds.
 
-        const MIN_WALK = 4.453125;
-        const MAX_WALK = 93.75;
-        const MAX_RUN = 350;
-        const ACC_WALK = 133.59375;
-        const ACC_RUN = 400;
-        const DEC_REL = 182.8125;
-        const DEC_SKID = 1500;
-        const MIN_SKID = 33.75;
-        const TURN_SKID = 20;
+        //-------------adjust constants to alter physics-----------
+        //run
+        const MAX_RUN = 800; //adjust for maximum run speed
+        const ACC_RUN = 600;  //adjust for maximum acceleration
+        //skids
+        const DEC_SKID = 4000;
+        const TURN_SKID = 50;
+        //jump
+        const JUMP_ACC = 700;     //adjust for maximum jump acc
+        const MAX_JUMP = 1000;    //adjust for maximum jump height
+        const DBL_JUMP_MOD = 200; //adjust for double jump boost
+        //falling
+        const MAX_FALL = 1000;  //adjust for fall speed
         const STOP_FALL = 1575;
-        const WALK_FALL = 1800;
-        const RUN_FALL = 2025;
-        const JUMP_ACC = 700;
-        const STOP_FALL_A = 450;
-        const WALK_FALL_A = 421.875;
-        const RUN_FALL_A = 562.5;
-
-        const MAX_FALL = 600;
+        //in air deceleration
+        const AIR_DEC = 2;
 
 
 
@@ -139,7 +137,8 @@ class Knight {
                 && (entity instanceof Ground || entity instanceof Bridge || entity instanceof Land || entity instanceof LandEnd || entity instanceof Cloud)) {
                 othThanCloud = entity instanceof Ground || entity instanceof Bridge || entity instanceof Land || entity instanceof LandEnd;
                 if (that.velocity.y > 0 && othThanCloud) { //falling
-                    if (that.BB.bottom >= entity.BB.top && (that.BB.bottom - entity.BB.top) < 10) {
+                    console.log("HEARD");
+                    if (that.BB.bottom >= entity.BB.top && (that.BB.bottom - entity.BB.top) < 20) {
                         that.y = entity.BB.top - that.BB.height - yOff +1;
                         that.velocity.y = 0;
                         canFall = false;
@@ -182,11 +181,16 @@ class Knight {
             }
 
         });
+        console.log(this.y);
+        if (this.y > 2000) {
+            this.velocity.x = 0;
+            this.x = 0;
+            this.y = -500;
+        }
         let yVel = Math.abs(this.velocity.y);
         //this physics will need a fine tuning;
-        if (this.dead) { //TODO
-            this.velocity.y += RUN_FALL * TICK;
-            this.y += this.velocity.y * TICK * PARAMS.SCALE;
+        if (this.dead) {
+            //TODO
         } else { //set facing state field
             if (!this.game.B) {
                 this.jumpFlag = false;
@@ -205,146 +209,87 @@ class Knight {
             } else if (!this.game.A && !this.game.B && !this.game.right && !this.game.left) {
                 this.state = 0;
             }
-            console.log(this.jumpFlag);
-            //turn slide face left
+
+            //if moving right and then face left, skid
             if(this.game.left && this.velocity.x > 0 && yVel < 20) {
                 this.velocity.x -= TURN_SKID;
             }
-            //turn slide face right
+            //if moving left ann then face right, skid
             if(this.game.right && this.velocity.x < 0 && yVel < 20) {
                 this.velocity.x += TURN_SKID;
             }
-            //if you unpress left/right while moving
+            //if you unpress left and right while moving right
             if (!this.game.right && !this.game.left) {
                 if (this.facing === 0) { //moving right
-                    if (yVel > 50 && Math.abs(this.velocity.x) > 50) {
-                        //this.velocity.x --;
-                    } else if (this.velocity.x > 0) {
+                    if (this.velocity.x > 0 && yVel < 20) {
                         this.velocity.x -= DEC_SKID * TICK;
-                    } else {
+                    } else if (yVel < 20) {
                         this.velocity.x = 0;
+                    } else if (this.velocity.x > 0) { //this is where you control horizontal deceleration when in air
+                        this.velocity.x-=AIR_DEC;
                     }
-                } else { //moving left
-                    if (yVel > 50 && Math.abs(this.velocity.x) > 50) {
-                        //this.velocity.x++;
-                    } else if (this.velocity.x < 0) {
+                } else { //if you unpress left and right while moving left
+                    if (this.velocity.x < 0 && yVel < 20) {
                         this.velocity.x += DEC_SKID * TICK;
-                    } else {
+                    } else if (yVel < 20) {
                         this.velocity.x = 0;
+                    } else if (this.velocity.x < 0) { //this is where you control horizontal deceleration when in air
+                        this.velocity.x+=AIR_DEC;
                     }
                 }
             }
-            //if you are facing right and press right
-            if (this.facing === 0) {
-                if (this.game.right && !this.game.left) {
-                    if (yVel < 10 && !this.game.B) {
+            //Run physics
+            if (this.facing === 0) {                        //facing right
+                if (this.game.right && !this.game.left) {   //and pressing right.
+                    if (yVel < 10 && !this.game.B) {        //makes sure you are on ground
                         this.velocity.x += ACC_RUN * TICK;
                     }
-
-                } else if (!this.game.right && this.game.left) { //if you're facing right and press left
-                    this.velocity.x -= DEC_SKID * TICK;
                 }
-            } else if(this.facing === 1) { //if you are facing left and press left
-                if (!this.game.right && this.game.left) {
-
-                    if (yVel < 10 && !this.game.B) {  //so you cant move in the air
+            } else if(this.facing === 1) {                  //facing left
+                if (!this.game.right && this.game.left) {   //and pressing left.
+                    if (yVel < 10 && !this.game.B) {        //makes sure you are on ground
                         this.velocity.x -= ACC_RUN * TICK;
                     }
-                } else if (this.game.right && !this.game.left) { //if you are facing left and press right
-                    this.velocity.x += DEC_SKID*3 * TICK;
                 }
             }
 
             if (this.game.B) {
                 canFall = true;
-
-
                 let timeDiff = this.time2 - this.time1;
-                console.log(timeDiff);
-                if (this.velocity.y == 0) { // add double jump later
+                if (this.velocity.y === 0) { // add double jump later
                     this.time1 = this.testTimer.getTime();
                     this.velocity.y -= JUMP_ACC;
                     this.fallAcc = STOP_FALL;
                     this.jumpFlag = true;
                 } else if (!this.jumpFlag && timeDiff > 100 && timeDiff < 200) {
-                    this.velocity.y -= JUMP_ACC/2;
+                    this.velocity.y -= DBL_JUMP_MOD;
                     this.fallAcc = STOP_FALL;
                 }
-                // else if (this.velocity.y < -400) {
-                //     console.log("HEARD v= " + this.velocity.y);
-                //     this.velocity.y = -800;
-                //     //this.fallAcc = STOP_FALL;
-                // } else if (this.velocity.y > 500) {
-                //
-                // }
-                //if (this.fallAcc === WALK_FALL) this.velocity.y -= (WALK_FALL - WALK_FALL_A) * TICK;
-                //if (this.fallAcc === RUN_FALL) this.velocity.y -= (RUN_FALL - RUN_FALL_A) * TICK;
             }
-            //jummping works below
-            // if (this.game.B && this.facing === 0) {
-            //     canFall = true;
-            //     if (this.velocity.y === 0) {
-            //         this.velocity.y -= JUMP_ACC;
-            //         this.fallAcc = STOP_FALL/3;
-            //     } else if (this.velocity.y < -500) {
-            //         this.velocity.y += 50;
-            //         this.fallAcc = STOP_FALL/2;
-            //
-            //     }
-            //
-            // } else if (this.game.B && this.facing === 1) { //jumping
-            //     canFall = true;
-            //     if (this.velocity.y === 0) {
-            //
-            //         this.velocity.y -= JUMP_ACC;
-            //         this.fallAcc = STOP_FALL/3;
-            //     } else if (this.velocity.y < -500) {
-            //
-            //         this.velocity.y += 50;
-            //         this.fallAcc = STOP_FALL/2;
-            //
-            //     }
-            //
-            // }
-
-
-
-
         }
-
-
 
         // max speed calculation
         if (this.velocity.x >= MAX_RUN) this.velocity.x = MAX_RUN;
         if (this.velocity.x <= -MAX_RUN) this.velocity.x = -MAX_RUN;
-        // if (this.velocity.x >= MAX_WALK && !this.game.B) this.velocity.x = MAX_WALK;
-        // if (this.velocity.x <= -MAX_WALK && !this.game.B) this.velocity.x = -MAX_WALK;
 
         // update position
-        if (canFall) {
+        if (canFall) { //this makes sure we aren't applying velocity if we are on ground/platform
             this.velocity.y += this.fallAcc * TICK;
-
             this.y += this.velocity.y * TICK * PARAMS.SCALE;
         }
+
         if (this.velocity.y >= MAX_FALL) this.velocity.y = MAX_FALL;
-        if (this.velocity.y <= -MAX_FALL) this.velocity.y = -MAX_FALL;
-
+        if (this.velocity.y <= -MAX_JUMP) this.velocity.y = -MAX_FALL;
         this.x += this.velocity.x * TICK * PARAMS.SCALE;
-        //test comment
 
-        this.updateBB();
-
-
-
-
-
+        this.updateBB(); //Update your bounding box every tick
     };
 
 
     draw(ctx) {
         //this.animation.drawFrame(this.game.clockTick, ctx, 300, 300, 3);
         if (this.dead) {
-            this.deadAnim.drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, PARAMS.SCALE);
+            //this.deadAnim.drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, PARAMS.SCALE);
         } else if (this.facing === 0) {  //facing right, need to offset
             this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x,
                 this.y - this.game.camera.y , PARAMS.SCALE);

@@ -34,9 +34,7 @@ class GameEngine {
 
     startInput() {
         var that = this;
-
         this.ctx.canvas.addEventListener("keydown", function (e) {
-
             switch (e.code) {
                 case "ArrowLeft":
                 case "KeyA":
