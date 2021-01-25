@@ -108,8 +108,11 @@ class Knight {
 
         //-------------adjust constants to alter physics-----------
         //run
-        const MAX_RUN = 800; //adjust for maximum run speed
-        const ACC_RUN = 600;  //adjust for maximum acceleration
+        let max_run = 500;         //adjust for maximum run speed
+        let acc_run = 400;         //adjust for maximum acceleration
+        const ACC_SPRINT = 1000;   //adjust for maximum sprint acc
+        const MAX_SPRINT = 800     //adjust for maximum sprint
+
         //skids
         const DEC_SKID = 4000;
         const TURN_SKID = 50;
@@ -209,6 +212,10 @@ class Knight {
             } else if (!this.game.A && !this.game.B && !this.game.right && !this.game.left) {
                 this.state = 0;
             }
+            if (this.game.C) {
+                acc_run = ACC_SPRINT;
+                max_run = MAX_SPRINT;
+            }
 
             //if moving right and then face left, skid
             if(this.game.left && this.velocity.x > 0 && yVel < 20) {
@@ -242,13 +249,13 @@ class Knight {
             if (this.facing === 0) {                        //facing right
                 if (this.game.right && !this.game.left) {   //and pressing right.
                     if (yVel < 10 && !this.game.B) {        //makes sure you are on ground
-                        this.velocity.x += ACC_RUN * TICK;
+                        this.velocity.x += acc_run * TICK;
                     }
                 }
             } else if(this.facing === 1) {                  //facing left
                 if (!this.game.right && this.game.left) {   //and pressing left.
                     if (yVel < 10 && !this.game.B) {        //makes sure you are on ground
-                        this.velocity.x -= ACC_RUN * TICK;
+                        this.velocity.x -= acc_run * TICK;
                     }
                 }
             }
@@ -269,8 +276,8 @@ class Knight {
         }
 
         // max speed calculation
-        if (this.velocity.x >= MAX_RUN) this.velocity.x = MAX_RUN;
-        if (this.velocity.x <= -MAX_RUN) this.velocity.x = -MAX_RUN;
+        if (this.velocity.x >= max_run) this.velocity.x = max_run;
+        if (this.velocity.x <= -max_run) this.velocity.x = -max_run;
 
         // update position
         if (canFall) { //this makes sure we aren't applying velocity if we are on ground/platform
