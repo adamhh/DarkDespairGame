@@ -32,7 +32,7 @@ class Cloud {
         }
         this.moveDown = false;
         this.moveRight = false;
-        this.BB = new BoundingBox(this.x + 20,  this.y + 20, this.w - 40, this.h - 40);
+        this.BB = new BoundingBox(this.x + 7,  this.y + 45, this.w -15, this.h - 80);
     };
 
     update() {
@@ -63,7 +63,7 @@ class Cloud {
                 this.x -= this.speed;
             }
         }
-        this.BB = new BoundingBox(this.x + 20, this.y + 20, this.w - 40, this.h - 40);
+        this.BB = new BoundingBox(this.x + 7, this.y + 45, this.w - 15, this.h - 80);
 
     };
 

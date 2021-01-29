@@ -22,7 +22,8 @@ class Knight {
         this.xOffset = 15 * PARAMS.SCALE;
         this.cWidth = 70 * PARAMS.SCALE;
         this.cHeight = 65 * PARAMS.SCALE;
-
+        this.initialFall = true;
+        this.sprint = false;
 
 
         this.velocity = { x: 0, y: 0 };
@@ -77,6 +78,14 @@ class Knight {
         //facing left
         this.animations[3][1] =  new Animator(this.spritesheet, 312, 150, 148, 117, 1,
             1, 2, false, true);
+
+        //death
+        // facing right
+        this.deadAnimR = new Animator(this.spritesheet, 2165, 390, 148, 117, 4,
+            .04, false, false);
+        //facing left
+        this.deadAnimL =  new Animator(this.spritesheet, 20, 407, 148, 117, 3,
+            .04, 2, true, false);
     };
 
     updateBB() {
@@ -100,6 +109,7 @@ class Knight {
     update() {
         this.time2 = this.testTimer.getTime();
         //TODO refactor for knight
+        console.log("(" + Math.floor(this.x) + "," + Math.floor(this.y) + ")");
         const TICK = this.game.clockTick;
         //console.log("(this.game, " + Math.ceil(this.x) +  ", " + Math.ceil(this.y) + ")");
         // I used this page to approximate my constants
@@ -108,10 +118,10 @@ class Knight {
 
         //-------------adjust constants to alter physics-----------
         //run
-        let max_run = 500;         //adjust for maximum run speed
-        let acc_run = 400;         //adjust for maximum acceleration
-        const ACC_SPRINT = 1000;   //adjust for maximum sprint acc
-        const MAX_SPRINT = 800     //adjust for maximum sprint
+        let max_run = 200;         //adjust for maximum run speed
+        let acc_run = 300;         //adjust for maximum acceleration
+        const ACC_SPRINT = 400;   //adjust for maximum sprint acc
+        const MAX_SPRINT = 600     //adjust for maximum sprint
 
         //skids
         const DEC_SKID = 4000;
@@ -125,76 +135,77 @@ class Knight {
         const STOP_FALL = 1575;
         //in air deceleration
         const AIR_DEC = 2;
-
-
-
-
-        let yOff = 50 * PARAMS.SCALE;
-        let xOff = 15 * PARAMS.SCALE;
-        // collision
-        var that = this;
-        let canFall = true;
-        let othThanCloud = false;
-        this.game.entities.forEach( function (entity) {
-            if ((entity.BB && that.BB.collide(entity.BB))
-                && (entity instanceof Ground || entity instanceof Bridge || entity instanceof Land || entity instanceof LandEnd || entity instanceof Cloud)) {
-                othThanCloud = entity instanceof Ground || entity instanceof Bridge || entity instanceof Land || entity instanceof LandEnd;
-                if (that.velocity.y > 0 && othThanCloud) { //falling
-                    console.log("HEARD");
-                    if (that.BB.bottom >= entity.BB.top && (that.BB.bottom - entity.BB.top) < 20) {
-                        that.y = entity.BB.top - that.BB.height - yOff +1;
-                        that.velocity.y = 0;
-                        canFall = false;
-
-                    }
-
-                } else if (entity instanceof Cloud) {
-                    if (that.BB.bottom >= entity.BB.top && (that.BB.bottom - entity.BB.top) < 10) {
-                        that.y = entity.BB.top - that.BB.height - yOff + 5;
-                        that.velocity.y = 0;
-                        canFall = false;
-
-                    }
-
-                } else if (that.BB.bottom >= entity.BB.top && (that.BB.bottom - entity.BB.top)){
-                    canFall = false;
-                } else {
-                    canFall = true;
-                }
-
-                if ((entity instanceof Bridge || entity instanceof Ground || entity instanceof Land) || entity instanceof LandEnd || entity instanceof Cloud) {
-                    if (that.BB.right > entity.BB.left && (that.BB.left - entity.BB.left) < 100) {  //for collisions ->
-
-                        if (that.BB.bottom > (entity.BB.top + 20)) {
-                            that.x = entity.BB.left - that.BB.width - xOff;
-                            that.velocity.x = 0;
-                        }
-
-                    } else if (that.BB.left < entity.BB.right) {  //for collisions ->
-                        if (that.BB.bottom > (entity.BB.top + 20)) {
-                            that.x = entity.BB.right + xOff - 8;
-                            that.velocity.x = 0;
-                        }
-
-                    }
-
-                }
-
-
-            }
-
-        });
-        console.log(this.y);
-        if (this.y > 2000) {
-            this.velocity.x = 0;
-            this.x = 0;
-            this.y = -500;
-        }
-        let yVel = Math.abs(this.velocity.y);
-        //this physics will need a fine tuning;
+        // if (this.y > 1000 ) this.dead = true;
+        this.sprint = false;
         if (this.dead) {
-            //TODO
-        } else { //set facing state field
+            this.velocity.y = 0;
+            this.velocity.x = 0;
+        } else {
+            let yOff = 50 * PARAMS.SCALE;
+            let xOff = 15 * PARAMS.SCALE;
+            // collision
+            var that = this;
+            let canFall = true;
+            let othThanCloud = false;
+            this.game.entities.forEach(function (entity) {
+                if ((entity.BB && that.BB.collide(entity.BB))
+                    && (entity instanceof Land || entity instanceof Cloud || entity instanceof Background || entity instanceof Portal)) {
+                    othThanCloud = entity instanceof Land ||  entity instanceof Background;
+                    if (that.velocity.y > 0 && othThanCloud) { //falling
+                        if (that.BB.bottom >= entity.BB.top && (that.BB.bottom - entity.BB.top) < 20) {
+                            that.y = entity.BB.top - that.BB.height - yOff + 1;
+                            that.velocity.y = 0;
+                            canFall = false;
+                        }
+
+                    } else if (entity instanceof Cloud) {
+                        if (that.BB.bottom >= entity.BB.top && (that.BB.bottom - entity.BB.top) < 10) {
+                            that.y = entity.BB.top - that.BB.height - yOff + 5;
+                            that.velocity.y = 0;
+                            canFall = false;
+
+                        }
+
+                    } else if (entity instanceof Portal) {
+                        that.x = -1750;
+                        that.y= 614;
+
+                    } else if (that.BB.bottom >= entity.BB.top && (that.BB.bottom - entity.BB.top)) {
+                        canFall = false;
+                    } else {
+                        canFall = true;
+                    }
+
+                    // if (entity instanceof Cloud && that.BB.bottom - entity.BB.top > 75) {
+                    //     if (that.BB.right > entity.BB.left && (that.BB.left - entity.BB.left) < 100) {  //for collisions ->
+                    //         if (that.BB.bottom > (entity.BB.top + 40)) {
+                    //             that.x = entity.BB.left - that.BB.width - xOff;
+                    //             that.velocity.x = 0;
+                    //         }
+                    //
+                    //     } else if (that.BB.left < entity.BB.right) {  //for collisions ->
+                    //         if (that.BB.bottom > (entity.BB.top + 40)) {
+                    //             that.x = entity.BB.right + xOff - 8;
+                    //             that.velocity.x = 0;
+                    //         }
+                    //
+                    //     }
+                    //
+                    // }
+
+
+                }
+
+            });
+            //console.log(this.y);
+            if (this.y > 3000) {
+                this.velocity.x = 0;
+                this.x = -1700;
+                this.y = 1800;
+            }
+            let yVel = Math.abs(this.velocity.y);
+            //this physics will need a fine tuning;
+            //set facing state field
             if (!this.game.B) {
                 this.jumpFlag = false;
             }
@@ -211,18 +222,18 @@ class Knight {
 
             } else if (!this.game.A && !this.game.B && !this.game.right && !this.game.left) {
                 this.state = 0;
-            }
-            if (this.game.C) {
+            } if (this.game.C) {
+                this.sprint = true;
                 acc_run = ACC_SPRINT;
                 max_run = MAX_SPRINT;
             }
 
             //if moving right and then face left, skid
-            if(this.game.left && this.velocity.x > 0 && yVel < 20) {
+            if (this.game.left && this.velocity.x > 0 && yVel < 20) {
                 this.velocity.x -= TURN_SKID;
             }
             //if moving left ann then face right, skid
-            if(this.game.right && this.velocity.x < 0 && yVel < 20) {
+            if (this.game.right && this.velocity.x < 0 && yVel < 20) {
                 this.velocity.x += TURN_SKID;
             }
             //if you unpress left and right while moving right
@@ -233,7 +244,7 @@ class Knight {
                     } else if (yVel < 20) {
                         this.velocity.x = 0;
                     } else if (this.velocity.x > 0) { //this is where you control horizontal deceleration when in air
-                        this.velocity.x-=AIR_DEC;
+                        this.velocity.x -= AIR_DEC;
                     }
                 } else { //if you unpress left and right while moving left
                     if (this.velocity.x < 0 && yVel < 20) {
@@ -241,7 +252,7 @@ class Knight {
                     } else if (yVel < 20) {
                         this.velocity.x = 0;
                     } else if (this.velocity.x < 0) { //this is where you control horizontal deceleration when in air
-                        this.velocity.x+=AIR_DEC;
+                        this.velocity.x += AIR_DEC;
                     }
                 }
             }
@@ -252,7 +263,7 @@ class Knight {
                         this.velocity.x += acc_run * TICK;
                     }
                 }
-            } else if(this.facing === 1) {                  //facing left
+            } else if (this.facing === 1) {                  //facing left
                 if (!this.game.right && this.game.left) {   //and pressing left.
                     if (yVel < 10 && !this.game.B) {        //makes sure you are on ground
                         this.velocity.x -= acc_run * TICK;
@@ -273,30 +284,33 @@ class Knight {
                     this.fallAcc = STOP_FALL;
                 }
             }
+
+
+            // max speed calculation
+            if (this.velocity.x >= max_run) this.velocity.x = max_run;
+            if (this.velocity.x <= -max_run) this.velocity.x = -max_run;
+
+            // update position
+            if (canFall) { //this makes sure we aren't applying velocity if we are on ground/platform
+                this.velocity.y += this.fallAcc * TICK;
+                this.y += this.velocity.y * TICK * PARAMS.SCALE;
+            }
+
+            if (this.velocity.y >= MAX_FALL) this.velocity.y = MAX_FALL;
+            if (this.velocity.y <= -MAX_JUMP) this.velocity.y = -MAX_FALL;
+            this.x += this.velocity.x * TICK * PARAMS.SCALE;
+
+            this.updateBB(); //Update your bounding box every tick
         }
-
-        // max speed calculation
-        if (this.velocity.x >= max_run) this.velocity.x = max_run;
-        if (this.velocity.x <= -max_run) this.velocity.x = -max_run;
-
-        // update position
-        if (canFall) { //this makes sure we aren't applying velocity if we are on ground/platform
-            this.velocity.y += this.fallAcc * TICK;
-            this.y += this.velocity.y * TICK * PARAMS.SCALE;
-        }
-
-        if (this.velocity.y >= MAX_FALL) this.velocity.y = MAX_FALL;
-        if (this.velocity.y <= -MAX_JUMP) this.velocity.y = -MAX_FALL;
-        this.x += this.velocity.x * TICK * PARAMS.SCALE;
-
-        this.updateBB(); //Update your bounding box every tick
     };
 
 
     draw(ctx) {
         //this.animation.drawFrame(this.game.clockTick, ctx, 300, 300, 3);
-        if (this.dead) {
-            //this.deadAnim.drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, PARAMS.SCALE);
+        if (this.dead && this.facing === 0) {
+            this.deadAnimR.drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - this.game.camera.y, PARAMS.SCALE);
+        } else if (this.dead && this.facing === 1) {
+            this.deadAnimL.drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x - 50, this.y - this.game.camera.y, PARAMS.SCALE);
         } else if (this.facing === 0) {  //facing right, need to offset
             this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x,
                 this.y - this.game.camera.y , PARAMS.SCALE);
@@ -308,5 +322,6 @@ class Knight {
             ctx.strokeStyle = 'Red';
             ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y - this.game.camera.y, this.BB.width, this.BB.height);
         }
+
     }
 };
