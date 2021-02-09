@@ -1,6 +1,6 @@
 class Knight {
     constructor(game, x, y) {
-        Object.assign(this, { game, x, y });
+        Object.assign(this, {game, x, y});
         this.game.knight = this;
 
         // spritesheet
@@ -26,7 +26,7 @@ class Knight {
         this.sprint = false;
 
 
-        this.velocity = { x: 0, y: 0 };
+        this.velocity = {x: 0, y: 0};
         this.fallAcc = 2000;
 
         this.updateBB();
@@ -76,7 +76,7 @@ class Knight {
         this.animations[3][0] = new Animator(this.spritesheet, 2165, 150, 148, 117, 1,
             1, 2, false, true);
         //facing left
-        this.animations[3][1] =  new Animator(this.spritesheet, 312, 150, 148, 117, 1,
+        this.animations[3][1] = new Animator(this.spritesheet, 312, 150, 148, 117, 1,
             1, 2, false, true);
 
         //death
@@ -84,7 +84,7 @@ class Knight {
         this.deadAnimR = new Animator(this.spritesheet, 2165, 390, 148, 117, 4,
             .04, false, false);
         //facing left
-        this.deadAnimL =  new Animator(this.spritesheet, 20, 407, 148, 117, 3,
+        this.deadAnimL = new Animator(this.spritesheet, 20, 407, 148, 117, 3,
             .04, 2, true, false);
     };
 
@@ -108,7 +108,7 @@ class Knight {
 
     update() {
         this.time2 = this.testTimer.getTime();
-        console.log("(" + Math.floor(this.x) + "," + Math.floor(this.y) + ")");
+        //console.log("(" + Math.floor(this.x) + "," + Math.floor(this.y) + ")");
         const TICK = this.game.clockTick;
 
         //-------------adjust constants to alter physics-----------
@@ -142,8 +142,23 @@ class Knight {
             var that = this;
             let canFall = true;
             this.game.entities.forEach(function (entity) {
+                if (entity instanceof Dragon) {
+                    if (entity.SBB && that.BB.collide(entity.SBB)) {
+                        if (entity instanceof Dragon) {
+                            console.log("HEARD");
+                            if (that.lastBB.left >= entity.SBB.right) { //collisions <-
+                                that.x = that.lastBB.left + 3.8;
+                                that.updateBB();
+                            } else if (that.lastBB.right <= entity.SBB.left) {  //collisions ->
+                                that.x = that.lastBB.left - that.xOffset;
+                                that.updateBB();
+                            }
+                        }
+                    }
+                }
                 if ((entity.BB && that.BB.collide(entity.BB))
-                    && (entity instanceof Land || entity instanceof Cloud || entity instanceof Background || entity instanceof Portal)) {
+                    && (entity instanceof Land || entity instanceof Cloud || entity instanceof Background
+                        || entity instanceof Portal || entity instanceof Dragon)) {
                     if (entity instanceof Cloud) {
                         if (that.BB.bottom >= entity.BB.top && (that.BB.bottom - entity.BB.top) < 10) {
                             that.y = entity.BB.y - that.BB.height - 32;
@@ -158,7 +173,7 @@ class Knight {
                         }
                     } else if (entity instanceof Portal) {
                         that.x = -1750;
-                        that.y= 614;
+                        that.y = 614;
 
                     } else if (that.BB.bottom >= entity.BB.top && (that.BB.bottom - entity.BB.top)) {
                         canFall = false;
@@ -193,7 +208,8 @@ class Knight {
 
             } else if (!this.game.A && !this.game.B && !this.game.right && !this.game.left) {
                 this.state = 0;
-            } if (this.game.C) {
+            }
+            if (this.game.C) {
                 this.sprint = true;
                 acc_run = ACC_SPRINT;
                 max_run = MAX_SPRINT;
@@ -284,7 +300,7 @@ class Knight {
             this.deadAnimL.drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x - 50, this.y - this.game.camera.y, PARAMS.SCALE);
         } else if (this.facing === 0) {  //facing right, need to offset
             this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x,
-                this.y - this.game.camera.y , PARAMS.SCALE);
+                this.y - this.game.camera.y, PARAMS.SCALE);
         } else {
             this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x - 50,
                 this.y - this.game.camera.y, PARAMS.SCALE);
