@@ -17,7 +17,7 @@ class Dragon {
         this.updateBB();
         this.animations = [];
         this.loadAnimations();
-        this.animation = new Animator(this.spritesheet, 75, 2590, this.width + 75, this.height + 30, 15, 0.3, 150, true, false);
+
 
     }
 
@@ -43,7 +43,7 @@ class Dragon {
             this.animations[2][1] = new Animator(this.spritesheet, 85, 1450, this.width + 75, this.height, 12, 0.09, 150, false, true);
 
             //dead
-            this.animations[3][0] = new Animator(this.spritesheet, 30, 2100, this.width + 100, this.height, 11, 0.09, 25, false, false);
+            this.animations[3][0] = new Animator(this.spritesheet, 75, 2590, this.width + 75, this.height + 30, 15, 0.3, 150, true, false);
             this.animations[3][1] =  new Animator(this.spritesheet, 30, 2200, this.width + 75, this.height + 30, 15, 0.3, 150, false, false);
 
 
@@ -140,7 +140,7 @@ class Dragon {
     }
 
     draw(ctx) {
-        this.animation.drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.y, this.y - this.game.camera.y, PARAMS.SCALE)
+
         if (PARAMS.DEBUG) {
             ctx.strokeStyle = 'Blue';
             ctx.strokeRect(this.BB.x, this.BB.y - this.game.camera.y, this.BB.width, this.BB.height);

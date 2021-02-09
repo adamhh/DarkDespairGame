@@ -84,8 +84,8 @@ class SceneManager {
         this.game.addEntity(land);
 
         //dragon
-        let dragon = new Dragon(this.game, 2000, 2100);
-        this.game.addEntity(dragon);
+        // let dragon = new Dragon(this.game, 2000, 2100);
+        // this.game.addEntity(dragon);
         //start point
         this.knight = new Knight(this.game,-1700, 2100);
         //portal start point
