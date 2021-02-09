@@ -5,7 +5,7 @@ class Cloud {
         switch(n) {
             case 1:
                 this.spritesheet = ASSET_MANAGER.getAsset("./sprites/cloud1.png");
-                this.w = 200;
+                this.w = 225;
                 this.h = 100;
 
                 break;
@@ -32,7 +32,7 @@ class Cloud {
         }
         this.moveDown = false;
         this.moveRight = false;
-        this.BB = new BoundingBox(this.x + 7,  this.y + 45, this.w -15, this.h - 80);
+        this.BB = new BoundingBox(this.x,  this.y, this.w, this.h);
     };
 
     update() {
@@ -63,7 +63,7 @@ class Cloud {
                 this.x -= this.speed;
             }
         }
-        this.BB = new BoundingBox(this.x + 7, this.y + 45, this.w - 15, this.h - 80);
+        this.BB = new BoundingBox(this.x, this.y, this.w, this.h);
 
     };
 

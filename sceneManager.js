@@ -41,9 +41,9 @@ class SceneManager {
 
 
         //floating land
-        let floating = new Land(this.game, 2200, 2000, 127, 1);
+        let floating = new Land(this.game, 2200, 2000, 128, 1);
         this.game.addEntity(floating);
-        floating = new Land(this.game, 2500, 1850, 127, 1);
+        floating = new Land(this.game, 2500, 1850, 128, 1);
         this.game.addEntity(floating);
 
 
@@ -83,8 +83,15 @@ class SceneManager {
         land = new Land(this.game, 3800, 700, 930, 2);
         this.game.addEntity(land);
 
-        //character
-        this.knight = new Knight(this.game,-1700, 1800);
+        //dragon
+        let dragon = new Dragon(this.game, 2000, 2100);
+        this.game.addEntity(dragon);
+        //start point
+        this.knight = new Knight(this.game,-1700, 2100);
+        //portal start point
+        // this.knight = new Knight(this.game,3971, 1926);
+        //cloud start point
+        //this.knight = new Knight(this.game,1937, 2000);
         this.game.addEntity(this.knight);
 
     };

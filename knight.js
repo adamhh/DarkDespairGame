@@ -108,13 +108,8 @@ class Knight {
 
     update() {
         this.time2 = this.testTimer.getTime();
-        //TODO refactor for knight
         console.log("(" + Math.floor(this.x) + "," + Math.floor(this.y) + ")");
         const TICK = this.game.clockTick;
-        //console.log("(this.game, " + Math.ceil(this.x) +  ", " + Math.ceil(this.y) + ")");
-        // I used this page to approximate my constants
-        // https://web.archive.org/web/20130807122227/http://i276.photobucket.com/albums/kk21/jdaster64/smb_playerphysics.png
-        // I converted these values from hex and into units of pixels and seconds.
 
         //-------------adjust constants to alter physics-----------
         //run
@@ -137,35 +132,30 @@ class Knight {
         const AIR_DEC = 2;
         // if (this.y > 1000 ) this.dead = true;
         this.sprint = false;
+
         if (this.dead) {
             this.velocity.y = 0;
             this.velocity.x = 0;
         } else {
             let yOff = 50 * PARAMS.SCALE;
-            let xOff = 15 * PARAMS.SCALE;
             // collision
             var that = this;
             let canFall = true;
-            let othThanCloud = false;
             this.game.entities.forEach(function (entity) {
                 if ((entity.BB && that.BB.collide(entity.BB))
                     && (entity instanceof Land || entity instanceof Cloud || entity instanceof Background || entity instanceof Portal)) {
-                    othThanCloud = entity instanceof Land ||  entity instanceof Background;
-                    if (that.velocity.y > 0 && othThanCloud) { //falling
+                    if (entity instanceof Cloud) {
+                        if (that.BB.bottom >= entity.BB.top && (that.BB.bottom - entity.BB.top) < 10) {
+                            that.y = entity.BB.y - that.BB.height - 32;
+                            that.velocity.y = 0;
+                            canFall = false;
+                        }
+                    } else if (that.velocity.y > 0) { //falling
                         if (that.BB.bottom >= entity.BB.top && (that.BB.bottom - entity.BB.top) < 20) {
                             that.y = entity.BB.top - that.BB.height - yOff + 1;
                             that.velocity.y = 0;
                             canFall = false;
                         }
-
-                    } else if (entity instanceof Cloud) {
-                        if (that.BB.bottom >= entity.BB.top && (that.BB.bottom - entity.BB.top) < 10) {
-                            that.y = entity.BB.top - that.BB.height - yOff + 5;
-                            that.velocity.y = 0;
-                            canFall = false;
-
-                        }
-
                     } else if (entity instanceof Portal) {
                         that.x = -1750;
                         that.y= 614;
@@ -175,25 +165,6 @@ class Knight {
                     } else {
                         canFall = true;
                     }
-
-                    // if (entity instanceof Cloud && that.BB.bottom - entity.BB.top > 75) {
-                    //     if (that.BB.right > entity.BB.left && (that.BB.left - entity.BB.left) < 100) {  //for collisions ->
-                    //         if (that.BB.bottom > (entity.BB.top + 40)) {
-                    //             that.x = entity.BB.left - that.BB.width - xOff;
-                    //             that.velocity.x = 0;
-                    //         }
-                    //
-                    //     } else if (that.BB.left < entity.BB.right) {  //for collisions ->
-                    //         if (that.BB.bottom > (entity.BB.top + 40)) {
-                    //             that.x = entity.BB.right + xOff - 8;
-                    //             that.velocity.x = 0;
-                    //         }
-                    //
-                    //     }
-                    //
-                    // }
-
-
                 }
 
             });
