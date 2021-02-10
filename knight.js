@@ -3,8 +3,10 @@ class Knight {
         Object.assign(this, {game, x, y});
         this.game.knight = this;
 
+        // spritesheet old
+        // this.spritesheet = ASSET_MANAGER.getAsset("./sprites/knightTEST.png");
         // spritesheet
-        this.spritesheet = ASSET_MANAGER.getAsset("./sprites/knightTEST.png");
+        this.spritesheet = ASSET_MANAGER.getAsset("./sprites/light_assassin.png");
 
 
         // knights's state variables
@@ -33,34 +35,31 @@ class Knight {
         // knights's animations
         this.animations = [];
         this.loadAnimations();
-        //this.animation = new Animator(this.spritesheet, 2167, 400, 148, 117, 9,
-        //   0.1, 2, false, true);
     };
 
     loadAnimations() {
-        for (var i = 0; i < 4; i++) {  //3 States: 0 = idle, 1 = walk, 2 = attack, 3 = jumping, 4 = falling?
+        for (var i = 0; i < 7; i++) {  //3 States: 0 = idle, 1 = walk, 2 = attack, 3 = jumping, 4 = running, 5 = hurt
             this.animations.push([]);
             for (var j = 0; j < 2; j++) { //2 directions: 0 = right, 1 = left
                 this.animations[i].push([]);
             }
         }
-
         //idle animation for state 0
         // facing right
-        this.animations[0][0] = new Animator(this.spritesheet, 2165, 273, 148, 117, 14,
-            0.1, 2, false, true);
+        this.animations[0][0] = new Animator(this.spritesheet, 0, 0, 65, 91, 10,
+            0.06, 125, false, true);
 
         // facing left
-        this.animations[0][1] = new Animator(this.spritesheet, 14, 270, 148, 117, 14,
-            0.1, 2, true, true);
+        this.animations[0][1] =new Animator(this.spritesheet, 0, 99, 65, 91, 10,
+            0.06, 125, true, true);
 
         //walking animation for state 1
         // facing right
-        this.animations[1][0] = new Animator(this.spritesheet, 2165, 150, 148, 117, 12,
-            0.1, 2, false, true);
+        this.animations[1][0] = new Animator(this.spritesheet, 0, 200, 95, 91, 10,
+            0.06, 95, false, true);
         // facing left
-        this.animations[1][1] = new Animator(this.spritesheet, 312, 150, 148, 117, 12,
-            0.1, 2, true, true);
+        this.animations[1][1] = new Animator(this.spritesheet, 0, 302, 95, 91, 10,
+            0.06, 95, true, true);
 
 
         //attacking animation
@@ -86,6 +85,49 @@ class Knight {
         //facing left
         this.deadAnimL = new Animator(this.spritesheet, 20, 407, 148, 117, 3,
             .04, 2, true, false);
+
+        //for old sprite sheet below
+        // //idle animation for state 0
+        // // facing right
+        // this.animations[0][0] = new Animator(this.spritesheet, 2165, 273, 148, 117, 14,
+        //     0.1, 2, false, true);
+        //
+        // // facing left
+        // this.animations[0][1] = new Animator(this.spritesheet, 14, 270, 148, 117, 14,
+        //     0.1, 2, true, true);
+        //
+        // //walking animation for state 1
+        // // facing right
+        // this.animations[1][0] = new Animator(this.spritesheet, 2165, 150, 148, 117, 12,
+        //     0.1, 2, false, true);
+        // // facing left
+        // this.animations[1][1] = new Animator(this.spritesheet, 312, 150, 148, 117, 12,
+        //     0.1, 2, true, true);
+        //
+        //
+        // //attacking animation
+        // // facing right
+        // this.animations[2][0] = new Animator(this.spritesheet, 2164, 26, 148, 117, 13,
+        //     0.03, 2, false, true);
+        // // facing left
+        // this.animations[2][1] = new Animator(this.spritesheet, 168, 26, 148, 117, 13,
+        //     0.03, 2, true, true);
+        //
+        // //jumping
+        // // facing right
+        // this.animations[3][0] = new Animator(this.spritesheet, 2165, 150, 148, 117, 1,
+        //     1, 2, false, true);
+        // //facing left
+        // this.animations[3][1] = new Animator(this.spritesheet, 312, 150, 148, 117, 1,
+        //     1, 2, false, true);
+        //
+        // //death
+        // // facing right
+        // this.deadAnimR = new Animator(this.spritesheet, 2165, 390, 148, 117, 4,
+        //     .04, false, false);
+        // //facing left
+        // this.deadAnimL = new Animator(this.spritesheet, 20, 407, 148, 117, 3,
+        //     .04, 2, true, false);
     };
 
     updateBB() {
@@ -94,10 +136,15 @@ class Knight {
         if (PARAMS.SCALE == 0.75) {
             scale = -15;
         }
+        // if (this.facing === 0) {
+        //     this.BB = new BoundingBox(this.x + this.xOffset, this.y + this.yOffset, this.cWidth, this.cHeight);
+        // } else {
+        //     this.BB = new BoundingBox(this.x + this.xOffset + scale, this.y + this.yOffset, this.cWidth, this.cHeight);
+        // }
         if (this.facing === 0) {
-            this.BB = new BoundingBox(this.x + this.xOffset, this.y + this.yOffset, this.cWidth, this.cHeight);
+            this.BB = new BoundingBox(this.x, this.y, 65, 91);
         } else {
-            this.BB = new BoundingBox(this.x + this.xOffset + scale, this.y + this.yOffset, this.cWidth, this.cHeight);
+            this.BB = new BoundingBox(this.x, this.y, 65, 91);
         }
     };
 
@@ -161,13 +208,13 @@ class Knight {
                         || entity instanceof Portal || entity instanceof Dragon)) {
                     if (entity instanceof Cloud) {
                         if (that.BB.bottom >= entity.BB.top && (that.BB.bottom - entity.BB.top) < 10) {
-                            that.y = entity.BB.y - that.BB.height - 32;
+                            that.y = entity.BB.y - that.BB.height;
                             that.velocity.y = 0;
                             canFall = false;
                         }
                     } else if (that.velocity.y > 0) { //falling
                         if (that.BB.bottom >= entity.BB.top && (that.BB.bottom - entity.BB.top) < 20) {
-                            that.y = entity.BB.top - that.BB.height - yOff + 1;
+                            that.y = entity.BB.top - that.BB.height;
                             that.velocity.y = 0;
                             canFall = false;
                         }
@@ -295,15 +342,15 @@ class Knight {
     draw(ctx) {
         //this.animation.drawFrame(this.game.clockTick, ctx, 300, 300, 3);
         if (this.dead && this.facing === 0) {
-            this.deadAnimR.drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - this.game.camera.y, PARAMS.SCALE);
+            this.deadAnimR.drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - this.game.camera.y, 1);
         } else if (this.dead && this.facing === 1) {
-            this.deadAnimL.drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x - 50, this.y - this.game.camera.y, PARAMS.SCALE);
+            this.deadAnimL.drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x - 50, this.y - this.game.camera.y, 1);
         } else if (this.facing === 0) {  //facing right, need to offset
             this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x,
-                this.y - this.game.camera.y, PARAMS.SCALE);
+                this.y - this.game.camera.y,1);
         } else {
-            this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x - 50,
-                this.y - this.game.camera.y, PARAMS.SCALE);
+            this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x,
+                this.y - this.game.camera.y, 1);
         }
         if (PARAMS.DEBUG) {
             ctx.strokeStyle = 'Red';
