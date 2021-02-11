@@ -87,12 +87,12 @@ class SceneManager {
         let dragon = new Dragon(this.game, -1500, 1400);
         this.game.addEntity(dragon);
         //start point
-        this.knight = new Knight(this.game,-1700, 2100);
+        this.assassin = new Assassin(this.game,-1000, 2100);
         //portal start point
-        // this.knight = new Knight(this.game,3971, 1926);
+        // this.assassin = new Assassin(this.game,3971, 1926);
         //cloud start point
-        //this.knight = new Knight(this.game,1937, 2000);
-        this.game.addEntity(this.knight);
+        //this.assassin = new Assassin(this.game,1937, 2000);
+        this.game.addEntity(this.assassin);
 
     };
 
@@ -107,13 +107,13 @@ class SceneManager {
 
         // if (this.x < this.knight.x - midpoint) this.x = this.knight.x - midpoint;
         //always start center
-        if (this.knight.x - midpoint > -1965 || this.count === 0) {
+        if (this.assassin.x - midpoint > -1965 || this.count === 0) {
             this.count++;
-            this.x = this.knight.x - midpoint;
+            this.x = this.assassin.x - midpoint;
         }
         //console.log(this.knight.y-midpointY);
-        if (this.knight.y -midpointY < 1920) {
-            this.y = this.knight.y - midpointY;
+        if (this.assassin.y -midpointY < 1920) {
+            this.y = this.assassin.y - midpointY;
         }
 
 

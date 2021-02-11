@@ -14,7 +14,9 @@ class GameEngine {
         this.A = false;
         this.B = false;
         this.C = false;
-        this.double = false;
+        this.One = false;
+        this.Two = false;
+        this.Three = false;
     };
 
     init(ctx) { // called after page has loaded
@@ -64,6 +66,21 @@ class GameEngine {
                 case "KeyC":
                 case "Slash":
                     that.C = true;
+                    break;
+                case "Digit1":
+                    that.One = true;
+                    that.Two = false;
+                    that.Three = false;
+                    break;
+                case "Digit2":
+                    that.One = false;
+                    that.Two = true;
+                    that.Three = false;
+                    break;
+                case "Digit3":
+                    that.One = false;
+                    that.Two = false;
+                    that.Three = true;
                     break;
             }
         }, false);

@@ -100,7 +100,7 @@ class Dragon {
                         }
 
                     }
-                    if (entity instanceof Knight) {
+                    if (entity instanceof Assassin) {
                         if (entity.BB.right - that.BB.left > 0 && entity.BB.left - that.BB.left < 0) {
                             that.facing = 1;
                         } else if (entity.BB.right > that.BB.right) {
