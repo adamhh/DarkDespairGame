@@ -184,8 +184,8 @@ class Assassin {
 
         //jumping
         // facing right
-        this.animations[3][0][2] = new Animator(this.spritesheetBow, 12, 1170, 90, 100, 1,
-            .2, 100.05, false, true);
+        this.animations[3][0][2] = new Animator(this.spritesheetBow, 12, 1170, 100, 100, 1,
+            .2, 90.05, false, true);
         //facing left
         this.animations[3][1][2] = new Animator(this.spritesheetBow, 20, 1270, 100, 100, 1,
             .2, 90.05, false, true);
