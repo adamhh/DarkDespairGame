@@ -87,7 +87,7 @@ class SceneManager {
         let dragon = new Dragon(this.game, -1500, 1400);
         this.game.addEntity(dragon);
         //start point
-        this.assassin = new Assassin(this.game,-1000, 2100);
+        this.assassin = new Assassin(this.game,-1700, 2100);
         //portal start point
         // this.assassin = new Assassin(this.game,3971, 1926);
         //cloud start point

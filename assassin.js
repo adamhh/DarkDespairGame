@@ -324,9 +324,9 @@ class Assassin {
                 this.state = 1;
             } else if (this.game.A) {
                 this.state = 2;
-            } else if (this.game.B) {
+            }
+            if (this.game.B) {
                 this.state = 3;
-
             } else if (!this.game.A && !this.game.B && !this.game.right && !this.game.left) {
                 this.state = 0;
             }
@@ -449,9 +449,12 @@ class Assassin {
                 if (this.state === 1 && this.facing === 1) {
                     xOffset = -15;
                     yOffset = 0;
-                } else if (this.state === 2) {
-                    xOffset = -70;
-                    yOffset = 18;
+                } else if (this.state === 2 && this.facing === 0) {
+                    xOffset = -40;
+                    yOffset = -13;
+                } else if (this.state === 2 && this.facing === 1) {
+                    xOffset = -68;
+                    yOffset = -15;
                 } else if (this.state === 3 && this.facing === 1) {
                     xOffset = -45;
                     yOffset = 0;
