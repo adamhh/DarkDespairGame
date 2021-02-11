@@ -12,7 +12,7 @@ class Assassin {
         // knights's state variables
         this.facing = 0; // 0 = right, 1 = left
         this.state = 0;  // 0 idle, 1, walking , 3 attacking
-        this.weapon = 1; //0 hand, 1 sword, 2 bow
+        this.weapon = 0; //0 hand, 1 sword, 2 bow
         this.dead = false;
 
         //timer for various things
@@ -58,11 +58,11 @@ class Assassin {
 
         //walking animation for state 1
         // facing right
-        this.animations[1][0][0] = new Animator(this.spritesheet, 25, 216, 65, 91, 12,
+        this.animations[1][0][0] = new Animator(this.spritesheet, 25, 218, 65, 91, 12,
             0.05, 125.05, false, true);
 
         // facing left
-        this.animations[1][1][0] = new Animator(this.spritesheet, 45, 320, 70, 91, 12,
+        this.animations[1][1][0] = new Animator(this.spritesheet, 45, 322, 70, 91, 12,
             0.05, 120.05, true, true);
 
         //attacking animation
@@ -147,7 +147,7 @@ class Assassin {
 
         //death
         // facing right
-        this.deadAnimR[1] = new Animator(this.spritesheetSword, 0, 837, 115, 150, 9,
+        this.deadAnimR[1] = new Animator(this.spritesheetSword, 0, 837, 115, 150, 12,
             .06, 75.05, false, false);
         //facing left
         this.deadAnimL[1] = new Animator(this.spritesheetSword, 50, 986, 125, 150, 9,
@@ -157,30 +157,30 @@ class Assassin {
         //for bow animations ---------------------------------
         //idle animation for state 0
         // facing right
-        this.animations[0][0][2] = new Animator(this.spritesheetBow, 35, 16, 65, 91, 12,
-            0.05, 125.05, false, true);
+        this.animations[0][0][2] = new Animator(this.spritesheetBow, 2, 5, 85, 91, 6,
+            0.07, 105.05, false, true);
 
         // facing left
-        this.animations[0][1][2] = new Animator(this.spritesheetBow, 30, 115, 75, 91, 12,
-            0.05, 115.05, true, true);
+        this.animations[0][1][2] = new Animator(this.spritesheetBow, 8, 106, 75, 91, 6,
+            0.08, 115.05, true, true);
 
         //walking animation for state 1
         // facing right
-        this.animations[1][0][2] = new Animator(this.spritesheetBow, 25, 216, 65, 91, 12,
-            0.05, 125.05, false, true);
+        this.animations[1][0][2] = new Animator(this.spritesheetBow, 7, 216, 85, 91, 12,
+            0.05, 105.05, false, true);
 
         // facing left
-        this.animations[1][1][2] = new Animator(this.spritesheetBow, 45, 320, 70, 91, 12,
-            0.05, 120.05, true, true);
+        this.animations[1][1][2] = new Animator(this.spritesheetBow, 7, 320, 85, 91, 12,
+            0.05, 105.05, true, true);
 
         //attacking animation
         // facing right
-        this.animations[2][0][2] = new Animator(this.spritesheetBow, 35, 630, 95, 91, 10,
-            0.05, 95.05, false, true);
+        this.animations[2][0][2] = new Animator(this.spritesheetBow, 25, 630, 95, 91, 15,
+            0.05, 94.95, false, true);
 
         // facing left
-        this.animations[2][1][2] = new Animator(this.spritesheetBow, 50, 735, 95, 91, 10,
-            0.05, 95.05, true, true);
+        this.animations[2][1][2] = new Animator(this.spritesheetBow, 20, 743, 95, 91, 15,
+            0.05, 94.95, true, true);
 
         //jumping
         // facing right
@@ -192,20 +192,20 @@ class Assassin {
 
         //running
         // facing right
-        this.animations[4][0][2] = new Animator(this.spritesheetBow, 43, 415, 65, 91, 8,
-            0.07, 125.05, false, true);
+        this.animations[4][0][2] = new Animator(this.spritesheetBow, 43, 420, 85, 91, 8,
+            0.07, 105.05, false, true);
 
         // facing left
-        this.animations[4][1][2] = new Animator(this.spritesheetBow, 33, 520, 75, 91, 8,
-            0.05, 115.05, true, true);
+        this.animations[4][1][2] = new Animator(this.spritesheetBow, 27, 525, 85, 91, 8,
+            0.05, 105.05, true, true);
 
         //death
         // facing right
-        this.deadAnimR[2] = new Animator(this.spritesheetBow, 0, 860, 105, 120, 11,
-            .07, 85.05, false, false);
+        this.deadAnimR[2] = new Animator(this.spritesheetBow, 15, 845, 155, 135, 9,
+            .07, 35.05, false, false);
         //facing left
-        this.deadAnimL[2] = new Animator(this.spritesheetBow, 25, 990, 105, 120, 11,
-            .07, 85.05, true, false);
+        this.deadAnimL[2] = new Animator(this.spritesheetBow, 40, 1000, 155, 135, 9,
+            .07, 35.05, true, false);
 
 
     };
@@ -312,6 +312,10 @@ class Assassin {
             }
             let yVel = Math.abs(this.velocity.y);
             //this physics will need a fine tuning;
+
+            if (this.game.One) this.weapon = 0;
+            if (this.game.Two) this.weapon = 1;
+            if (this.game.Three) this.weapon = 2;
             //set facing state field
             if (!this.game.B) {
                 this.jumpFlag = false;
@@ -419,20 +423,25 @@ class Assassin {
         let xOffset = 0;
         let yOffset = 0;
         if (this.dead) {
-            if (this.weapon === 1 && this.facing === 0) {
+            if (this.weapon === 0 && this.facing === 0) {
+                xOffset = -45;
+                yOffset = -23;
+            } else if (this.weapon === 0 && this.facing === 1) {
+                xOffset = -35;
+                yOffset = -20;
+            } else if (this.weapon === 1 && this.facing === 0) {
                 xOffset = -75;
                 yOffset = -45;
             } else if (this.weapon === 1 && this.facing === 1) {
                 xOffset = -0;
                 yOffset = -42;
             } else if (this.weapon === 2 && this.facing === 0) {
-                xOffset = -20;
-                yOffset = -20
-            } else if (this.weapon === 3 && this.facing === 1) {
-                xOffset = -20;
-                yOffset = -20;
-            } else {
-                yOffset = -25;
+                xOffset = -65;
+                yOffset = -40;
+            } else if (this.weapon === 2 && this.facing === 1) {
+                xOffset = -30;
+                yOffset = -30;
+
             }
             if (this.facing === 0) {
                 this.deadAnimR[this.weapon].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x + xOffset,
@@ -446,6 +455,9 @@ class Assassin {
                 xOffset = 0;
                 yOffset = 0;
             } else if (this.weapon === 1) {
+                if (this.state === 0) {
+                    this.facing === 0 ? xOffset = 0: xOffset = -27;
+                }
                 if (this.state === 1 && this.facing === 1) {
                     xOffset = -15;
                     yOffset = 0;
@@ -459,54 +471,22 @@ class Assassin {
                     xOffset = -45;
                     yOffset = 0;
                 } else {
-                    xOffset = -30;
-                    yOffset = 0;
+                    // xOffset = -30;
+                    // yOffset = 0;
                 }
             } else { //if bow
-                xOffset = 0;
-                yOffset = 0;
+                console.log(this.facing + " " + this.state);
+                if (this.state === 0) {
+                    this.facing === 0 ? xOffset = 0 : xOffset = 0;
+                } else if (this.state === 2) {
+                    this.facing === 0 ? xOffset = 0 : xOffset = -7;
+                }
+
             }
             this.animations[this.state][this.facing][this.weapon].drawFrame(this.game.clockTick, ctx,
                 this.x - this.game.camera.x + xOffset, this.y - this.game.camera.y + yOffset, 1);
         }
 
-
-
-        //
-        // if (this.dead && this.facing === 0) {
-        //     //this.deadAnimR[this.weapon].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - this.game.camera.y - 20, 1);
-        // } else if (this.dead && this.facing === 1) {
-        //     //this.deadAnimL[this.weapon].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - this.game.camera.y - 20, 1);
-        // } else if (this.facing === 0) {
-        //     if (this.state === 2 && this.weapon === 1) {
-        //         this.animations[this.state][this.facing][this.weapon].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x - 14,
-        //             this.y - this.game.camera.y - 14,1);
-        //     } else {
-        //         this.animations[this.state][this.facing][this.weapon].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x,
-        //             this.y - this.game.camera.y,1);
-        //     }
-        //
-        // } else {
-        //     if (this.weapon === 1) {
-        //         if ((this.state === 1 ) && this.facing === 1) {
-        //             this.animations[this.state][this.facing][this.weapon].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x - 15,
-        //                 this.y - this.game.camera.y, 1);
-        //         } else if (this.state === 2) {
-        //             this.animations[this.state][this.facing][this.weapon].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x - 70,
-        //                 this.y - this.game.camera.y - 18, 1);
-        //         } else if (this.state === 3 && this.facing === 1) {
-        //             this.animations[this.state][this.facing][this.weapon].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x - 45,
-        //                 this.y - this.game.camera.y, 1);
-        //         } else {
-        //             this.animations[this.state][this.facing][this.weapon].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x - 30,
-        //                 this.y - this.game.camera.y, 1);
-        //         }
-        //
-        //     } else {
-        //         this.animations[this.state][this.facing][this.weapon].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x,
-        //             this.y - this.game.camera.y, 1);
-        //     }
-        // }
         if (PARAMS.DEBUG) {
             ctx.strokeStyle = 'Red';
             ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y - this.game.camera.y, this.BB.width, this.BB.height);
