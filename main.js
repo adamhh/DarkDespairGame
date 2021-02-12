@@ -14,9 +14,8 @@ ASSET_MANAGER.queueDownload("./sprites/landblock.png");
 ASSET_MANAGER.queueDownload("./sprites/sky_land.png");
 ASSET_MANAGER.queueDownload("./sprites/portal.png");
 ASSET_MANAGER.queueDownload("./sprites/cloud1.png");
-ASSET_MANAGER.queueDownload("./sprites/knightTEST.png");
-ASSET_MANAGER.queueDownload("./sprites/light_assassin.png");
-// ASSET_MANAGER.queueDownload("./sprites/princess/princess_idle.png");
+ASSET_MANAGER.queueDownload("./sprites/healthbar.png");
+ASSET_MANAGER.queueDownload("./sprites/weaponicons.png");
 
 ASSET_MANAGER.downloadAll(function () {
 	var gameEngine = new GameEngine();

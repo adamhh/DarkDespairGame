@@ -17,6 +17,7 @@ class GameEngine {
         this.One = false;
         this.Two = false;
         this.Three = false;
+
     };
 
     init(ctx) { // called after page has loaded
@@ -62,6 +63,7 @@ class GameEngine {
                 case "KeyX":
                 case "Period":
                     that.A = true;
+
                     break;
                 case "KeyC":
                 case "Slash":

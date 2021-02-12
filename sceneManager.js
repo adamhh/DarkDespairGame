@@ -4,9 +4,7 @@ class SceneManager {
         this.game.camera = this;
         this.x = 0;
         this.y = 0;
-        this.score = 0;
         this.health = 100;
-        this.coins = 0;
         this.lives = 3;
         this.count = 0;
 
@@ -83,16 +81,22 @@ class SceneManager {
         land = new Land(this.game, 3800, 700, 930, 2);
         this.game.addEntity(land);
 
-        //dragon
-        let dragon = new Dragon(this.game, -1500, 1400);
-        this.game.addEntity(dragon);
+
+        let healthBar = new HealthBar(this.game);
+        this.game.addEntity(healthBar);
+        let weaponIcon = new WeaponIcons(this.game);
+        this.game.addEntity(weaponIcon);
         //start point
-        this.assassin = new Assassin(this.game,-1700, 2100);
+        this.assassin = new Assassin(this.game,-1700, 1900, healthBar, weaponIcon);
         //portal start point
         // this.assassin = new Assassin(this.game,3971, 1926);
         //cloud start point
         //this.assassin = new Assassin(this.game,1937, 2000);
         this.game.addEntity(this.assassin);
+        //dragon
+        let dragon = new Dragon(this.game, -1500, 1400);
+        this.game.addEntity(dragon);
+
 
     };
 
@@ -124,20 +128,19 @@ class SceneManager {
     };
 
     draw(ctx) {
-        //
-        // ctx.font = PARAMS.BLOCKWIDTH/2 + 'px "Press Start 2P"';
-        // ctx.fillStyle = "Black";
-        // ctx.fillText("SCORE", .2 * PARAMS.BLOCKWIDTH, 1 * PARAMS.BLOCKWIDTH);
+        // ctx.font = 48 + 'px "MedievalSharp"';
+        // ctx.fillStyle = "White";
+        // ctx.fillText("TEST", 5, 40);
         // ctx.fillText(("TODO"), .2 * PARAMS.BLOCKWIDTH, 1.5 * PARAMS.BLOCKWIDTH);
         // ctx.fillText("HEALTH", 3 * PARAMS.BLOCKWIDTH, 1 * PARAMS.BLOCKWIDTH);
         // ctx.fillText("TODO", 3 * PARAMS.BLOCKWIDTH, 1.5 * PARAMS.BLOCKWIDTH);
-        //
-        // if (this.health === parseInt(this.health,10)) {
-        //     this.health--;
-        // }
-        // if (this.health == 0) {
-        //     this.health = "DEAD?"
-        // }
+
+        if (this.health === parseInt(this.health,10)) {
+            this.health--;
+        }
+        if (this.health == 0) {
+            this.health = "DEAD?"
+        }
 
 
         // if (PARAMS.DEBUG) {

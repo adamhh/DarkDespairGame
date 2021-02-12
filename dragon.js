@@ -8,10 +8,15 @@ class Dragon {
         this.height = 300;
         //state variables
         this.facing = 0; //0 for right, 1 for left
-        this.state = 0;  //0 for idle, 1 for walking, 2 for attacking, 3 for dead
+        this.state = 2;  //0 for idle, 1 for walking, 2 for attacking, 3 for dead
         this.dead = false;
         this.velocity = { x: 0, y: 0 };
         this.canFall = true;
+        this.attacking = false;
+        this.testTimer = new Timer();
+        this.attackStart = this.testTimer.getTime();
+        this.attackEnd = this.attackStart;
+        this.attackWindow = false;
         this.leftBound = 0;
         this.rightBound = 0;
         this.updateBB();
@@ -51,22 +56,32 @@ class Dragon {
 
     updateBB() {
         this.lastBB = this.BB;
+        let yOffset = 0;
+        let xOffset = 0;
+        if (this.state === 1){
+            xOffset = 10;
+            yOffset = 30;
+        } else if (this.state === 2) {
+            xOffset = 0;
+            yOffset = 90;
+        }
         this.ABB = new BoundingBox(this.x, this.y, 0, 0);
         if (this.facing === 1) {
-            this.BB = new BoundingBox(this.x, this.y, 335, 220);
-            this.SBB = new BoundingBox(this.x + 25, this.y + 60, 200, 150);
+            this.BB = new BoundingBox(this.x + 65, this.y, 160, 120);
+            this.SBB = new BoundingBox(this.x + 15 - xOffset, this.y - 65 + yOffset, 75, 95);
             if (this.state === 2) {
-                this.ABB = new BoundingBox(this.x + 5, this.y + 155, 50, 50);
+                this.ABB = new BoundingBox(this.x + 15, this.y + 65, 50, 40);
             }
 
         } else  {
-            this.BB = new BoundingBox(this.x - 50, this.y, 420, 220);
-            this.SBB = new BoundingBox(this.x + 170, this.y + 60, 200, 150);
+            this.BB = new BoundingBox(this.x + 150, this.y, 160, 120);
+            this.SBB = new BoundingBox(this.x + 330 + xOffset, this.y - 65 + yOffset, 75, 95);
             if (this.state === 2) {
-                this.ABB = new BoundingBox(this.x + 380, this.y + 150, 50, 50);
+                this.ABB = new BoundingBox(this.x + 363, this.y + 65, 50, 40);
             }
 
         }
+        this.sight = new BoundingBox(this.x - 400, this.y, 1400, 150);
 
     }
 
@@ -88,32 +103,40 @@ class Dragon {
         //collision system
         if (!this.dead) {
             this.game.entities.forEach(function (entity) {
-                if (entity.BB && that.BB.collide(entity.BB)) {
-                    if (entity instanceof Land || entity instanceof Background) {
-                        console.log(that.BB.bottom);
-                        that.canFall = false;
-                        if (that.BB.bottom - entity.BB.top > 0 && that.BB.bottom - entity.BB.bottom < 50) { //if on top/falling
+                if (entity.BB && that.BB.collide(entity.BB)) { //BB collision
+                    if (that.velocity.y > 0) { //falling
+                        if ((entity instanceof Land || entity instanceof Background) &&
+                            that.lastBB.bottom <= entity.BB.top) { //things you can land on & landed true
+                            //that.state = 3;
+                            that.y = entity.BB.top - that.lastBB.height;
                             that.velocity.y = 0;
-                            that.y = entity.BB.top - that.BB.height;
-                            that.leftBound = entity.BB.left;
-                            that.rightBound = entity.BB.right;
-                        }
-
+                            that.updateBB();
+                        } //can change to states if falling here
                     }
-                    if (entity instanceof Assassin) {
-                        if (entity.BB.right - that.BB.left > 0 && entity.BB.left - that.BB.left < 0) {
+                }
+                if (entity instanceof Assassin) {
+                    if (entity.BB && that.sight.collide(entity.BB)) { //if dragon sees assassin
+                        if ((entity.BB.x - that.sight.x) + 250 < (that.sight.x + that.sight.width) - entity.BB.x) {
                             that.facing = 1;
-                        } else if (entity.BB.right > that.BB.right) {
+                        } else {
                             that.facing = 0;
+
                         }
-                        that.state = 2;
-                        that.velocity.x = 0;
-                    } else {
-                        that.state = 1;
                     }
                 }
             });
 
+            // if (entity instanceof Assassin) {
+            //     if (entity.BB.right - that.BB.left > 0 && entity.BB.left - that.BB.left < 0) {
+            //         that.facing = 1;
+            //     } else if (entity.BB.right > that.BB.right) {
+            //         that.facing = 0;
+            //     }
+            //     that.state = 2;
+            //     that.velocity.x = 0;
+            // } else {
+            //     that.state = 1;
+            // }
             //platform walking physics
             // if (!this.canFall) {
             //     if (this.leftBound > this.x) {
@@ -158,14 +181,17 @@ class Dragon {
 
     draw(ctx) {
         this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x,
-            this.y - this.game.camera.y , PARAMS.SCALE);
+            this.y - this.game.camera.y - 100 , PARAMS.SCALE);
         if (PARAMS.DEBUG) {
-            ctx.strokeStyle = 'Blue';
-            ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y - this.game.camera.y, this.BB.width, this.BB.height);
             ctx.strokeStyle = 'Red';
+            ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y - this.game.camera.y, this.BB.width, this.BB.height);
+            ctx.strokeStyle = 'Blue';
             ctx.strokeRect(this.SBB.x - this.game.camera.x, this.SBB.y - this.game.camera.y, this.SBB.width, this.SBB.height);
-            ctx.strokeStyle = 'Green';
+            ctx.strokeStyle = 'Yellow';
             ctx.strokeRect(this.ABB.x - this.game.camera.x, this.ABB.y - this.game.camera.y, this.ABB.width, this.ABB.height);
+            ctx.strokeStyle = "White";
+            ctx.strokeRect(this.sight.x - this.game.camera.x, this.sight.y - this.game.camera.y, this.sight.width, this.sight.height);
+
 
 
 
