@@ -14,11 +14,11 @@ class Assassin {
         this.dead = false;
 
         //timer for various things
-        this.testTimer = new Timer();
-        this.time1 = this.testTimer.getTime();
+        this.timer = new Timer();
+        this.time1 = this.timer.getTime();
         this.time2 = this.time1;
         this.attacking = false;
-        this.attackStart = this.testTimer.getTime();
+        this.attackStart = this.timer.getTime();
         this.attackEnd = this.attackStart;
         this.attackWindow = false;
 
@@ -262,9 +262,9 @@ class Assassin {
         if (this.healthBar.isDead()) {
             this.dead = true;
         }
-        this.time2 = this.testTimer.getTime();
+        this.time2 = this.timer.getTime();
         const TICK = this.game.clockTick;
-        this.attackEnd = this.testTimer.getTime();
+        this.attackEnd = this.timer.getTime();
 
         //-------------adjust constants to alter physics-----------
         //run
@@ -307,7 +307,7 @@ class Assassin {
                         }
 
                     } if (entity.ABB && that.BB.collide(entity.ABB)) {
-                        that.healthBar.updateHealth(-.1);
+                        that.healthBar.updateHealth(-.05);
                     }
                     // if (entity.BB && that.BB.collide(entity.BB)) {
                     //     if (that.BB.bottom - that.BB.top > 50) {
@@ -329,7 +329,7 @@ class Assassin {
                                 that.velocity.y = 0;
                                 that.y = entity.BB.top - that.BB.height;
                                 that.updateBB();
-                            } //can change to states if falling here
+                            }
 
 
                     }
@@ -450,7 +450,7 @@ class Assassin {
                     if (yVel < 20) {
                         this.velocity.x = 0;
                     }
-                    this.attackStart = this.testTimer.getTime();
+                    this.attackStart = this.timer.getTime();
                 }
                 if (this.game.B) {
                     this.state = 3;
@@ -520,7 +520,7 @@ class Assassin {
                     canFall = true;
                     let timeDiff = this.time2 - this.time1;
                     if (this.velocity.y === 0) { // add double jump later
-                        this.time1 = this.testTimer.getTime();
+                        this.time1 = this.timer.getTime();
                         this.velocity.y -= JUMP_ACC;
                         this.fallAcc = STOP_FALL;
                         this.jumpFlag = true;

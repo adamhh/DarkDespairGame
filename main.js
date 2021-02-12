@@ -1,7 +1,7 @@
 
 var ASSET_MANAGER = new AssetManager();
 ASSET_MANAGER.queueDownload("./sprites/background/Background.png");
-ASSET_MANAGER.queueDownload("./sprites/dragon_sheet.png");
+ASSET_MANAGER.queueDownload("./sprites/dragon_sheetUNCHANGED.png");
 ASSET_MANAGER.queueDownload("./sprites/assassin.png");
 ASSET_MANAGER.queueDownload("./sprites/assassin_bow.png");
 ASSET_MANAGER.queueDownload("./sprites/assassin_sword.png");

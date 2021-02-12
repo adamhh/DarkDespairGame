@@ -86,11 +86,11 @@ class SceneManager {
         this.game.addEntity(healthBar);
         let weaponIcon = new WeaponIcons(this.game);
         this.game.addEntity(weaponIcon);
-        let dragon = new Dragon(this.game, -1500, 1400);
+        let dragon = new Dragon(this.game, -1700, 1400);
         this.game.addEntity(dragon);
 
         //start point
-        this.assassin = new Assassin(this.game,-1700, 1900, healthBar, weaponIcon);
+        this.assassin = new Assassin(this.game,-600, 1900, healthBar, weaponIcon);
         //portal start point
         // this.assassin = new Assassin(this.game,3971, 1926);
         //cloud start point
@@ -103,10 +103,10 @@ class SceneManager {
 
     update() {
 
-         PARAMS.DEBUG = document.getElementById("debug").checked;
+         PARAMS.DEBUG = true;
 
 
-        let midpoint = PARAMS.CANVAS_WIDTH/4 - 60;
+        let midpoint = PARAMS.CANVAS_WIDTH/2 - 100;
         let midpointY = PARAMS.CANVAS_HEIGHT/1.2 - 160;
         // let midpointY = PARAMS.CANVAS_HEIGHT/2 - 60;
 
@@ -136,76 +136,6 @@ class SceneManager {
         // ctx.fillText("HEALTH", 3 * PARAMS.BLOCKWIDTH, 1 * PARAMS.BLOCKWIDTH);
         // ctx.fillText("TODO", 3 * PARAMS.BLOCKWIDTH, 1.5 * PARAMS.BLOCKWIDTH);
 
-        if (this.health === parseInt(this.health,10)) {
-            this.health--;
-        }
-        if (this.health == 0) {
-            this.health = "DEAD?"
-        }
 
-
-        // if (PARAMS.DEBUG) {
-        //     let xV = "xV=" + Math.floor(this.game.mario.velocity.x);
-        //     let yV = "yV=" + Math.floor(this.game.mario.velocity.y);
-        //     ctx.fillText(xV, 1.5 * PARAMS.BLOCKWIDTH, 2.5 * PARAMS.BLOCKWIDTH);
-        //     ctx.fillText(yV, 1.5 * PARAMS.BLOCKWIDTH, 3 * PARAMS.BLOCKWIDTH);
-        //
-        //     ctx.translate(0, -10); // hack to move elements up by 10 pixels instead of adding -10 to all y coordinates below
-        //     ctx.strokeStyle = "White";
-        //     ctx.lineWidth = 2;
-        //     ctx.strokeStyle = this.game.left ? "White" : "Grey";
-        //     ctx.fillStyle = ctx.strokeStyle;
-        //     ctx.strokeRect(6 * PARAMS.BLOCKWIDTH - 2, 2.5 * PARAMS.BLOCKWIDTH - 2, 0.5 * PARAMS.BLOCKWIDTH + 2, 0.5 * PARAMS.BLOCKWIDTH + 2);
-        //     ctx.fillText("L", 6 * PARAMS.BLOCKWIDTH, 3 * PARAMS.BLOCKWIDTH);
-        //     ctx.strokeStyle = this.game.down ? "White" : "Grey";
-        //     ctx.fillStyle = ctx.strokeStyle;
-        //     ctx.strokeRect(6.5 * PARAMS.BLOCKWIDTH, 3 * PARAMS.BLOCKWIDTH, 0.5 * PARAMS.BLOCKWIDTH + 2, 0.5 * PARAMS.BLOCKWIDTH + 2);
-        //     ctx.fillText("D", 6.5 * PARAMS.BLOCKWIDTH + 2, 3.5 * PARAMS.BLOCKWIDTH + 2);
-        //     ctx.strokeStyle = this.game.up ? "White" : "Grey";
-        //     ctx.fillStyle = ctx.strokeStyle;
-        //     ctx.strokeRect(6.5 * PARAMS.BLOCKWIDTH, 2 * PARAMS.BLOCKWIDTH - 4, 0.5 * PARAMS.BLOCKWIDTH + 2, 0.5 * PARAMS.BLOCKWIDTH + 2);
-        //     ctx.fillText("U", 6.5 * PARAMS.BLOCKWIDTH + 2, 2.5 * PARAMS.BLOCKWIDTH - 2);
-        //     ctx.strokeStyle = this.game.right ? "White" : "Grey";
-        //     ctx.fillStyle = ctx.strokeStyle;
-        //     ctx.strokeRect(7 * PARAMS.BLOCKWIDTH + 2, 2.5 * PARAMS.BLOCKWIDTH - 2, 0.5 * PARAMS.BLOCKWIDTH + 2, 0.5 * PARAMS.BLOCKWIDTH + 2);
-        //     ctx.fillText("R", 7 * PARAMS.BLOCKWIDTH + 4, 3 * PARAMS.BLOCKWIDTH);
-        //
-        //     ctx.strokeStyle = this.game.A ? "White" : "Grey";
-        //     ctx.fillStyle = ctx.strokeStyle;
-        //     ctx.beginPath();
-        //     ctx.arc(8.25 * PARAMS.BLOCKWIDTH + 2, 2.75 * PARAMS.BLOCKWIDTH, 0.25 * PARAMS.BLOCKWIDTH + 4, 0, 2 * Math.PI);
-        //     ctx.stroke();
-        //     ctx.fillText("A", 8 * PARAMS.BLOCKWIDTH + 4, 3 * PARAMS.BLOCKWIDTH);
-        //     ctx.strokeStyle = this.game.B ? "White" : "Grey";
-        //     ctx.fillStyle = ctx.strokeStyle;
-        //     ctx.beginPath();
-        //     ctx.arc(9 * PARAMS.BLOCKWIDTH + 2, 2.75 * PARAMS.BLOCKWIDTH, 0.25 * PARAMS.BLOCKWIDTH + 4, 0, 2 * Math.PI);
-        //     ctx.stroke();
-        //     ctx.fillText("B", 8.75 * PARAMS.BLOCKWIDTH + 4, 3 * PARAMS.BLOCKWIDTH);
-        //
-        //     ctx.translate(0, 10);
-        //     ctx.strokeStyle = "White";
-        //     ctx.fillStyle = ctx.strokeStyle;
-        //
-        //     this.minimap.draw(ctx);
-        // }
     };
 };
-
-// class Minimap {
-//     constructor(game, x, y, w) {
-//         Object.assign(this, { game, x, y, w });
-//     };
-//
-//     update() {
-//
-//     };
-//
-//     draw(ctx) {
-//         ctx.strokeStyle = "Black";
-//         ctx.strokeRect(this.x, this.y, this.w, PARAMS.BLOCKWIDTH);
-//         for (var i = 0; i < this.game.entities.length; i++) {
-//             this.game.entities[i].drawMinimap(ctx, this.x, this.y);
-//         }
-//     };
-// };

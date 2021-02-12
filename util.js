@@ -30,7 +30,7 @@ window.requestAnimFrame = (function () {
 const PARAMS = {
     //note game only designed for 0.75 scale, there is some dynamic scaling going on
     //in the program, but there are some bugs with collisions (bouncing of walls)
-    DEBUG: true,
+    DEBUG: false,
     SCALE: .75,
     BITWIDTH: 16
 };

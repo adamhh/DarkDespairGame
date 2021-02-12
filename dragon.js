@@ -3,18 +3,18 @@ class Dragon {
         Object.assign(this, {game, x, y});
         //spritesheets
 
-        this.spritesheet = ASSET_MANAGER.getAsset("./sprites/dragon_sheet.png");
+        this.spritesheet = ASSET_MANAGER.getAsset("./sprites/dragon_sheetUNCHANGED.png");
         this.width = 500;
         this.height = 300;
         //state variables
         this.facing = 1; //0 for right, 1 for left
-        this.state = 2;  //0 for idle, 1 for walking, 2 for attacking, 3 for dead
+        this.state = 0;  //0 for idle, 1 for walking, 2 for attacking, 3 for dead
         this.dead = false;
         this.velocity = { x: 0, y: 0 };
         this.canFall = true;
         this.attacking = false;
-        this.testTimer = new Timer();
-        this.attackStart = this.testTimer.getTime();
+        this.timer = new Timer();
+        this.attackStart = this.timer.getTime();
         this.attackEnd = this.attackStart;
         this.attackWindow = false;
         this.leftBound = 0;
@@ -28,7 +28,7 @@ class Dragon {
 
     loadAnimations() {
         //initialize
-        for (var i = 0; i < 4; i++) { //0 = idle, 1 = walking, 2 = attacking, 3 = dead
+        for (var i = 0; i < 5; i++) { //0 = idle, 1 = walking, 2 = attacking, 3 = dead, 4 = battle idle
             this.animations.push([]);
             for (var j = 0; j < 2; j++) { //2 directions, 0 for right, 1 for left
                 this.animations[i].push([]);
@@ -36,20 +36,25 @@ class Dragon {
         }
 
         //store various states for animations
-            //idle
-            this.animations[0][0] = new Animator(this.spritesheet, 45, 385, this.width, this.height, 7, 0.09, 225, false, true);
-            this.animations[0][1] = new Animator(this.spritesheet, 25, 35, this.width, this.height, 7, 0.09, 225, false, true);
-            //walking
-            this.animations[1][0] = new Animator(this.spritesheet, 85, 1050, this.width, this.height, 11, 0.09, 225, true, true);
-            this.animations[1][1] = new Animator(this.spritesheet, 45, 735, this.width, this.height, 11, 0.09, 225, false, true);
+        //idle
+        this.animations[0][0] = new Animator(this.spritesheet, 45, 385, this.width, this.height, 7, 0.09, 225, false, true);
+        this.animations[0][1] = new Animator(this.spritesheet, 25, 35, this.width, this.height, 7, 0.09, 225, false, true);
+        //walking
+        this.animations[1][0] = new Animator(this.spritesheet, 85, 1050, this.width, this.height, 11, 0.09, 225, true, true);
+        this.animations[1][1] = new Animator(this.spritesheet, 45, 735, this.width, this.height, 11, 0.09, 225, false, true);
 
-            //attack
-            this.animations[2][0] = new Animator(this.spritesheet, 70, 1790, this.width + 75, this.height, 6, 0.1, 150, true, true);
-            this.animations[2][1] = new Animator(this.spritesheet, 85, 1450, this.width + 75, this.height, 6, 0.1, 150, false, true);
+        //attack
+        this.animations[2][0] = new Animator(this.spritesheet, 75, 1825, this.width + 75, this.height, 11, 0.05, 150, true, true);
+        this.animations[2][1] = new Animator(this.spritesheet, 0, 1450, this.width + 75, this.height, 11, 0.05, 150, false, true);
 
-            //dead
-            this.animations[3][0] = new Animator(this.spritesheet, 75, 2590, this.width + 75, this.height + 30, 15, 0.3, 150, true, false);
-            this.animations[3][1] =  new Animator(this.spritesheet, 30, 2200, this.width + 75, this.height + 30, 15, 0.3, 150, false, false);
+        //dead
+        this.animations[3][0] = new Animator(this.spritesheet, 75, 2590, this.width + 75, this.height + 30, 15, 0.3, 150, true, false);
+        this.animations[3][1] = new Animator(this.spritesheet, 30, 2200, this.width + 75, this.height + 30, 15, 0.3, 150, false, false);
+
+        //battle idle
+        this.animations[4][0] = new Animator(this.spritesheet, 35, 4120, this.width + 75, this.height, 11, 0.09, 150, true, true);
+        this.animations[4][1] = new Animator(this.spritesheet, 50, 3810, this.width + 75 , this.height, 11, 0.09, 150, false, true);
+
 
 
     }
@@ -60,19 +65,18 @@ class Dragon {
         let xOffset = 0;
         if (this.state === 0) {
             yOffset = -25;
-            if (this.facing === 0) xOffset = 285;
-                else xOffset = 35;
+            this.facing === 0 ? xOffset = 285 : xOffset = 35;
 
         } else if (this.state === 1) {
             yOffset = 65;
-            if (this.facing === 0) xOffset = 320;
-                else xOffset = 20;
+            this.facing === 0 ? xOffset = 320 : xOffset = 20;
 
         } else if (this.state === 2) {
             yOffset = 200;
-
-            if (this.facing === 0) xOffset = 410;
-                else xOffset = 30;
+            this.facing === 0 ? xOffset = 410 : xOffset = 30;
+        } else {
+            yOffset = 120
+            this.facing === 0 ? xOffset = 320 : xOffset = 45;
         }
         this.ABB = new BoundingBox(this.x, this.y, 0, 0);
         if (this.facing === 1) {
@@ -88,11 +92,12 @@ class Dragon {
             this.BB = new BoundingBox(this.x + 265 + xDiff, this.y, 320, 350);
             this.BB2 = new BoundingBox(this.x + 330 + xOffset, this.y + yOffset, 95, 115);
             if (this.state === 2) {
-                this.ABB = new BoundingBox(this.x + 700, this.y + 270, 160, 70);
+                console.log(this.timer.getTime());
+                this.ABB = new BoundingBox(this.x + 690, this.y + 270, 160, 70);
             }
 
         }
-        this.sight = new BoundingBox(this.x - 400, this.y + 200, 1400, 150);
+        this.sight = new BoundingBox(this.x - 600, this.y + 200, 1900, 150);
 
     }
 
@@ -110,7 +115,9 @@ class Dragon {
         const MAX_WALK = 100;
         const MAX_FALL = 100;
         const FALL_ACC = .5;
+        let moveTo = 0;
         let that = this;
+        let inSight = false;
         //collision system
         if (!this.dead) {
             this.game.entities.forEach(function (entity) {
@@ -127,47 +134,66 @@ class Dragon {
                 }
                 if (entity instanceof Assassin) {
                     if (entity.BB && that.sight.collide(entity.BB)) { //if dragon sees assassin
+                        inSight = true;
                         if ((entity.BB.x - that.sight.x) < (that.sight.x + that.sight.width) - entity.BB.x) {
                             that.facing = 1;
+                            //console.log(that.sight.x - entity.BB.x);
                         } else {
                             that.facing = 0;
 
                         }
+                        moveTo = entity.BB.x;
+
+
+
+
+                    } else {
+                        that.velocity.x = 0;
+                        that.state = 0;
                     }
                 }
             });
+            if (this.state === 2) {
+                this.attacking = true;
+            }
+            let playerDiff = 0;
+            if (this.facing === 1 && inSight) {                                 //facing and in sight <-
+                playerDiff = this.x - moveTo;
+                console.log(playerDiff);
+                if (playerDiff < 75 && playerDiff > 25) {                       //if close walk to attack position
+                    this.velocity.x -= MAX_WALK;
+                    that.state = 1;
+                } else if (playerDiff < 600 && playerDiff > 75) {               //ranged attack
+                    this.state = 0;
+                    this.velocity.x = 0;
 
-            // if (entity instanceof Assassin) {
-            //     if (entity.BB.right - that.BB.left > 0 && entity.BB.left - that.BB.left < 0) {
-            //         that.facing = 1;
-            //     } else if (entity.BB.right > that.BB.right) {
-            //         that.facing = 0;
-            //     }
-            //     that.state = 2;
-            //     that.velocity.x = 0;
-            // } else {
-            //     that.state = 1;
-            // }
-            //platform walking physics
-            // if (!this.canFall) {
-            //     if (this.leftBound > this.x) {
-            //         this.state = 1;
-            //         this.facing = 0;
-            //         this.velocity.x += MAX_WALK;
-            //     } else if (this.rightBound - this.x < 70) {
-            //         this.state = 1;
-            //         this.facing = 1;
-            //         this.velocity.x -= MAX_WALK;
-            //     } else if (this.velocity.x === 0 && this.state !== 2 && this.facing === 1) {
-            //         this.state = 1;
-            //         this.facing = 1;
-            //         this.velocity.x -= MAX_WALK;
-            //     } else if (this.velocity.x === 0 && this.state !== 2 && this.facing === 0) {
-            //         this.state = 1;
-            //         this.facing = 0;
-            //         this.velocity.x += MAX_WALK;
-            //     }
-            // }
+                } else if (playerDiff < 25 && playerDiff > -120) {              //attack if in zone
+                    this.velocity.x = 0;
+                    this.state = 2;
+                } else {                                                        //else stop
+                    that.velocity.x = 0;
+                    that.state = 4;
+                }
+
+            } else if (inSight) {                                               //facing and in sight ->
+                playerDiff = moveTo - this.x;
+                console.log(playerDiff);
+                if (playerDiff < 810 && playerDiff > 760) {                     //in zone will walk towards and attack
+                    this.velocity.x += MAX_WALK;
+                    that.state = 1;
+                } else if (playerDiff < 1285 && playerDiff > 810) {             //ranged attack
+                    this.state = 0;
+                    this.velocity.x = 0;
+
+                } else if (playerDiff < 760 && playerDiff > 580) {
+                    this.velocity.x = 0;
+                    this.state = 2;
+
+                } else {                                                        //else stop
+                    that.velocity.x = 0;
+                    that.state = 4;
+                }
+            }
 
             // update position
 
