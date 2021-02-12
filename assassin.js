@@ -300,7 +300,7 @@ class Assassin {
             this.game.entities.forEach(function (entity) {
                 if (entity instanceof Dragon) {
                     if (entity.BB && that.BB.collide(entity.BB)) {
-                        //that.healthBar.updateHealth(-.1);
+                        that.healthBar.updateHealth(-.1);
                         if (that.BB.left > entity.BB.left) {
                            that.x += 10;
                         } else {
