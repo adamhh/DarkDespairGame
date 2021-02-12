@@ -128,7 +128,7 @@ class Assassin {
             0.05, 35.05, false, true);
 
         // facing left
-        this.animations[2][1][1] = new Animator(this.spritesheetSword, 0, 720, 155, 105, 10,
+        this.animations[2][1][1] = new Animator(this.spritesheetSword, 0, 722, 155, 105, 10,
             0.05, 35.05, true, true);
 
         //jumping
@@ -222,8 +222,7 @@ class Assassin {
 
     updateBB() {
         this.lastBB = this.BB;
-        this.BB = new BoundingBox(this.x, this.y, 65, 91);
-        this.SBB = new BoundingBox(this.x + 20, this.y + 10, 35, 81);
+        this.BB = new BoundingBox(this.x + 15, this.y, 45, 85);
         if (this.attackWindow) {
             let xOff = 0;
             let yOff = 0;
@@ -280,7 +279,7 @@ class Assassin {
         //jump
         const JUMP_ACC = 700;     //adjust for maximum jump acc
         const MAX_JUMP = 1000;    //adjust for maximum jump height
-        const DBL_JUMP_MOD = 200; //adjust for double jump boost
+        const DBL_JUMP_MOD = 50; //adjust for double jump boost
         //falling
         const MAX_FALL = 1000;  //adjust for fall speed
         const STOP_FALL = 1575;
@@ -288,8 +287,8 @@ class Assassin {
         const AIR_DEC = 2;
         // if (this.y > 1000 ) this.dead = true;
 
-        console.log("(" + Math.floor(this.x) + "," + this.y + ")");
-        console.log(this.velocity.y);
+        // console.log("(" + Math.floor(this.x) + "," + this.y + ")");
+       // console.log(this.velocity.y);
         if (this.dead) {
             this.velocity.y = 0;
             this.velocity.x = 0;
@@ -300,49 +299,49 @@ class Assassin {
             let canFall = true;
             this.game.entities.forEach(function (entity) {
                 if (entity instanceof Dragon) {
-                    if (entity.ABB && that.BB.collide(entity.ABB)) {
+                    if (entity.BB && that.BB.collide(entity.BB)) {
                         //that.healthBar.updateHealth(-.1);
                         if (that.facing === 0) {
-                           //do something if hit
+                           //that.x = entity.ABB.left - that.BB.width - 50;
                         }
                         if (that.facing === 1) {
-                            //do something if hit
+                            //that.x = entity.ABB.right + 50;
                         }
 
-                    } if (entity.BB && that.BB.collide(entity.BB)) {
-                        if (that.BB.bottom - that.BB.top > 50) {
-                            console.log(that.BB.right - entity.BB.left);
-                            if (that.BB.right - entity.BB.left < 110) {
-                                that.x = entity.BB.x - that.BB.width;
-                                that.velocity.x = 0;
-                            } else {
-                                that.x = entity.BB.x + entity.BB.width;
-                            }
-                        }
                     }
+                    // if (entity.BB && that.BB.collide(entity.BB)) {
+                    //     if (that.BB.bottom - that.BB.top > 50) {
+                    //
+                    //         if (that.BB.right - entity.BB.left < 110) {
+                    //             that.x = entity.BB.x - that.BB.width;
+                    //             that.velocity.x = 0;
+                    //         } else {
+                    //             that.x = entity.BB.x + entity.BB.width;
+                    //         }
+                    //     }
+                    // }
 
                 }
                 if (entity.BB && that.BB.collide(entity.BB)) { //BB collision
                     if (that.velocity.y > 0) { //falling
-
                             if ((entity instanceof Land || entity instanceof Background) &&
                                 that.lastBB.bottom <= entity.BB.top) { //things you can land on & landed true
-                                //that.state = 3;
-                                that.y = entity.BB.top - that.lastBB.height;
                                 that.velocity.y = 0;
+                                that.y = entity.BB.top - that.BB.height;
                                 that.updateBB();
                             } //can change to states if falling here
 
 
                     }
                     if (that.velocity.y < 0) { //jumping
-                        //add if hitting anything from under
+
+                    }
+                    if (entity instanceof Portal) {
+                        that.x = -1750;
+                        that.y = 614;
                     }
                 }
-                if (entity instanceof Portal) {
-                    // that.x = -1750;
-                    // that.y = 614;
-                }
+
 
 
             });
@@ -448,6 +447,9 @@ class Assassin {
                 } else if (this.game.A) {
                     this.state = 2;
                     this.attacking = true;
+                    if (yVel < 20) {
+                        this.velocity.x = 0;
+                    }
                     this.attackStart = this.testTimer.getTime();
                 }
                 if (this.game.B) {
@@ -466,6 +468,9 @@ class Assassin {
                 if (this.game.A && this.game.B) {
                     if (this.velocity.y > 200) this.state = 0;
                     else this.state = 3;
+                }
+                if (this.game.B && this.game.C && (this.game.right || this.game.left)) {
+                    this.state = 0;
                 }
 
                 //if moving right and then face left, skid
@@ -524,8 +529,6 @@ class Assassin {
                         this.fallAcc = STOP_FALL;
                     }
                 }
-
-
             }
 
             // max speed calculation
@@ -581,13 +584,12 @@ class Assassin {
             } else if (this.weapon === 1) {
                 if (this.state === 0) {
                     this.facing === 0 ? xOffset = 0: xOffset = -27;
-                }
-                if (this.state === 1 && this.facing === 1) {
+                } else if (this.state === 1 && this.facing === 1) {
                     xOffset = -15;
                     yOffset = 0;
                 } else if (this.state === 2 && this.facing === 0) {
-                    xOffset = -40;
-                    yOffset = -13;
+                    xOffset = -18;
+                    yOffset = -15;
                 } else if (this.state === 2 && this.facing === 1) {
                     xOffset = -68;
                     yOffset = -15;
@@ -595,7 +597,7 @@ class Assassin {
                     xOffset = -45;
                     yOffset = 0;
                 } else {
-                    // xOffset = -30;
+                     // xOffset = 100;
                     // yOffset = 0;
                 }
             } else { //if bow
@@ -608,6 +610,7 @@ class Assassin {
                 }
 
             }
+            yOffset -= 5;
             this.animations[this.state][this.facing][this.weapon].drawFrame(this.game.clockTick, ctx,
                 this.x - this.game.camera.x + xOffset, this.y - this.game.camera.y + yOffset, 1);
         }
@@ -615,8 +618,6 @@ class Assassin {
         if (PARAMS.DEBUG) {
             ctx.strokeStyle = 'Red';
             ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y - this.game.camera.y, this.BB.width, this.BB.height);
-            ctx.strokeStyle = 'Blue';
-            ctx.strokeRect(this.SBB.x - this.game.camera.x, this.SBB.y - this.game.camera.y, this.SBB.width, this.SBB.height);
             ctx.strokeStyle = 'Yellow';
             ctx.strokeRect(this.ABB.x - this.game.camera.x, this.ABB.y - this.game.camera.y, this.ABB.width, this.ABB.height);
 

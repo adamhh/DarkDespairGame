@@ -7,8 +7,8 @@ class Dragon {
         this.width = 500;
         this.height = 300;
         //state variables
-        this.facing = 0; //0 for right, 1 for left
-        this.state = 2;  //0 for idle, 1 for walking, 2 for attacking, 3 for dead
+        this.facing = 1; //0 for right, 1 for left
+        this.state = 0;  //0 for idle, 1 for walking, 2 for attacking, 3 for dead
         this.dead = false;
         this.velocity = { x: 0, y: 0 };
         this.canFall = true;
@@ -58,30 +58,41 @@ class Dragon {
         this.lastBB = this.BB;
         let yOffset = 0;
         let xOffset = 0;
-        if (this.state === 1){
-            xOffset = 10;
-            yOffset = 30;
+        if (this.state === 0) {
+            yOffset = -25;
+            if (this.facing === 0) xOffset = 285;
+                else xOffset = 35;
+
+        } else if (this.state === 1) {
+            yOffset = 65;
+            if (this.facing === 0) xOffset = 320;
+                else xOffset = 20;
+
         } else if (this.state === 2) {
-            xOffset = 0;
-            yOffset = 90;
+            yOffset = 200;
+
+            if (this.facing === 0) xOffset = 410;
+                else xOffset = 30;
         }
         this.ABB = new BoundingBox(this.x, this.y, 0, 0);
         if (this.facing === 1) {
-            this.BB = new BoundingBox(this.x + 65, this.y, 160, 120);
-            this.SBB = new BoundingBox(this.x + 15 - xOffset, this.y - 65 + yOffset, 75, 95);
+            this.BB = new BoundingBox(this.x + 170, this.y, 320, 350);
+            this.BB2 = new BoundingBox(this.x + xOffset, this.y + yOffset, 95, 115);
             if (this.state === 2) {
-                this.ABB = new BoundingBox(this.x + 15, this.y + 65, 50, 40);
+                this.ABB = new BoundingBox(this.x + 10, this.y + 270, 160, 70);
             }
 
         } else  {
-            this.BB = new BoundingBox(this.x + 150, this.y, 160, 120);
-            this.SBB = new BoundingBox(this.x + 330 + xOffset, this.y - 65 + yOffset, 75, 95);
+            let xDiff = 0;
+            if (this.state === 2) xDiff = 105;
+            this.BB = new BoundingBox(this.x + 265 + xDiff, this.y, 320, 350);
+            this.BB2 = new BoundingBox(this.x + 330 + xOffset, this.y + yOffset, 95, 115);
             if (this.state === 2) {
-                this.ABB = new BoundingBox(this.x + 363, this.y + 65, 50, 40);
+                this.ABB = new BoundingBox(this.x + 700, this.y + 270, 160, 70);
             }
 
         }
-        this.sight = new BoundingBox(this.x - 400, this.y, 1400, 150);
+        this.sight = new BoundingBox(this.x - 400, this.y + 200, 1400, 150);
 
     }
 
@@ -181,12 +192,12 @@ class Dragon {
 
     draw(ctx) {
         this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x,
-            this.y - this.game.camera.y - 100 , PARAMS.SCALE);
+            this.y - this.game.camera.y - 90, 1.5);
         if (PARAMS.DEBUG) {
             ctx.strokeStyle = 'Red';
             ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y - this.game.camera.y, this.BB.width, this.BB.height);
-            ctx.strokeStyle = 'Blue';
-            ctx.strokeRect(this.SBB.x - this.game.camera.x, this.SBB.y - this.game.camera.y, this.SBB.width, this.SBB.height);
+            ctx.strokeStyle = 'Pink';
+            ctx.strokeRect(this.BB2.x - this.game.camera.x, this.BB2.y - this.game.camera.y, this.BB2.width, this.BB2.height);
             ctx.strokeStyle = 'Yellow';
             ctx.strokeRect(this.ABB.x - this.game.camera.x, this.ABB.y - this.game.camera.y, this.ABB.width, this.ABB.height);
             ctx.strokeStyle = "White";
