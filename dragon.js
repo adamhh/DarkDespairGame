@@ -8,7 +8,7 @@ class Dragon {
         this.height = 300;
         //state variables
         this.facing = 1; //0 for right, 1 for left
-        this.state = 0;  //0 for idle, 1 for walking, 2 for attacking, 3 for dead
+        this.state = 2;  //0 for idle, 1 for walking, 2 for attacking, 3 for dead
         this.dead = false;
         this.velocity = { x: 0, y: 0 };
         this.canFall = true;
@@ -127,7 +127,7 @@ class Dragon {
                 }
                 if (entity instanceof Assassin) {
                     if (entity.BB && that.sight.collide(entity.BB)) { //if dragon sees assassin
-                        if ((entity.BB.x - that.sight.x) + 250 < (that.sight.x + that.sight.width) - entity.BB.x) {
+                        if ((entity.BB.x - that.sight.x) < (that.sight.x + that.sight.width) - entity.BB.x) {
                             that.facing = 1;
                         } else {
                             that.facing = 0;
@@ -170,13 +170,12 @@ class Dragon {
             // }
 
             // update position
-            if (this.canFall) { //this makes sure we aren't applying velocity if we are on ground/platform
-                this.velocity.y += FALL_ACC;
-                if (this.velocity.y >= MAX_FALL) this.velocity.y = MAX_FALL;
-                //if (this.velocity.y <= -MAX_FALL) this.velocity.y = -MAX_FALL;
-                this.y += this.velocity.y;
 
-            }
+            this.velocity.y += FALL_ACC;
+            if (this.velocity.y >= MAX_FALL) this.velocity.y = MAX_FALL;
+            //if (this.velocity.y <= -MAX_FALL) this.velocity.y = -MAX_FALL;
+            this.y += this.velocity.y;
+
             if (this.velocity.x >= MAX_WALK) this.velocity.x = MAX_WALK;
             if (this.velocity.x <= -MAX_WALK) this.velocity.x = -MAX_WALK;
             this.x += this.velocity.x * TICK * PARAMS.SCALE;

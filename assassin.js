@@ -279,7 +279,7 @@ class Assassin {
         //jump
         const JUMP_ACC = 700;     //adjust for maximum jump acc
         const MAX_JUMP = 1000;    //adjust for maximum jump height
-        const DBL_JUMP_MOD = 50; //adjust for double jump boost
+        const DBL_JUMP_MOD = 100; //adjust for double jump boost
         //falling
         const MAX_FALL = 1000;  //adjust for fall speed
         const STOP_FALL = 1575;
@@ -301,11 +301,10 @@ class Assassin {
                 if (entity instanceof Dragon) {
                     if (entity.BB && that.BB.collide(entity.BB)) {
                         //that.healthBar.updateHealth(-.1);
-                        if (that.facing === 0) {
-                           //that.x = entity.ABB.left - that.BB.width - 50;
-                        }
-                        if (that.facing === 1) {
-                            //that.x = entity.ABB.right + 50;
+                        if (that.BB.left > entity.BB.left) {
+                           that.x += 10;
+                        } else {
+                            that.x -= 10;
                         }
 
                     }

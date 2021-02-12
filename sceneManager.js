@@ -86,6 +86,9 @@ class SceneManager {
         this.game.addEntity(healthBar);
         let weaponIcon = new WeaponIcons(this.game);
         this.game.addEntity(weaponIcon);
+        let dragon = new Dragon(this.game, -1500, 1400);
+        this.game.addEntity(dragon);
+
         //start point
         this.assassin = new Assassin(this.game,-1700, 1900, healthBar, weaponIcon);
         //portal start point
@@ -94,8 +97,6 @@ class SceneManager {
         //this.assassin = new Assassin(this.game,1937, 2000);
         this.game.addEntity(this.assassin);
         //dragon
-        let dragon = new Dragon(this.game, -1500, 1400);
-        this.game.addEntity(dragon);
 
 
     };
