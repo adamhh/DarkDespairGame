@@ -26,7 +26,7 @@ class SceneManager {
         this.x = 0;
         this.y = 0;
         // //background
-        // let background = new Background(this.game, 0, 0);
+        // let background = new Land(this.game, 0, 0);
         // this.game.addEntity(background);
         //
         // //ground
@@ -86,13 +86,43 @@ class SceneManager {
         // let dragon = new Dragon(this.game, -1600, 1400);
         // this.game.addEntity(dragon);
 
+        //ground assets
+
+        //trees
+
+        let tree = null;
+        let place = -1000;
+        //for starting block
+        for (var i = 0; i < 20; i++) {
+            place += randomInt(400) + 200;
+            if (place > 1800) i = 20;
+            tree = new Tree(this.game, place, -180, randomInt(2));
+            this.game.addEntity(tree);
+        }
+
+        //grass
+        let grass = null;
+        for (var i = 0; i < 20; i++) {
+            //starting block
+            grass = new Grass(this.game, randomInt(2500) - 500, 110 + randomInt(5), 0);
+            this.game.addEntity(grass);
+        }
+
+        let land = new Land(this.game, -930, 100, 0);
+        this.game.addEntity(land);
+        land = new Land(this.game, 0, 100, 0);
+        this.game.addEntity(land);
+        land = new Land(this.game, 930, 100, 0);
+        this.game.addEntity(land);
+        land = new Land(this.game, 1860, 100, 0);
+        this.game.addEntity(land);
         //assets for assassin
         let healthBar = new HealthBar(this.game);
         this.game.addEntity(healthBar);
         let weaponIcon = new WeaponIcons(this.game);
         this.game.addEntity(weaponIcon);
         //start point
-        this.assassin = new Assassin(this.game,100, 0, healthBar, weaponIcon);
+        this.assassin = new Assassin(this.game,0, 0, healthBar, weaponIcon);
         this.game.addEntity(this.assassin);
 
     };

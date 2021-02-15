@@ -259,6 +259,7 @@ class Assassin {
     };
 
     update() {
+        console.log(Math.floor(this.x) + "  " + Math.floor(this.y));
         if (this.healthBar.isDead()) {
             this.dead = true;
         }
@@ -324,7 +325,7 @@ class Assassin {
                 }
                 if (entity.BB && that.BB.collide(entity.BB)) { //BB collision
                     if (that.velocity.y > 0) { //falling
-                            if ((entity instanceof Land || entity instanceof Background) &&
+                            if ((entity instanceof Land || entity instanceof Land) &&
                                 that.lastBB.bottom <= entity.BB.top) { //things you can land on & landed true
                                 that.velocity.y = 0;
                                 that.y = entity.BB.top - that.BB.height;
@@ -345,61 +346,12 @@ class Assassin {
 
 
             });
-            // this.game.entities.forEach(function (entity) {
-            //     if (entity instanceof Dragon) {
-            //         if (entity.SBB && that.BB.collide(entity.SBB)) {
-            //             if (entity instanceof Dragon) {
-            //                 if (that.lastBB.left >= entity.SBB.right) { //collisions <-
-            //                     that.x = that.lastBB.left + 3.8;
-            //                     that.updateBB();
-            //                 } else if (that.lastBB.right <= entity.SBB.left) {  //collisions ->
-            //                     that.x = that.lastBB.left - 15;
-            //                     that.updateBB();
-            //                 }
-            //             }
-            //         }
-            //         if (entity.ABB && that.BB.collide(entity.ABB)) {
-            //             that.dead = true;
-            //         }
-            //     }
-            //     if ((entity.BB && that.BB.collide(entity.BB))
-            //         && (entity instanceof Land || entity instanceof Cloud || entity instanceof Background
-            //             || entity instanceof Portal || entity instanceof Dragon)) {
-            //         if (that.BB.bottom > entity.BB.top && (that.BB.right > entity.BB.left || that.BB.left < entity.BB.right)) {
-            //             that.y = that.lastBB.y;
-            //             that.velocity.y = 0;
-            //             canFall = false;
-            //         }
-            //         if (entity instanceof Cloud) {
-            //             if (that.BB.bottom >= entity.BB.top && (that.BB.bottom - entity.BB.top) < 10) {
-            //                 that.y = entity.BB.y - that.BB.height;
-            //                 that.velocity.y = 0;
-            //                 canFall = false;
-            //             }
-            //         } else if (that.velocity.y > 0) { //falling
-            //             if (that.BB.bottom >= entity.BB.top && (that.BB.bottom - entity.BB.top) < 20) {
-            //                 that.y = entity.BB.top - that.BB.height;
-            //                 that.velocity.y = 0;
-            //                 canFall = false;
-            //             }
-            //         } else if (entity instanceof Portal) {
-            //             that.x = -1750;
-            //             that.y = 614;
-            //
-            //         } else if (that.BB.bottom >= entity.BB.top && (that.BB.bottom - entity.BB.top)) {
-            //             canFall = false;
-            //         } else {
-            //             canFall = true;
-            //         }
-            //     }
-            //
-            // });
-            //console.log(this.y);
-            if (this.y > 3000) {
-                this.velocity.x = 0;
-                this.x = -1700;
-                this.y = 1800;
-            }
+
+            // if (this.y > 3000) {
+            //     this.velocity.x = 0;
+            //     this.x = -1700;
+            //     this.y = 1800;
+            // }
             let yVel = Math.abs(this.velocity.y);
             //this physics will need a fine tuning;
             let attackLength = 350;
@@ -541,6 +493,7 @@ class Assassin {
             if (this.velocity.y <= -MAX_JUMP) this.velocity.y = -MAX_FALL;
 
             this.x += this.velocity.x * TICK * PARAMS.SCALE;
+
             this.updateBB(); //Update your bounding box every tick
         }
     };

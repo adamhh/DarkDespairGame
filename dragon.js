@@ -125,7 +125,7 @@ class Dragon {
             this.game.entities.forEach(function (entity) {
                 if (entity.BB && that.BB.collide(entity.BB)) { //BB collision
                     if (that.velocity.y > 0) { //falling
-                        if ((entity instanceof Land || entity instanceof Background) &&
+                        if ((entity instanceof Land || entity instanceof Land) &&
                             that.lastBB.bottom <= entity.BB.top) { //things you can land on & landed true
                             //that.state = 3;
                             that.y = entity.BB.top - that.lastBB.height;
