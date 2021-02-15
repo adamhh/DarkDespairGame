@@ -241,7 +241,7 @@ class Assassin {
                         this.ABB = new BoundingBox(this.x + 75, this.y + 40, 670, 2);
                     }
                     else {
-                        this.ABB = new BoundingBox(this.x - 670, this.y + 41, 670, 2);
+                        this.ABB = new BoundingBox(this.x - 595, this.y + 41, 595, 2);
                     }
 
                     break;
@@ -613,6 +613,7 @@ class Assassin {
             yOffset -= 5;
             this.animations[this.state][this.facing][this.weapon].drawFrame(this.game.clockTick, ctx,
                 this.x - this.game.camera.x + xOffset, this.y - this.game.camera.y + yOffset, 1);
+
         }
 
         if (PARAMS.DEBUG) {
@@ -621,7 +622,11 @@ class Assassin {
             ctx.strokeStyle = 'Yellow';
             ctx.strokeRect(this.ABB.x - this.game.camera.x, this.ABB.y - this.game.camera.y, this.ABB.width, this.ABB.height);
 
+        } else if (this.weapon === 2) {
+            ctx.strokeStyle = 'Black';
+            ctx.strokeRect(this.ABB.x - this.game.camera.x, this.ABB.y - this.game.camera.y, this.ABB.width, 1);
         }
+
 
     }
 };
