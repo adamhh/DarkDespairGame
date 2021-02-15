@@ -7,7 +7,7 @@ class Dragon {
         this.width = 500;
         this.height = 300;
         //state variables
-        this.facing = 1; //0 for right, 1 for left
+        this.facing = 0; //0 for right, 1 for left
         this.state = 0;  //0 for idle, 1 for walking, 2 for attacking, 3 for dead
         this.dead = false;
         this.velocity = { x: 0, y: 0 };
@@ -28,7 +28,7 @@ class Dragon {
 
     loadAnimations() {
         //initialize
-        for (var i = 0; i < 5; i++) { //0 = idle, 1 = walking, 2 = attacking, 3 = dead, 4 = battle idle
+        for (var i = 0; i < 6; i++) { //0 = idle, 1 = walking, 2 = attacking, 3 = dead, 4 = battle idle, 5 = breathing fire
             this.animations.push([]);
             for (var j = 0; j < 2; j++) { //2 directions, 0 for right, 1 for left
                 this.animations[i].push([]);
@@ -55,7 +55,9 @@ class Dragon {
         this.animations[4][0] = new Animator(this.spritesheet, 35, 4120, this.width + 75, this.height, 11, 0.09, 150, true, true);
         this.animations[4][1] = new Animator(this.spritesheet, 50, 3810, this.width + 75 , this.height, 11, 0.09, 150, false, true);
 
-
+        //ranged attack?
+        // this.animations[5][0] = new Animator(this.spritesheet, 750, 4760, this.width + 831, this.height, 1, 0.09, 0, true, true);
+        // this.animations[5][1] = new Animator(this.spritesheet, 100, 4844, this.width + 831 , this.height, 1, 0.09, 0, false, true);
 
     }
 
@@ -136,10 +138,10 @@ class Dragon {
                     if (entity.BB && that.sight.collide(entity.BB)) { //if dragon sees assassin
                         inSight = true;
                         if ((entity.BB.x - that.sight.x) < (that.sight.x + that.sight.width) - entity.BB.x) {
-                            that.facing = 1;
+                           that.facing = 1;
                             //console.log(that.sight.x - entity.BB.x);
                         } else {
-                            that.facing = 0;
+                           that.facing = 0;
 
                         }
                         moveTo = entity.BB.x;
@@ -159,39 +161,31 @@ class Dragon {
             let playerDiff = 0;
             if (this.facing === 1 && inSight) {                                 //facing and in sight <-
                 playerDiff = this.x - moveTo;
-                console.log(playerDiff);
-                if (playerDiff < 75 && playerDiff > 25) {                       //if close walk to attack position
+                //console.log(playerDiff);
+                if (playerDiff < 700 && playerDiff > 25) {                       //if close walk to attack position
                     this.velocity.x -= MAX_WALK;
                     that.state = 1;
-                } else if (playerDiff < 600 && playerDiff > 75) {               //ranged attack
-                    this.state = 0;
-                    this.velocity.x = 0;
-
                 } else if (playerDiff < 25 && playerDiff > -120) {              //attack if in zone
-                    this.velocity.x = 0;
+                   this.velocity.x = 0;
                     this.state = 2;
                 } else {                                                        //else stop
                     that.velocity.x = 0;
-                    that.state = 4;
+                   that.state = 4;
                 }
 
             } else if (inSight) {                                               //facing and in sight ->
                 playerDiff = moveTo - this.x;
                 console.log(playerDiff);
-                if (playerDiff < 810 && playerDiff > 760) {                     //in zone will walk towards and attack
+                if (playerDiff < 1500 && playerDiff > 760) {                     //in zone will walk towards and attack
                     this.velocity.x += MAX_WALK;
-                    that.state = 1;
-                } else if (playerDiff < 1285 && playerDiff > 810) {             //ranged attack
-                    this.state = 0;
-                    this.velocity.x = 0;
-
+                   that.state = 1;
                 } else if (playerDiff < 760 && playerDiff > 580) {
-                    this.velocity.x = 0;
-                    this.state = 2;
+                   this.velocity.x = 0;
+                   this.state = 2;
 
                 } else {                                                        //else stop
-                    that.velocity.x = 0;
-                    that.state = 4;
+                   that.velocity.x = 0;
+                   that.state = 4;
                 }
             }
 
