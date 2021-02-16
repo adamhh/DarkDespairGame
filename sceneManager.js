@@ -2,6 +2,7 @@ class SceneManager {
     constructor(game) {
         this.game = game;
         this.game.camera = this;
+        this.parralax = 0;
         this.x = 0;
         this.y = 0;
         this.health = 100;
@@ -25,6 +26,7 @@ class SceneManager {
     loadLevelOne() {
         this.x = 0;
         this.y = 0;
+        this.parralax = 0;
         // //background
         // let background = new Land(this.game, 0, 0);
         // this.game.addEntity(background);
@@ -86,25 +88,57 @@ class SceneManager {
         // let dragon = new Dragon(this.game, -1600, 1400);
         // this.game.addEntity(dragon);
 
-        //ground assets
 
+        let bLayer = new BackgroundLayer(this.game, -950, 0, 1, 0);
+        this.game.addEntity(bLayer);
+        bLayer = new BackgroundLayer(this.game, -950, 0, 1, 1);
+        this.game.addEntity(bLayer);
+        bLayer = new BackgroundLayer(this.game, -950, 0, 1, 2);
+        this.game.addEntity(bLayer);
+        bLayer = new BackgroundLayer(this.game, -950, 0, 1, 3);
+        this.game.addEntity(bLayer);
+        bLayer = new BackgroundLayer(this.game, -950, 0, 1, 4);
+        this.game.addEntity(bLayer);
+
+        let bVine = new BackgroundLayer(this.game, -1000, 0, 0, 0);
+        this.game.addEntity(bVine);
+        bVine = new BackgroundLayer(this.game, -1000, 0, 0, 1);
+        this.game.addEntity(bVine);
+        bVine = new BackgroundLayer(this.game, -1000, 0, 0, 2);
+        this.game.addEntity(bVine);
+        bVine = new BackgroundLayer(this.game, -1000, 0, 0, 3);
+        this.game.addEntity(bVine);
+        bVine = new BackgroundLayer(this.game, -1000, 0, 0, 4);
+        this.game.addEntity(bVine);
+
+
+
+        let ceil = new Ceiling(this.game, -500, -650);
+        this.game.addEntity(ceil);
+        ceil = new Ceiling(this.game, 500, -650);
+        this.game.addEntity(ceil);
+        ceil = new Ceiling(this.game, 1500, -650);
+        this.game.addEntity(ceil);
+
+
+        //let vines = new Vines(this.game, -500, -500);
+       // this.game.addEntity(vines);
         //trees
-
-        let tree = null;
-        let place = -1000;
-        //for starting block
-        for (var i = 0; i < 20; i++) {
-            place += randomInt(400) + 200;
-            if (place > 1800) i = 20;
-            tree = new Tree(this.game, place, -180, randomInt(2));
-            this.game.addEntity(tree);
-        }
+        // let tree = null;
+        // let place = -1000;
+        // //for starting block
+        // for (var i = 0; i < 20; i++) {
+        //     place += randomInt(400) + 200;
+        //     if (place > 1800) i = 20;
+        //     tree = new Tree(this.game, place, -180, randomInt(2));
+        //     this.game.addEntity(tree);
+        // }
 
         //grass
         let grass = null;
         for (var i = 0; i < 20; i++) {
             //starting block
-            grass = new Grass(this.game, randomInt(2500) - 500, 110 + randomInt(5), 0);
+            grass = new Grass(this.game, randomInt(2500) - 500, 120 + randomInt(5), 0);
             this.game.addEntity(grass);
         }
 
@@ -141,6 +175,7 @@ class SceneManager {
         if (this.assassin.x - midpoint > -1965 || this.count === 0) {
             this.count++;
             this.x = this.assassin.x - midpoint;
+            this.parralax = this.assassin.x/1.4 - midpoint;
         }
         //console.log(this.knight.y-midpointY);
         if (this.assassin.y -midpointY < 1920) {
