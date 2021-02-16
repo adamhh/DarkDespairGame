@@ -22,9 +22,9 @@ class BackgroundLayer {
 
     draw(ctx) {
         if (this.type === 0) {
-            ctx.drawImage(this.spritesheet, this.x - this.game.camera.parralax + this.offset, this.y, this.w, this.h);
+            ctx.drawImage(this.spritesheet, this.x - this.game.camera.parallax + this.offset, this.y, this.w, this.h);
         } else {
-            ctx.drawImage(this.spritesheet, this.x - this.game.camera.parralax/2 + this.offset, this.y, this.w, this.h);
+            ctx.drawImage(this.spritesheet, this.x - this.game.camera.parallax/2 + this.offset, this.y, this.w, this.h);
         }
 
     };

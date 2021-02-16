@@ -2,7 +2,8 @@ class SceneManager {
     constructor(game) {
         this.game = game;
         this.game.camera = this;
-        this.parralax = 0;
+        this.parallax = 0;
+        this.parallaxY = 0;
         this.x = 0;
         this.y = 0;
         this.health = 100;
@@ -26,7 +27,8 @@ class SceneManager {
     loadLevelOne() {
         this.x = 0;
         this.y = 0;
-        this.parralax = 0;
+        this.parallax = 0;
+        this.parallaxY = 0;
         // //background
         // let background = new Land(this.game, 0, 0);
         // this.game.addEntity(background);
@@ -100,24 +102,28 @@ class SceneManager {
         bLayer = new BackgroundLayer(this.game, -950, 0, 1, 4);
         this.game.addEntity(bLayer);
 
-        let bVine = new BackgroundLayer(this.game, -1000, 0, 0, 0);
+        let bVine = new BackgroundLayer(this.game, -1000, -200, 0, 0);
         this.game.addEntity(bVine);
-        bVine = new BackgroundLayer(this.game, -1000, 0, 0, 1);
+        bVine = new BackgroundLayer(this.game, -1000, -200, 0, 1);
         this.game.addEntity(bVine);
-        bVine = new BackgroundLayer(this.game, -1000, 0, 0, 2);
+        bVine = new BackgroundLayer(this.game, -1000, -200, 0, 2);
         this.game.addEntity(bVine);
-        bVine = new BackgroundLayer(this.game, -1000, 0, 0, 3);
+        bVine = new BackgroundLayer(this.game, -1000, -200, 0, 3);
         this.game.addEntity(bVine);
-        bVine = new BackgroundLayer(this.game, -1000, 0, 0, 4);
+        bVine = new BackgroundLayer(this.game, -1000, -200, 0, 4);
         this.game.addEntity(bVine);
 
 
 
-        let ceil = new Ceiling(this.game, -500, -650);
+        let ceil = new Ceiling(this.game, -1500, -700);
         this.game.addEntity(ceil);
-        ceil = new Ceiling(this.game, 500, -650);
+        ceil = new Ceiling(this.game, -500, -700);
         this.game.addEntity(ceil);
-        ceil = new Ceiling(this.game, 1500, -650);
+        ceil = new Ceiling(this.game, 500, -700);
+        this.game.addEntity(ceil);
+        ceil = new Ceiling(this.game, 1500, -700);
+        this.game.addEntity(ceil);
+        ceil = new Ceiling(this.game, 2500, -700);
         this.game.addEntity(ceil);
 
 
@@ -175,12 +181,15 @@ class SceneManager {
         if (this.assassin.x - midpoint > -1965 || this.count === 0) {
             this.count++;
             this.x = this.assassin.x - midpoint;
-            this.parralax = this.assassin.x/1.4 - midpoint;
+            this.parallax = this.assassin.x/1.4 - midpoint;
         }
         //console.log(this.knight.y-midpointY);
-        if (this.assassin.y -midpointY < 1920) {
-            this.y = this.assassin.y - midpointY;
-        }
+        // if (this.assassin.y -midpointY < 1920) {
+        //     this.y = this.assassin.y - midpointY;
+        //     this.parallaxY = this.assassin.y/1.4 - midpointY;
+        // }
+        this.y = this.assassin.y - midpointY;
+        this.parallaxY = this.assassin.y/1.1 - midpointY;
 
 
         // if (this.knight.dead && this.knight.y > PARAMS.BLOCKWIDTH * 16) {

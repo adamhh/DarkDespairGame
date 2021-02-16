@@ -80,7 +80,7 @@ class Ceiling {
     constructor(game, x, y) {
         Object.assign(this, {game, x, y});
         this.w = 1000;
-        this.h = 715;
+        this.h = 850;
         this.spritesheet = ASSET_MANAGER.getAsset("./sprites/ceiling.png");
     }
 

@@ -238,10 +238,10 @@ class Assassin {
                     break;
                 case 2:
                     if (this.facing === 0)  {
-                        this.ABB = new BoundingBox(this.x + 75, this.y + 40, 670, 2);
+                        this.ABB = new BoundingBox(this.x + 75, this.y + 35, 670, 2);
                     }
                     else {
-                        this.ABB = new BoundingBox(this.x - 595, this.y + 41, 595, 2);
+                        this.ABB = new BoundingBox(this.x - 595, this.y + 35, 595, 2);
                     }
 
                     break;
@@ -259,7 +259,7 @@ class Assassin {
     };
 
     update() {
-        console.log(Math.floor(this.x) + "  " + Math.floor(this.y));
+        //console.log(Math.floor(this.x) + "  " + Math.floor(this.y));
         if (this.healthBar.isDead()) {
             this.dead = true;
         }
@@ -536,6 +536,7 @@ class Assassin {
                 yOffset = 0;
             } else if (this.weapon === 1) {
                 if (this.state === 0) {
+                    if (this.facing === 1) yOffset = 1;
                     this.facing === 0 ? xOffset = 0: xOffset = -27;
                 } else if (this.state === 1 && this.facing === 1) {
                     xOffset = -15;
@@ -576,8 +577,9 @@ class Assassin {
             ctx.strokeRect(this.ABB.x - this.game.camera.x, this.ABB.y - this.game.camera.y, this.ABB.width, this.ABB.height);
 
         } else if (this.weapon === 2) {
-            ctx.strokeStyle = 'Black';
-            ctx.strokeRect(this.ABB.x - this.game.camera.x, this.ABB.y - this.game.camera.y, this.ABB.width, 1);
+            ctx.strokeStyle = 'White';
+            //ctx.arc()
+            ctx.strokeRect(this.ABB.x - this.game.camera.x, this.ABB.y - this.game.camera.y, this.ABB.width, .25);
         }
 
 
