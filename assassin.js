@@ -259,7 +259,7 @@ class Assassin {
     };
 
     update() {
-        //console.log(Math.floor(this.x) + "  " + Math.floor(this.y));
+        //console.log("(" + Math.floor(this.x) + ",  (" + Math.floor(this.y) + ")");
         if (this.healthBar.isDead()) {
             this.dead = true;
         }
@@ -299,52 +299,40 @@ class Assassin {
             var that = this;
             let canFall = true;
             this.game.entities.forEach(function (entity) {
-                if (entity instanceof Dragon) {
-                    if (entity.BB && that.BB.collide(entity.BB)) {
-                        if (that.BB.left > entity.BB.left) {
-                           that.x += 10;
-                        } else {
-                            that.x -= 10;
+                if (entity.BB && that.BB.collide(entity.BB)) {
+                    if (that.velocity.y > 0) { // falling
+                        if ((entity instanceof Land) // landing
+                            && (that.lastBB.bottom) <= entity.BB.top) { // was above last tick
+                            that.velocity.y = 0;
+                            that.y = entity.BB.top - that.BB.height;
+                            that.updateBB();
+                            //that.velocity.y === 0;
+                            //if(that.state === 4) that.state = 0; // set state to idle
+                            that.updateBB();
+
                         }
-
-                    } if (entity.ABB && that.BB.collide(entity.ABB)) {
-                        that.healthBar.updateHealth(-.05);
                     }
-                    // if (entity.BB && that.BB.collide(entity.BB)) {
-                    //     if (that.BB.bottom - that.BB.top > 50) {
-                    //
-                    //         if (that.BB.right - entity.BB.left < 110) {
-                    //             that.x = entity.BB.x - that.BB.width;
-                    //             that.velocity.x = 0;
-                    //         } else {
-                    //             that.x = entity.BB.x + entity.BB.width;
-                    //         }
-                    //     }
-                    // }
-
-                }
-                if (entity.BB && that.BB.collide(entity.BB)) { //BB collision
-                    if (that.velocity.y > 0) { //falling
-                            if ((entity instanceof Land || entity instanceof Land) &&
-                                that.lastBB.bottom <= entity.BB.top) { //things you can land on & landed true
-                                that.velocity.y = 0;
-                                that.y = entity.BB.top - that.BB.height;
-                                that.updateBB();
+                    if (that.velocity.y < 0) { // jumping
+                        if ((entity instanceof CaveWall) // hit ceiling
+                            && (that.lastBB.top) >= entity.BB.bottom // was below last tick
+                            && that.BB.collide(entity.BB.left) && that.BB.collide(entity.BB.right)) { // collide with the center point of the brick
+                            that.velocity.y = 0;
+                        }
+                    }
+                    if (entity instanceof CaveWall) {
+                        if (that.BB.left < entity.BB.left) {
+                            that.x = entity.BB.left - (that.BB.width * 2)  + 20;
+                            if (that.velocity.x > 0) {
+                                that.velocity.x *= -.2;
                             }
-
-
-                    }
-                    if (that.velocity.y < 0) { //jumping
-
-                    }
-                    if (entity instanceof Portal) {
-                        that.x = -1750;
-                        that.y = 614;
+                        } else { //<-
+                            if (that.velocity.x < 0) {
+                                that.velocity.x *= -.2;
+                            }
+                            that.x = that.lastBB.left - 5;
+                        }
                     }
                 }
-
-
-
             });
 
             // if (this.y > 3000) {

@@ -16,6 +16,10 @@ ASSET_MANAGER.queueDownload("./sprites/ceiling.png");
 ASSET_MANAGER.queueDownload("./sprites/portal.png");
 ASSET_MANAGER.queueDownload("./sprites/healthbar.png");
 ASSET_MANAGER.queueDownload("./sprites/weaponicons.png");
+ASSET_MANAGER.queueDownload("./sprites/cavewall_left.png");
+ASSET_MANAGER.queueDownload("./sprites/cavewall_right.png");
+ASSET_MANAGER.queueDownload("./sprites/cavewall_left2.png");
+ASSET_MANAGER.queueDownload("./sprites/cavewall_right2.png");
 
 ASSET_MANAGER.downloadAll(function () {
 	var gameEngine = new GameEngine();

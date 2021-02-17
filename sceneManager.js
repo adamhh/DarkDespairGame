@@ -114,7 +114,6 @@ class SceneManager {
         this.game.addEntity(bVine);
 
 
-
         let ceil = new Ceiling(this.game, -1500, -700);
         this.game.addEntity(ceil);
         ceil = new Ceiling(this.game, -500, -700);
@@ -156,7 +155,23 @@ class SceneManager {
         this.game.addEntity(land);
         land = new Land(this.game, 1860, 100, 0);
         this.game.addEntity(land);
+
+        let caveWall = new CaveWall(this.game, -900, -650, 1, 0);
+        this.game.addEntity(caveWall);
+        caveWall = new CaveWall(this.game, 3000, -650, 1, 1);
+        this.game.addEntity(caveWall);
+        caveWall = new CaveWall(this.game, 3000, 550, .5, 3);
+        this.game.addEntity(caveWall);
+
+        land = new Land(this.game, 2700, 1050, 0);
+        this.game.addEntity(land);
+        land = new Land(this.game, 1770, 1050, 0);
+        this.game.addEntity(land);
+
+
         //assets for assassin
+
+
         let healthBar = new HealthBar(this.game);
         this.game.addEntity(healthBar);
         let weaponIcon = new WeaponIcons(this.game);
@@ -169,7 +184,7 @@ class SceneManager {
 
     update() {
 
-         PARAMS.DEBUG = false;
+         PARAMS.DEBUG = true;
 
 
         let midpoint = PARAMS.CANVAS_WIDTH/2 - 100;

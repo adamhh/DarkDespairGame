@@ -35,12 +35,28 @@ class Land {
     };
 };
 
-class Tree {
-    constructor(game, x, y, type) {
-        Object.assign(this, {game, x, y, type});
-        this.w = 380;
-        this.h = 380;
-        this.spritesheet = ASSET_MANAGER.getAsset("./sprites/landassets.png");
+class CaveWall {
+    constructor(game, x, y, scale, type) {
+        Object.assign(this, {game, x, y, scale, type});
+        this.w = 572;
+        this.h = 1200 * this.scale;
+        switch (this.type) {
+            case 0:
+                this.spritesheet = ASSET_MANAGER.getAsset("./sprites/cavewall_left.png");
+                break;
+            case 1:
+                this.spritesheet = ASSET_MANAGER.getAsset("./sprites/cavewall_right.png");
+                break;
+            case 2:
+                this.spritesheet = ASSET_MANAGER.getAsset("./sprites/cavewall_left2.png")
+                break;
+            default:
+                this.spritesheet = ASSET_MANAGER.getAsset("./sprites/cavewall_right2.png")
+                break;
+
+        }
+
+        this.BB = new BoundingBox(this.x, this.y, this.w, this.h);
     }
 
     update() {
@@ -48,12 +64,11 @@ class Tree {
     }
 
     draw(ctx) {
-        if (this.type === 0) {
-            ctx.drawImage(this.spritesheet, 2, 0, this.w, this.h, this.x - this.game.camera.x, this.y - this.game.camera.y, this.w, this.h);
-        } else {
-            ctx.drawImage(this.spritesheet, 382, 0, this.w, this.h, this.x - this.game.camera.x, this.y - this.game.camera.y, this.w, this.h);
+        ctx.drawImage(this.spritesheet, 0, 0, 573, 1190, this.x - this.game.camera.x, this.y - this.game.camera.y, this.w, this.h);
+        if (PARAMS.DEBUG) {
+            ctx.strokeStyle = 'Red';
+            ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y - this.game.camera.y, this.BB.width, this.BB.height);
         }
-
     };
 }
 
