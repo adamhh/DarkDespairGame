@@ -108,10 +108,10 @@ class SceneManager {
         this.game.addEntity(weaponIcon);
         //start point
 
-        this.assassin = new Assassin(this.game,0, 0, healthBar, weaponIcon);
+        this.assassin = new Assassin(this.game,-200, 0, healthBar, weaponIcon);
         this.game.addEntity(this.assassin);
 
-        let shadowWarrior = new ShadowWarrior(this.game, 400, 0);
+        let shadowWarrior = new ShadowWarrior(this.game, 600, 0);
         this.game.addEntity(shadowWarrior);
 
     };
@@ -130,7 +130,7 @@ class SceneManager {
     }
 
     update() {
-        PARAMS.DEBUG = false;
+        PARAMS.DEBUG = true;
         let midpoint = PARAMS.CANVAS_WIDTH/2 - 30;
         let midpointY = PARAMS.CANVAS_HEIGHT/1.2 - 160;
         this.updateAudio();

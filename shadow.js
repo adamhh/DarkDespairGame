@@ -25,10 +25,9 @@ class ShadowWarrior {
         this.time1 = this.timer.getTime();
         this.time2 = this.time1;
 
-        this.attackCount = 5;
         this.dead = false;
         this.disappear = false;
-        this.health = 50;
+        this.health = 100;
         this.deathCount = 3;
     }
 
@@ -80,15 +79,17 @@ class ShadowWarrior {
         this.sight = new BoundingBox(this.x - 400, this.y, 875, this.height);
         if (this.state === 2) {
             if (this.facing === 0) {
-                this.ABB = new BoundingBox(this.x + 70, this.y + 35, 25, 15); //facing 0
+                this.ABB = new BoundingBox(this.x + 60, this.y + 55, 75, 15); //facing 0
             } else {
-                this.ABB = new BoundingBox(this.x - 45, this.y + 35, 25, 15);
+                this.ABB = new BoundingBox(this.x - 45, this.y + 55, 75, 15);
             }
         } else {
             this.ABB = new BoundingBox(0, 0, 0, 0);
         }
     }
-
+    hit() {
+        this.health -= .5;
+    }
     die() {
         this.BB = new BoundingBox(0,0,0,0);
         this.velocity.x = 0
@@ -103,6 +104,7 @@ class ShadowWarrior {
     }
 
     update() {
+        console.log(this.health);
         if (this.health < 1 && this.disappear === false) {
             this.time1 = this.timer.getTime();
             this.time2 = this.time1;
@@ -133,7 +135,9 @@ class ShadowWarrior {
                 if (entity instanceof Assassin) {
                     if (entity.BB && that.sight.collide(entity.BB)) { //if dragon sees assassin
                         inSight = true;
-                        if ((entity.BB.x - that.sight.x) < (that.sight.x + that.sight.width) - entity.BB.x) {
+                        let flipX = 0;
+                        that.facing === 1 ? flipX = 22 : flipX = 20;
+                        if (entity.BB.x - that.BB.x < flipX) {
                             that.facing = 1;
                         } else {
                             that.facing = 0;
@@ -142,18 +146,18 @@ class ShadowWarrior {
                         moveTo = entity.BB.x;
                     }
                     if (entity.ABB && that.BB.collide(entity.ABB)) {
-                        that.health--;
+                        that.health-= 2;
                     }
                 }
             });
             let playerDiff = 0;
             if (this.facing === 1 && inSight) {                                 //facing and in sight <-
                 playerDiff = this.x - moveTo;
-                console.log(playerDiff);
+                console.log(playerDiff + " <-");
                 if (playerDiff < 425 && playerDiff > 65) {                       //if close walk to attack position
                     this.velocity.x -= RUN_ACC;
                     this.state = 1;
-                } else if (playerDiff < 65 && playerDiff > -20) {              //attack if in zone
+                } else if (playerDiff < 65 && playerDiff > -25) {              //attack if in zone
                     this.velocity.x = 0;
                     this.state = 2;
                 } else {                                                        //else stop
@@ -163,11 +167,11 @@ class ShadowWarrior {
 
             } else if (inSight) {                                               //facing and in sight ->
                 playerDiff = moveTo - this.x;
-                console.log(playerDiff);
+                console.log(playerDiff + " ->");
                 if (playerDiff < 450 && playerDiff > 90) {                     //in zone will walk towards
                     this.velocity.x += RUN_ACC;
                     this.state = 1;
-                } else if (playerDiff < 90 && playerDiff > -20) {
+                } else if (playerDiff < 90 && playerDiff > -25) {
                     this.velocity.x = 0;
                     this.state = 2;
                 } else {                                                        //else stop

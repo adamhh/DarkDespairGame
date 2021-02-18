@@ -29,6 +29,7 @@ class Assassin {
         this.attackStart = this.timer.getTime();
         this.attackEnd = this.attackStart;
         this.attackWindow = false;
+        this.bowTime = this.time2;
 
 
         //boolean flag for double jump
@@ -245,12 +246,15 @@ class Assassin {
                     this.ABB = new BoundingBox(this.x + xOff, this.y + 30, 50, 60);
                     break;
                 case 2:
-                    if (this.facing === 0)  {
-                        this.ABB = new BoundingBox(this.x + 75, this.y + 35, 330, 2);
+                    console.log(this.bowTime);
+                    if (this.bowTime < 0.6 && this.bowTime > .4) {
+                        this.game.addEntity(new Arrow(this.game, this.x - this.game.camera.x, this.y - this.game.camera.y,
+                            this.facing === 1));
+                    } else {
+                        this.bowTime = 0;
                     }
-                    else {
-                        this.ABB = new BoundingBox(this.x - 330, this.y + 35, 330, 2);
-                    }
+
+
                     break;
             }
         } else {
@@ -270,9 +274,10 @@ class Assassin {
         if (this.healthBar.isDead()) {
             this.dead = true;
         }
-        this.time2 = this.timer.getTime();
         const TICK = this.game.clockTick;
+        this.time2 = this.timer.getTime();
         this.attackEnd = this.timer.getTime();
+        this.bowTime += TICK;
 
         //-------------adjust constants to alter physics-----------
         //run
@@ -341,14 +346,9 @@ class Assassin {
                     }
                 }
                 if (entity instanceof ShadowWarrior && entity.BB && that.BB.collide(entity.BB)){
-                    if (that.facing === 0) {
-                        that.velocity.x = -50;
-                    } else {
-                        that.velocity.x = 50;
-                    }
+                    that.velocity.x *= .9;
                 }
                 if (entity.ABB && entity instanceof ShadowWarrior && that.BB.collide(entity.ABB)) {
-                    console.log("HEARD")
                     if (that.state !== 3) that.healthBar.updateHealth(-.1);
                 }
             });
@@ -405,6 +405,7 @@ class Assassin {
                     if (yVel < 20) {
                         this.velocity.x = 0;
                     }
+                    this.bowTime = 0;
                     this.attackStart = this.timer.getTime();
                 }
                 if (this.game.B) {
