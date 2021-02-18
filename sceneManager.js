@@ -107,7 +107,8 @@ class SceneManager {
         let weaponIcon = new WeaponIcons(this.game);
         this.game.addEntity(weaponIcon);
         //start point
-        this.assassin = new Assassin(this.game,900, 700, healthBar, weaponIcon);
+        this.assassin = new Assassin(this.game,0, 0, healthBar, weaponIcon);
+        //this.assassin = new Assassin(this.game,900, 700, healthBar, weaponIcon);
         this.game.addEntity(this.assassin);
 
     };
