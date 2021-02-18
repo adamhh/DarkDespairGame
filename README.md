@@ -1,3 +1,3 @@
-# SaveThePrincess
-A web-based game
-Development Stage: In-progress
+# SaveThePrincess <br/>
+A web-based game  <br/>
+Development Stage: In-progress <br/>
