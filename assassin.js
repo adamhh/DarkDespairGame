@@ -2,11 +2,19 @@ class Assassin {
     constructor(game, x, y, healthBar, weaponIcon) {
         Object.assign(this, {game, x, y, healthBar, weaponIcon});
         this.game.assassin = this;
-        // spritesheet
+        // spritesheets
         this.spritesheet = ASSET_MANAGER.getAsset("./sprites/assassin.png");
         this.spritesheetSword = ASSET_MANAGER.getAsset("./sprites/assassin_sword.png");
         this.spritesheetBow = ASSET_MANAGER.getAsset("./sprites/assassin_bow.png");
 
+        this.setFields();
+        this.updateBB();
+        this.loadAnimations();
+
+
+    };
+
+    setFields() {
         // assassin's state variables
         this.facing = 0; // 0 = right, 1 = left
         this.state = 0;  // 0 idle, 1, walking , 3 attacking
@@ -27,14 +35,14 @@ class Assassin {
         this.jumpFlag = false;
         this.velocity = {x: 0, y: 0};
         this.fallAcc = 2000;
-        this.updateBB();
+
 
         //load animation
         this.animations = [];
         this.deadAnimL = [];
         this.deadAnimR = [];
-        this.loadAnimations();
-    };
+
+    }
 
     loadAnimations() {
         for (var i = 0; i < 5; i++) {  //Action State: 0-idle,1-walking,2-attacking,3-jumping,4-running
@@ -238,12 +246,11 @@ class Assassin {
                     break;
                 case 2:
                     if (this.facing === 0)  {
-                        this.ABB = new BoundingBox(this.x + 75, this.y + 35, 670, 2);
+                        this.ABB = new BoundingBox(this.x + 75, this.y + 35, 330, 2);
                     }
                     else {
-                        this.ABB = new BoundingBox(this.x - 595, this.y + 35, 595, 2);
+                        this.ABB = new BoundingBox(this.x - 330, this.y + 35, 330, 2);
                     }
-
                     break;
             }
         } else {
@@ -333,6 +340,10 @@ class Assassin {
                         }
                     }
                 }
+                if (entity.ABB && entity instanceof ShadowWarrior && that.BB.collide(entity.ABB)) {
+                    console.log("HEARD")
+                    if (that.state !== 3) that.healthBar.updateHealth(-.1);
+                }
             });
 
             // if (this.y > 3000) {
@@ -370,9 +381,6 @@ class Assassin {
                 this.attackWindow = false;
             }
             this.updateBB();
-            //console.log(this.velocity.y);
-            //console.log(this.attackEnd - this.attackStart);
-            //set facing state field
             if (!this.attacking) {
                 //console.log("HEARD")
                 if (!this.game.B) {
@@ -457,7 +465,6 @@ class Assassin {
                 }
 
                 if (this.game.B) {
-                    canFall = true;
                     let timeDiff = this.time2 - this.time1;
                     if (this.velocity.y === 0) { // add double jump later
                         this.time1 = this.timer.getTime();
