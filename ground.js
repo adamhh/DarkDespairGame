@@ -6,12 +6,13 @@ class Land {
                 this.spritesheet = ASSET_MANAGER.getAsset("./sprites/landblock.png");
                 this.w = 930;
                 this.h = 345;
-                this.BB = new BoundingBox(this.x, this.y + 96, this.w, this.h);
+                this.BB = new BoundingBox(this.x, this.y + 96, this.w, this.h - 120);
                 break;
             case 1: //floating rock
-                this.spritesheet = ASSET_MANAGER.getAsset("./sprites/floating_rock.png");
-                this.h = 100;
-                this.BB = new BoundingBox(this.x, this.y, this.w-5, 100);
+                this.spritesheet = ASSET_MANAGER.getAsset("./sprites/floating_land.png");
+                this.h = 353;
+                this.w = 377;
+                this.BB = new BoundingBox(this.x, this.y + 10, this.w, this.h);
                 break;
             default: //sky land
                 this.spritesheet = ASSET_MANAGER.getAsset("./sprites/sky_land.png");

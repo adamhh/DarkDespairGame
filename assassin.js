@@ -319,7 +319,7 @@ class Assassin {
                             that.velocity.y = 0;
                         }
                     }
-                    if (entity instanceof CaveWall) {
+                    if (entity instanceof CaveWall || entity instanceof Land && entity.BB.top - that.BB.bottom < -100) {
                         if (that.BB.left < entity.BB.left) {
                             that.x = entity.BB.left - (that.BB.width * 2)  + 20;
                             if (that.velocity.x > 0) {

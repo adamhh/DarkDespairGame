@@ -8,9 +8,9 @@ class BackgroundLayer {
                 this.spritesheet = ASSET_MANAGER.getAsset("./sprites/vines.png");
                 break;
             default:
-                this.w = 950;
-                this.h = 750;
-                this.spritesheet = ASSET_MANAGER.getAsset("./sprites/background_layer2.png");
+                this.w = 1222;
+                this.h = 850;
+                this.spritesheet = ASSET_MANAGER.getAsset("./sprites/background_layer1.png");
                 break;
         }
         this.offset *= this.w;

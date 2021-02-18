@@ -9,15 +9,8 @@ class SceneManager {
         this.health = 100;
         this.lives = 3;
         this.count = 0;
-
+        this.title = true;
         this.loadLevelOne();
-    };
-
-    addCoin() {
-        if (this.coins++ === 100) {
-            this.coins = 0;
-            this.lives++;
-        }
     };
 
     clearEntities() {
@@ -29,78 +22,22 @@ class SceneManager {
         this.y = 0;
         this.parallax = 0;
         this.parallaxY = 0;
-        // //background
-        // let background = new Land(this.game, 0, 0);
-        // this.game.addEntity(background);
-        //
-        // //ground
-        // let sign = new Sign(this.game, 3715, 1900, 0);
-        // this.game.addEntity(sign);
-        // let land = new Land(this.game, 700, 2400, 928, 0);
-        // this.game.addEntity(land);
-        // land = new Land(this.game, 3300, 1800, 928, 0);
-        // this.game.addEntity(land);
-        //
-        //
-        // //floating land
-        // let floating = new Land(this.game, 2200, 2000, 128, 1);
-        // this.game.addEntity(floating);
-        // floating = new Land(this.game, 2500, 1850, 128, 1);
-        // this.game.addEntity(floating);
-        //
-        //
-        // //layout clouds
-        // let cloud = new Cloud(this.game,1850, 2526, 1, 2100, 2750, true, 3);
-        // this.game.addEntity(cloud);
-        // cloud = new Cloud(this.game,2800, 1414, 1, 1500, 2000, true, 3);
-        // this.game.addEntity(cloud);
-        // // cloud = new Cloud(this.game,1750, 0, 1, 0, 700, true, 3);
-        // // this.game.addEntity(cloud);
-        // // cloud = new Cloud(this.game,1950, 200, 1, 1950, 2100, false, 2);
-        // // this.game.addEntity(cloud);
-        //
-        // //portal
-        // let portalAnim = new Portal (this.game, 3950, 1830, 1);
-        // this.game.addEntity(portalAnim);
-        // let portal = new Portal (this.game, 3935, 1830, 0);
-        // this.game.addEntity(portal);
-        // //enemies
-        // //TODO
-        //
-        // //sky land
-        // land = new Land(this.game, -2500, 700, 930, 2);
-        // this.game.addEntity(land);
-        // land = new Land(this.game, -1600, 700, 930, 2);
-        // this.game.addEntity(land);
-        // land = new Land(this.game, -700, 700, 930, 2);
-        // this.game.addEntity(land);
-        // land = new Land(this.game, 200, 700, 930, 2);
-        // this.game.addEntity(land);
-        // land = new Land(this.game, 1100, 700, 930, 2);
-        // this.game.addEntity(land);
-        // land = new Land(this.game, 2000, 700, 930, 2);
-        // this.game.addEntity(land);
-        // land = new Land(this.game, 2900, 700, 930, 2);
-        // this.game.addEntity(land);
-        // land = new Land(this.game, 3800, 700, 930, 2);
-        // this.game.addEntity(land);
-        //
-        //
 
-        // let dragon = new Dragon(this.game, -1600, 1400);
-        // this.game.addEntity(dragon);
+        if (!this.title) {
+            ASSET_MANAGER.pauseBackgroundMusic();
+            ASSET_MANAGER.playAsset("audio/background_music.mp3");
+        }
 
-
-        let bLayer = new BackgroundLayer(this.game, -950, 0, 1, 0);
+        let bLayer = new BackgroundLayer(this.game, 0, 0, 1, 0);
         this.game.addEntity(bLayer);
-        bLayer = new BackgroundLayer(this.game, -950, 0, 1, 1);
+        bLayer = new BackgroundLayer(this.game, 0, 0, 1, 1);
         this.game.addEntity(bLayer);
-        bLayer = new BackgroundLayer(this.game, -950, 0, 1, 2);
+        bLayer = new BackgroundLayer(this.game, 0, 0, 1, -1);
         this.game.addEntity(bLayer);
-        bLayer = new BackgroundLayer(this.game, -950, 0, 1, 3);
-        this.game.addEntity(bLayer);
-        bLayer = new BackgroundLayer(this.game, -950, 0, 1, 4);
-        this.game.addEntity(bLayer);
+        // bLayer = new BackgroundLayer(this.game, -950, 0, 1, 3);
+        // this.game.addEntity(bLayer);
+        // bLayer = new BackgroundLayer(this.game, -950, 0, 1, 4);
+        // this.game.addEntity(bLayer);
 
         let bVine = new BackgroundLayer(this.game, -1000, -200, 0, 0);
         this.game.addEntity(bVine);
@@ -126,19 +63,6 @@ class SceneManager {
         this.game.addEntity(ceil);
 
 
-        //let vines = new Vines(this.game, -500, -500);
-       // this.game.addEntity(vines);
-        //trees
-        // let tree = null;
-        // let place = -1000;
-        // //for starting block
-        // for (var i = 0; i < 20; i++) {
-        //     place += randomInt(400) + 200;
-        //     if (place > 1800) i = 20;
-        //     tree = new Tree(this.game, place, -180, randomInt(2));
-        //     this.game.addEntity(tree);
-        // }
-
         //grass
         let grass = null;
         for (var i = 0; i < 20; i++) {
@@ -163,32 +87,49 @@ class SceneManager {
         caveWall = new CaveWall(this.game, 3000, 550, .5, 3);
         this.game.addEntity(caveWall);
 
-        land = new Land(this.game, 2700, 1050, 0);
+        //one level down
+        land = new Land(this.game, 2700, 800, 0);
         this.game.addEntity(land);
-        land = new Land(this.game, 1770, 1050, 0);
+        land = new Land(this.game, 1770, 800, 0);
         this.game.addEntity(land);
+        land = new Land(this.game, 840, 800, 0);
+        this.game.addEntity(land);
+
+        // let floating = new Land(this.game, 250, 1000, 1);
+        // this.game.addEntity(floating);
+        // floating = new Land(this.game, -350, 1150, 1);
+        // this.game.addEntity(floating);
 
 
         //assets for assassin
-
-
         let healthBar = new HealthBar(this.game);
         this.game.addEntity(healthBar);
         let weaponIcon = new WeaponIcons(this.game);
         this.game.addEntity(weaponIcon);
         //start point
-        this.assassin = new Assassin(this.game,0, 0, healthBar, weaponIcon);
+        this.assassin = new Assassin(this.game,900, 700, healthBar, weaponIcon);
         this.game.addEntity(this.assassin);
 
     };
 
+    updateAudio() {
+        let mute = document.getElementById("mute").checked;
+        let volume = document.getElementById("volume").value;
+        ASSET_MANAGER.muteAudio(mute);
+        ASSET_MANAGER.adjustVolume(volume);
+        if (document.getElementById("play").checked) {
+            console.log("HEARD");
+            ASSET_MANAGER.playAsset("./audio/background_music.mp3");
+        }
+
+
+    }
+
     update() {
-
-         PARAMS.DEBUG = true;
-
-
+        PARAMS.DEBUG = true;
         let midpoint = PARAMS.CANVAS_WIDTH/2 - 100;
         let midpointY = PARAMS.CANVAS_HEIGHT/1.2 - 160;
+        this.updateAudio();
         // let midpointY = PARAMS.CANVAS_HEIGHT/2 - 60;
 
         // if (this.x < this.knight.x - midpoint) this.x = this.knight.x - midpoint;
@@ -196,7 +137,9 @@ class SceneManager {
         if (this.assassin.x - midpoint > -1965 || this.count === 0) {
             this.count++;
             this.x = this.assassin.x - midpoint;
-            this.parallax = this.assassin.x/1.4 - midpoint;
+            this.parallax = this.assassin.x/1.8 - midpoint;
+            //TODO delete
+            this.title = false;
         }
         //console.log(this.knight.y-midpointY);
         // if (this.assassin.y -midpointY < 1920) {

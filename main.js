@@ -9,6 +9,7 @@ ASSET_MANAGER.queueDownload("./sprites/portal_anim.png");
 ASSET_MANAGER.queueDownload("./sprites/sign_portal.png");
 ASSET_MANAGER.queueDownload("./sprites/landblock.png");
 ASSET_MANAGER.queueDownload("./sprites/landassets.png");
+ASSET_MANAGER.queueDownload("./sprites/floating_land.png");
 ASSET_MANAGER.queueDownload("./sprites/background_layer1.png");
 ASSET_MANAGER.queueDownload("./sprites/background_layer2.png");
 ASSET_MANAGER.queueDownload("./sprites/vines.png");
@@ -21,10 +22,12 @@ ASSET_MANAGER.queueDownload("./sprites/cavewall_right.png");
 ASSET_MANAGER.queueDownload("./sprites/cavewall_left2.png");
 ASSET_MANAGER.queueDownload("./sprites/cavewall_right2.png");
 
+ASSET_MANAGER.queueDownload("./audio/background_music.mp3");
+
 ASSET_MANAGER.downloadAll(function () {
 	var gameEngine = new GameEngine();
 
-	PARAMS.BLOCKWIDTH = PARAMS.BITWIDTH * PARAMS.SCALE;
+	ASSET_MANAGER.autoRepeat("./audio/background_music.mp3");
 
 	var canvas = document.getElementById('gameWorld');
 	var ctx = canvas.getContext('2d');
