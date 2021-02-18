@@ -340,6 +340,13 @@ class Assassin {
                         }
                     }
                 }
+                if (entity instanceof ShadowWarrior && entity.BB && that.BB.collide(entity.BB)){
+                    if (that.facing === 0) {
+                        that.velocity.x = -50;
+                    } else {
+                        that.velocity.x = 50;
+                    }
+                }
                 if (entity.ABB && entity instanceof ShadowWarrior && that.BB.collide(entity.ABB)) {
                     console.log("HEARD")
                     if (that.state !== 3) that.healthBar.updateHealth(-.1);

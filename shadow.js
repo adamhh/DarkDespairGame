@@ -80,9 +80,9 @@ class ShadowWarrior {
         this.sight = new BoundingBox(this.x - 400, this.y, 875, this.height);
         if (this.state === 2) {
             if (this.facing === 0) {
-                this.ABB = new BoundingBox(this.x + 115, this.y, 25, 80); //facing 0
+                this.ABB = new BoundingBox(this.x + 70, this.y + 35, 25, 15); //facing 0
             } else {
-                this.ABB = new BoundingBox(this.x - 50, this.y, 25, 80);
+                this.ABB = new BoundingBox(this.x - 45, this.y + 35, 25, 15);
             }
         } else {
             this.ABB = new BoundingBox(0, 0, 0, 0);
@@ -109,8 +109,8 @@ class ShadowWarrior {
             this.vanish();
         }
         const TICK = this.game.clockTick;
-        const MAX_RUN = 250;
-        const RUN_ACC = 200;
+        const MAX_RUN = 350;
+        const RUN_ACC = 20;
         const MAX_FALL = 100;
         const FALL_ACC = .5;
         let moveTo = 0;
