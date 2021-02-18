@@ -127,7 +127,7 @@ class SceneManager {
     }
 
     update() {
-        PARAMS.DEBUG = true;
+        PARAMS.DEBUG = false;
         let midpoint = PARAMS.CANVAS_WIDTH/2 - 100;
         let midpointY = PARAMS.CANVAS_HEIGHT/1.2 - 160;
         this.updateAudio();
