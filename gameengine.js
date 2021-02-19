@@ -38,6 +38,23 @@ class GameEngine {
 
     startInput() {
         var that = this;
+
+        if (PARAMS.START === false) {
+            this.ctx.canvas.addEventListener("click", function (e) {
+                let click = getXandY(e);
+                console.log(click)
+                if (click.x > 344 && click.x < 602 && click.y > 344 && click.y < 494) {
+                    PARAMS.PLAY = true;
+                }
+            }, false);
+        }
+        var getXandY = function (e) {
+            var x = e.clientX - that.ctx.canvas.getBoundingClientRect().left;
+            var y = e.clientY - that.ctx.canvas.getBoundingClientRect().top;
+
+            return { x: x, y: y };
+        }
+
         this.ctx.canvas.addEventListener("keydown", function (e) {
             switch (e.code) {
                 case "ArrowLeft":

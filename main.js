@@ -24,6 +24,7 @@ ASSET_MANAGER.queueDownload("./sprites/cavewall_right2.png");
 ASSET_MANAGER.queueDownload("./sprites/shadow_assassin.png");
 ASSET_MANAGER.queueDownload("./sprites/arrow_right.png");
 ASSET_MANAGER.queueDownload("./sprites/arrow_left.png");
+ASSET_MANAGER.queueDownload("./sprites/start_menu.png");
 
 ASSET_MANAGER.queueDownload("./audio/background_music.mp3");
 

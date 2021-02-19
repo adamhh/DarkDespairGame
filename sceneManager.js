@@ -106,13 +106,17 @@ class SceneManager {
         this.game.addEntity(healthBar);
         let weaponIcon = new WeaponIcons(this.game);
         this.game.addEntity(weaponIcon);
-        //start point
+
+        let shadowWarrior = new ShadowWarrior(this.game, 600, 0);
+        this.game.addEntity(shadowWarrior);
 
         this.assassin = new Assassin(this.game,-200, 0, healthBar, weaponIcon);
         this.game.addEntity(this.assassin);
 
-        let shadowWarrior = new ShadowWarrior(this.game, 600, 0);
-        this.game.addEntity(shadowWarrior);
+        this.startMenu = new StartMenu(this.game);
+        this.game.addEntity(this.startMenu);
+
+
 
     };
 
@@ -121,8 +125,8 @@ class SceneManager {
         let volume = document.getElementById("volume").value;
         ASSET_MANAGER.muteAudio(mute);
         ASSET_MANAGER.adjustVolume(volume);
-        if (document.getElementById("play").checked) {
-            console.log("HEARD");
+        if (PARAMS.START) {
+            //console.log("HEARD");
             ASSET_MANAGER.playAsset("./audio/background_music.mp3");
         }
 
@@ -130,7 +134,12 @@ class SceneManager {
     }
 
     update() {
-        PARAMS.DEBUG = true;
+        PARAMS.DEBUG = false;
+        if (PARAMS.START === true) {
+            if (this.startMenu) {
+                this.startMenu.exists = false;
+            }
+        }
         let midpoint = PARAMS.CANVAS_WIDTH/2 - 30;
         let midpointY = PARAMS.CANVAS_HEIGHT/1.2 - 160;
         this.updateAudio();

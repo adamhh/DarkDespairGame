@@ -32,4 +32,6 @@ const PARAMS = {
     //in the program, but there are some bugs with collisions (bouncing of walls)
     DEBUG: false,
     SCALE: .75,
+    PLAY: false,
+    START: false,
 };
