@@ -76,8 +76,10 @@ class ShadowWarrior {
     updateBB() {
         this.lastBB = this.BB;
         this.BB = new BoundingBox(this.x, this.y, this.width, this.height);
-        this.sight = new BoundingBox(this.x - 400, this.y, 875, this.height);
-        if (this.state === 2) {
+        this.sight = new BoundingBox(this.x - 650, this.y, 1225, this.height);
+        if (this.disappear) {
+            this.ABB = new BoundingBox(0, 0, 0, 0);
+        } else if (this.state === 2) {
             if (this.facing === 0) {
                 this.ABB = new BoundingBox(this.x + 60, this.y + 55, 75, 15); //facing 0
             } else {
@@ -101,10 +103,12 @@ class ShadowWarrior {
         this.time1 = this.timer.getTime();
         this.velocity.x = 0;
         this.deathCount > 0 ? this.disappear = true : this.die();
+        this.updateBB();
     }
 
     update() {
-        console.log(this.health);
+        //console.log(this.health);
+
         if (this.health < 1 && this.disappear === false) {
             this.time1 = this.timer.getTime();
             this.time2 = this.time1;
@@ -147,14 +151,16 @@ class ShadowWarrior {
                     }
                     if (entity.ABB && that.BB.collide(entity.ABB)) {
                         that.health-= 2;
+                        //that.facing === 0 ? that.x -= 1 : that.x += 1;
+                        that.updateBB();
                     }
                 }
             });
             let playerDiff = 0;
             if (this.facing === 1 && inSight) {                                 //facing and in sight <-
                 playerDiff = this.x - moveTo;
-                console.log(playerDiff + " <-");
-                if (playerDiff < 425 && playerDiff > 65) {                       //if close walk to attack position
+                //console.log(playerDiff + " <-");
+                if (playerDiff < 525 && playerDiff > 65) {                       //if close walk to attack position
                     this.velocity.x -= RUN_ACC;
                     this.state = 1;
                 } else if (playerDiff < 65 && playerDiff > -25) {              //attack if in zone
@@ -167,8 +173,8 @@ class ShadowWarrior {
 
             } else if (inSight) {                                               //facing and in sight ->
                 playerDiff = moveTo - this.x;
-                console.log(playerDiff + " ->");
-                if (playerDiff < 450 && playerDiff > 90) {                     //in zone will walk towards
+                //console.log(playerDiff + " ->");
+                if (playerDiff < 550 && playerDiff > 90) {                     //in zone will walk towards
                     this.velocity.x += RUN_ACC;
                     this.state = 1;
                 } else if (playerDiff < 90 && playerDiff > -25) {
@@ -182,14 +188,6 @@ class ShadowWarrior {
                 this.state = 0;
                 this.velocity.x = 0;
             }
-
-            // if (this.state === 2) {
-            //     this.attackCount++;
-            //     this.attackCount % 15 === 0 ? this.attacking = true : this.attacking = false;
-            // } else {
-            //     this.attacking = false;
-            // }
-            //this.attacking = true;
 
             // update position
 

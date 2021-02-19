@@ -246,15 +246,13 @@ class Assassin {
                     this.ABB = new BoundingBox(this.x + xOff, this.y + 30, 50, 60);
                     break;
                 case 2:
-                    console.log(this.bowTime);
+                    //console.log(this.bowTime);
                     if (this.bowTime < 0.6 && this.bowTime > .4) {
                         this.game.addEntity(new Arrow(this.game, this.x - this.game.camera.x, this.y - this.game.camera.y,
                             this.facing === 1));
                     } else {
                         this.bowTime = 0;
                     }
-
-
                     break;
             }
         } else {
