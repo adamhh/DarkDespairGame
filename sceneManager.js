@@ -113,6 +113,9 @@ class SceneManager {
         this.assassin = new Assassin(this.game,-200, 0, healthBar, weaponIcon);
         this.game.addEntity(this.assassin);
 
+        //let redEye = new RedEye(this.game, 0, 0);
+        //this.game.addEntity(redEye);
+
         this.startMenu = new StartMenu(this.game);
         this.game.addEntity(this.startMenu);
 
@@ -134,7 +137,7 @@ class SceneManager {
     }
 
     update() {
-        PARAMS.DEBUG = false;
+        PARAMS.DEBUG = true;
         if (PARAMS.START === true) {
             if (this.startMenu) {
                 this.startMenu.exists = false;
@@ -154,11 +157,7 @@ class SceneManager {
             //TODO delete
             this.title = false;
         }
-        //console.log(this.knight.y-midpointY);
-        // if (this.assassin.y -midpointY < 1920) {
-        //     this.y = this.assassin.y - midpointY;
-        //     this.parallaxY = this.assassin.y/1.4 - midpointY;
-        // }
+
         this.y = this.assassin.y - midpointY;
         this.parallaxY = this.assassin.y/1.1 - midpointY;
 

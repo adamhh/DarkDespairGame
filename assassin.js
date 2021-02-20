@@ -249,7 +249,7 @@ class Assassin {
                     //console.log(this.bowTime);
                     if (this.bowTime < 0.6 && this.bowTime > .4) {
                         this.game.addEntity(new Arrow(this.game, this.x - this.game.camera.x, this.y - this.game.camera.y,
-                            this.facing === 1));
+                            this.facing === 1, true));
                     } else {
                         this.bowTime = 0;
                     }
@@ -267,6 +267,9 @@ class Assassin {
 
     };
 
+    hit() {
+        this.healthBar.updateHealth(-.5);
+    }
     update() {
         //console.log("(" + Math.floor(this.x) + ",  (" + Math.floor(this.y) + ")");
         if (this.healthBar.isDead()) {

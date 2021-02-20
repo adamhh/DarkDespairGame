@@ -150,8 +150,8 @@ class ShadowWarrior {
                         moveTo = entity.BB.x;
                     }
                     if (entity.ABB && that.BB.collide(entity.ABB)) {
-                        that.health-= 2;
-                        //that.facing === 0 ? that.x -= 1 : that.x += 1;
+                        that.health-= 2.5;
+                        //that.facing === 0 ? that.x -= 5 : that.x += 5;
                         that.updateBB();
                     }
                 }
@@ -160,10 +160,10 @@ class ShadowWarrior {
             if (this.facing === 1 && inSight) {                                 //facing and in sight <-
                 playerDiff = this.x - moveTo;
                 //console.log(playerDiff + " <-");
-                if (playerDiff < 525 && playerDiff > 65) {                       //if close walk to attack position
+                if (playerDiff < 525 && playerDiff > 75) {                       //if close walk to attack position
                     this.velocity.x -= RUN_ACC;
                     this.state = 1;
-                } else if (playerDiff < 65 && playerDiff > -25) {              //attack if in zone
+                } else if (playerDiff < 75 && playerDiff > -25) {              //attack if in zone
                     this.velocity.x = 0;
                     this.state = 2;
                 } else {                                                        //else stop
@@ -174,10 +174,10 @@ class ShadowWarrior {
             } else if (inSight) {                                               //facing and in sight ->
                 playerDiff = moveTo - this.x;
                 //console.log(playerDiff + " ->");
-                if (playerDiff < 550 && playerDiff > 90) {                     //in zone will walk towards
+                if (playerDiff < 550 && playerDiff > 110) {                     //in zone will walk towards
                     this.velocity.x += RUN_ACC;
                     this.state = 1;
-                } else if (playerDiff < 90 && playerDiff > -25) {
+                } else if (playerDiff < 110 && playerDiff > -25) {
                     this.velocity.x = 0;
                     this.state = 2;
                 } else {                                                        //else stop
@@ -252,3 +252,186 @@ class ShadowWarrior {
 
 
 }
+
+class RedEye {
+    constructor(game, x, y) {
+        Object.assign(this, {game, x, y});
+        //spritesheets
+        this.setFields();
+        this.updateBB();
+        this.loadAnimations();
+
+    }
+
+    setFields() {
+        this.spritesheet = ASSET_MANAGER.getAsset("./sprites/red_eye_bow.png");
+        this.facing = 0; //0 for right, 1 for left
+
+        this.velocity = { x: 0, y: 0 };
+        this.width = 55;
+        this.height = 90;
+
+        this.animations = [];
+        this.disappearAnim = [];
+
+        this.timer = new Timer();
+        this.time1 = this.timer.getTime();
+        this.time2 = this.time1;
+
+        this.bowTime = 0;
+        this.disappear = false;
+        this.attacking = false;
+        this.health = 100;
+    }
+
+    loadAnimations() {
+        //load animations
+        //attacking
+        this.animations[0] = new Animator(this.spritesheet,5, 0, 85, 90, 8, .18,
+            105.05, false, true);
+        this.animations[1] = new Animator(this.spritesheet,5, 109, 85, 90, 8, .18,
+            105.05, true, true);
+        //death animation
+        this.disappearAnim[0] = new Animator(this.spritesheet, 20, 260, 95, 110, 5, .14,
+            95.05, false, true);
+        this.disappearAnim[1] = new Animator(this.spritesheet, 30, 381, 95, 110, 5, .14,
+            95.05, true, true);
+
+    }
+
+    updateBB() {
+        this.lastBB = this.BB;
+        this.BB = new BoundingBox(this.x, this.y, this.width, this.height);
+        this.sight = new BoundingBox(this.x - 650, this.y, 1225, this.height);
+        if (this.disappear) {
+            this.ABB = new BoundingBox(0, 0, 0, 0);
+        }
+        // console.log(this.attacking + " " + this.bowTime);
+        if (this.attacking) {
+            if (this.bowTime < 1.53 && this.bowTime > 1.43) {
+                this.game.addEntity(new Arrow(this.game, this.x - this.game.camera.x, this.y - this.game.camera.y,
+                    this.facing === 1, false));
+                this.bowTime = 0;
+            }
+        }
+    }
+    hit() {
+        this.health -= .5;
+    }
+
+    vanish() {
+        this.BB = new BoundingBox(0,0,0,0);
+        this.time1 = this.timer.getTime();
+        this.updateBB();
+    }
+
+    update() {
+        //console.log(this.health);
+
+        if (this.health < 1 && this.disappear === false) {
+            this.time1 = this.timer.getTime();
+            this.time2 = this.time1;
+            this.vanish();
+        }
+        const TICK = this.game.clockTick;
+        this.bowTime += TICK;
+        const MAX_FALL = 100;
+        const FALL_ACC = .5;
+        let that = this;
+        let inSight = false;
+        //collision system
+        if (!this.disappear) {
+            this.game.entities.forEach(function (entity) {
+                if (entity.BB && that.BB.collide(entity.BB)) { //BB collision
+                    if (that.velocity.y > 0) { //falling
+                        if ((entity instanceof Land || entity instanceof Land) &&
+                            that.lastBB.bottom <= entity.BB.top) { //things you can land on & landed true
+                            that.y = entity.BB.top - that.lastBB.height;
+                            that.velocity.y = 0;
+                            that.updateBB();
+                        } //can change to states if falling here
+                    }
+                }
+                if (entity instanceof Assassin) {
+                    if (entity.BB && that.sight.collide(entity.BB)) {
+                        inSight = true;
+                        let flipX = 0;
+                        that.facing === 1 ? flipX = 22 : flipX = 20;
+                        if (entity.BB.x - that.BB.x < flipX) {
+                            that.facing = 1;
+                        } else {
+                            that.facing = 0;
+
+                        }
+                    }
+                    if (entity.ABB && that.BB.collide(entity.ABB)) {
+                        that.health-= 2.5;
+                        that.updateBB();
+                    }
+                }
+            });
+            if (inSight) {
+                this.attacking = true;
+            }
+            // let playerDiff = 0;
+            // if (this.facing === 1 && inSight) {
+            //     playerDiff = this.x - moveTo;
+            //     //console.log(playerDiff + " <-");
+            //     // if (playerDiff < 525 && playerDiff > 75) {
+            //     //     this.attacking = true;
+            //     // }
+            //
+            // } else if (inSight) {
+            //     playerDiff = moveTo - this.x;
+            //     //console.log(playerDiff + " ->");
+            //     // if (playerDiff < 550 && playerDiff > 110) {
+            //     //     this.attacking = true;
+            //     // }
+            // }
+
+            // update position
+
+            this.velocity.y += FALL_ACC;
+            if (this.velocity.y >= MAX_FALL) this.velocity.y = MAX_FALL;
+            this.y += this.velocity.y;
+            this.updateBB();
+
+            //if dead
+        } else {
+            this.time2 = this.timer.getTime();
+            if (this.time2 - this.time1 > 750) {
+                this.x = -5000;
+                this.y = -5000;
+                this.disappear = false;
+                this.health = 100;
+            }
+        }
+    }
+
+    draw(ctx) {
+        let yOffset = 0;
+        let xOffset = 0;
+        if (this.disappear) {
+            yOffset = -22;
+            this.facing === 0 ? xOffset = -10 : xOffset = -18;
+            this.disappearAnim[this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x + xOffset,
+                                                    this.y - this.game.camera.y + yOffset, 1);
+        } else {
+            this.animations[this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x,
+                                                this.y - this.game.camera.y, 1);
+        }
+
+        if (PARAMS.DEBUG) {
+            ctx.strokeStyle = 'Red';
+            ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y - this.game.camera.y, this.BB.width, this.BB.height);
+            ctx.strokeStyle = "White";
+            ctx.strokeRect(this.sight.x - this.game.camera.x, this.sight.y - this.game.camera.y, this.sight.width, this.sight.height);
+        }
+
+    }
+
+
+}
+
+
+
