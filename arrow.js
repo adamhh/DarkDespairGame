@@ -1,5 +1,4 @@
 class Arrow {
-
     constructor(game, x, y, isLeft, isAssassin) {
         Object.assign(this, { game, x, y, isLeft, isAssassin});
         //console.log(this.left)
@@ -11,42 +10,22 @@ class Arrow {
 
         this.animations = new Animator(this.spritesheet, 0, 0, 355, 42, 1, 1, 0, false, true);
 
-        this.maxSpeed = 2500; // pixels per second
+        this.maxSpeed = 1500; // pixels per second
         this.velocity = { x: this.maxSpeed, y: this.maxSpeed };
-        this.updateBB();
+        this.BB = new BoundingBox(this.x, this.y, 50, 10);
     }
 
 
     updateBB() {
         if (this.isLeft) {
-            this.BB = new BoundingBox(this.x - 40, this.y + this.game.camera.y + 14, 50, 10);
+            this.BB = new BoundingBox(this.x - 40, this.y + 40, 50, 10);
         } else {
-            this.BB = new BoundingBox(this.x, this.y + this.game.camera.y + 14, 50, 10);
+            this.BB = new BoundingBox(this.x, this.y + 40, 50, 10);
         }
     };
 
 
     update() {
-
-        this.updateBB();
-        var that = this;
-        this.game.entities.forEach(function (entity) {
-            // Ninja dies if the Zombie collides with it.
-            if (entity.BB && that.BB.collide(entity.BB)) {
-                if (entity instanceof ShadowWarrior || entity instanceof RedEye) {
-                    entity.hit();
-                    //that.stop = true;
-                }
-                if (entity instanceof Assassin && !that.isAssassin) {
-                    entity.hit();
-                }
-                if (entity instanceof CaveWall) {
-                    //that.stop = true;
-                }
-            }
-
-        });
-
         if (this.isLeft) {
             this.x -= this.velocity.x * this.game.clockTick;
         } else {
@@ -57,14 +36,17 @@ class Arrow {
     }
     draw(ctx) {
         if (this.isLeft) {
-            this.animations.drawFrame(this.game.clockTick, ctx, this.x - 25, this.y + 40, .1)
+            this.animations.drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x - 25, this.y - this.game.camera.y + 40, .1)
         } else {
-            this.animations.drawFrame(this.game.clockTick, ctx, this.x + 70, this.y + 40, .1)
+            this.animations.drawFrame(this.game.clockTick, ctx, this.x + 70 - this.game.camera.x, this.y - this.game.camera.y + 40, .1)
+        }
+        this.updateBB();
+
+        if (PARAMS.DEBUG) {
+            ctx.strokeStyle = 'blue';
+            ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y - this.game.camera.y, this.BB.width, this.BB.height);
         }
 
-
-        // ctx.strokeStyle = 'blue';
-        // ctx.strokeRect(this.BB.x, this.BB.y - this.game.camera.y, this.BB.width, this.BB.height);
 
     }
 }

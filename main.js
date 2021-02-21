@@ -8,6 +8,8 @@ ASSET_MANAGER.queueDownload("./sprites/portal.png");
 ASSET_MANAGER.queueDownload("./sprites/portal_anim.png");
 ASSET_MANAGER.queueDownload("./sprites/sign_portal.png");
 ASSET_MANAGER.queueDownload("./sprites/landblock.png");
+ASSET_MANAGER.queueDownload("./sprites/landendL.png");
+ASSET_MANAGER.queueDownload("./sprites/landendR.png");
 ASSET_MANAGER.queueDownload("./sprites/landassets.png");
 ASSET_MANAGER.queueDownload("./sprites/floating_land.png");
 ASSET_MANAGER.queueDownload("./sprites/background_layer1.png");
@@ -26,6 +28,7 @@ ASSET_MANAGER.queueDownload("./sprites/arrow_right.png");
 ASSET_MANAGER.queueDownload("./sprites/arrow_left.png");
 ASSET_MANAGER.queueDownload("./sprites/start_menu.png");
 ASSET_MANAGER.queueDownload("./sprites/red_eye_bow.png");
+ASSET_MANAGER.queueDownload("./sprites/ingame_items.png");
 
 ASSET_MANAGER.queueDownload("./audio/background_music.mp3");
 

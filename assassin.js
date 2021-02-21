@@ -248,7 +248,7 @@ class Assassin {
                 case 2:
                     //console.log(this.bowTime);
                     if (this.bowTime < 0.6 && this.bowTime > .4) {
-                        this.game.addEntity(new Arrow(this.game, this.x - this.game.camera.x, this.y - this.game.camera.y,
+                        this.game.addEntity(new Arrow(this.game, this.x, this.y,
                             this.facing === 1, true));
                     } else {
                         this.bowTime = 0;
@@ -267,14 +267,11 @@ class Assassin {
 
     };
 
-    hit() {
-        this.healthBar.updateHealth(-.5);
-    }
     update() {
-        //console.log("(" + Math.floor(this.x) + ",  (" + Math.floor(this.y) + ")");
         if (this.healthBar.isDead()) {
             this.dead = true;
         }
+        if (this.y > 1800) this.dead = true;
         const TICK = this.game.clockTick;
         this.time2 = this.timer.getTime();
         this.attackEnd = this.timer.getTime();
@@ -303,202 +300,214 @@ class Assassin {
 
         // console.log("(" + Math.floor(this.x) + "," + this.y + ")");
        // console.log(this.velocity.y);
-        if (this.dead) {
-            this.velocity.y = 0;
-            this.velocity.x = 0;
-            this.BB = new BoundingBox(0, 0 , 0 ,0);
-        } else {
-            // collision
-            var that = this;
-            let canFall = true;
-            this.game.entities.forEach(function (entity) {
-                if (entity.BB && that.BB.collide(entity.BB)) {
-                    if (that.velocity.y > 0) { // falling
-                        if ((entity instanceof Land) // landing
-                            && (that.lastBB.bottom) <= entity.BB.top) { // was above last tick
-                            that.velocity.y = 0;
-                            that.y = entity.BB.top - that.BB.height;
-                            that.updateBB();
-                            //that.velocity.y === 0;
-                            //if(that.state === 4) that.state = 0; // set state to idle
-                            that.updateBB();
-
-                        }
-                    }
-                    if (that.velocity.y < 0) { // jumping
-                        if ((entity instanceof CaveWall) // hit ceiling
-                            && (that.lastBB.top) >= entity.BB.bottom // was below last tick
-                            && that.BB.collide(entity.BB.left) && that.BB.collide(entity.BB.right)) { // collide with the center point of the brick
-                            that.velocity.y = 0;
-                        }
-                    }
-                    if (entity instanceof CaveWall || entity instanceof Land && entity.BB.top - that.BB.bottom < -100) {
-                        if (that.BB.left < entity.BB.left) {
-                            that.x = entity.BB.left - (that.BB.width * 2)  + 20;
-                            if (that.velocity.x > 0) {
-                                that.velocity.x *= -.2;
-                            }
-                        } else { //<-
-                            if (that.velocity.x < 0) {
-                                that.velocity.x *= -.2;
-                            }
-                            that.x = that.lastBB.left - 5;
-                        }
-                    }
-                }
-                if (entity instanceof ShadowWarrior && entity.BB && that.BB.collide(entity.BB)){
-                    that.velocity.x *= .9;
-                }
-                if (entity.ABB && entity instanceof ShadowWarrior && that.BB.collide(entity.ABB)) {
-                    if (that.state !== 3) that.healthBar.updateHealth(-.1);
-                }
-            });
-
-            // if (this.y > 3000) {
-            //     this.velocity.x = 0;
-            //     this.x = -1700;
-            //     this.y = 1800;
-            // }
-            let yVel = Math.abs(this.velocity.y);
-            //this physics will need a fine tuning;
-            let attackLength = 350;
-            if (this.game.One) {
-                this.weapon = 0;
-                attackLength = 350;
-                this.weaponIcon.updateWeapon(0);
-            }
-            if (this.game.Two) {
-                this.weapon = 1;
-                attackLength = 400;
-                this.weaponIcon.updateWeapon(1);
-            }
-            if (this.game.Three) {
-                this.weapon = 2;
-                attackLength = 750;
-                this.weaponIcon.updateWeapon(2);
-            }
-            if (this.attackEnd - this.attackStart > attackLength) {
-                this.attacking = false;
+        if (PARAMS.START) {
+            if (this.dead) {
+                this.velocity.y = 0;
+                this.velocity.x = 0;
+                this.BB = new BoundingBox(0, 0, 0, 0);
             } else {
-                this.attacking = true;
-            }
-            if ((this.attackEnd - this.attackStart > attackLength - 200) && (this.attackEnd - this.attackStart < attackLength) &&
-                this.state === 2) {
-                this.attackWindow = true;
-            } else {
-                this.attackWindow = false;
-            }
-            this.updateBB();
-            if (!this.attacking) {
-                //console.log("HEARD")
-                if (!this.game.B) {
-                    this.jumpFlag = false;
+                // collision
+                var that = this;
+                let canFall = true;
+                this.game.entities.forEach(function (entity) {
+                    if (entity.BB && that.BB.collide(entity.BB)) {
+                        if (entity instanceof Arrow && !entity.isAssassin) {
+                            that.healthBar.updateHealth(-.4);
+                        }
+                        if (that.velocity.y > 0) { // falling
+                            if ((entity instanceof Land || entity instanceof FloatingLand) // landing
+                                && (that.lastBB.bottom) <= entity.BB.top) { // was above last tick
+                                that.velocity.y = 0;
+                                that.y = entity.BB.top - that.BB.height;
+                                that.updateBB();
+                                //that.velocity.y === 0;
+                                //if(that.state === 4) that.state = 0; // set state to idle
+
+                            }
+                        }
+                        if (that.velocity.y < 0) { // jumping
+                            if ((entity instanceof CaveWall) // hit ceiling
+                                && (that.lastBB.top) >= entity.BB.bottom // was below last tick
+                                && that.BB.collide(entity.BB.left) && that.BB.collide(entity.BB.right)) { // collide with the center point of the brick
+                                that.velocity.y = 0;
+                            }
+                        }
+                        if ((entity instanceof CaveWall || entity instanceof Land || entity instanceof FloatingLand)
+                            && entity.BB.top - that.BB.bottom < -100) {
+                            if (that.BB.left < entity.BB.left) {
+                                that.x = entity.BB.left - (that.BB.width * 2) + 20;
+                                if (that.velocity.x > 0) {
+                                    that.velocity.x *= -.2;
+                                }
+                            } else { //<-
+                                if (that.velocity.x < 0) {
+                                    that.velocity.x *= -.2;
+                                }
+                                that.x = that.lastBB.left - 5;
+                            }
+                        }
+                        if (entity instanceof HealthPotion) {
+                            if (!that.healthBar.isFull()) {
+                                that.healthBar.updateHealth(10);
+                                entity.drank = true;
+                            }
+                        }
+
+                    }
+                    if (entity instanceof ShadowWarrior && entity.BB && that.BB.collide(entity.BB)) {
+                        that.velocity.x *= .9;
+                    }
+                    if (entity.ABB && entity instanceof ShadowWarrior && that.BB.collide(entity.ABB)) {
+                        if (that.state !== 3) that.healthBar.updateHealth(-.1);
+                    }
+                });
+
+                // if (this.y > 3000) {
+                //     this.velocity.x = 0;
+                //     this.x = -1700;
+                //     this.y = 1800;
+                // }
+                let yVel = Math.abs(this.velocity.y);
+                //this physics will need a fine tuning;
+                let attackLength = 350;
+                if (this.game.One) {
+                    this.weapon = 0;
+                    attackLength = 350;
+                    this.weaponIcon.updateWeapon(0);
                 }
-                if (this.game.right) {
-                    this.facing = 0;
-                    this.state = 1;
-                } else if (this.game.left) {
-                    this.facing = 1;
-                    this.state = 1;
-                } else if (this.game.A) {
-                    this.state = 2;
+                if (this.game.Two) {
+                    this.weapon = 1;
+                    attackLength = 400;
+                    this.weaponIcon.updateWeapon(1);
+                }
+                if (this.game.Three) {
+                    this.weapon = 2;
+                    attackLength = 750;
+                    this.weaponIcon.updateWeapon(2);
+                }
+                if (this.attackEnd - this.attackStart > attackLength) {
+                    this.attacking = false;
+                } else {
                     this.attacking = true;
-                    if (yVel < 20) {
-                        this.velocity.x = 0;
+                }
+                if ((this.attackEnd - this.attackStart > attackLength - 200) && (this.attackEnd - this.attackStart < attackLength) &&
+                    this.state === 2) {
+                    this.attackWindow = true;
+                } else {
+                    this.attackWindow = false;
+                }
+                this.updateBB();
+                if (!this.attacking) {
+                    //console.log("HEARD")
+                    if (!this.game.B) {
+                        this.jumpFlag = false;
                     }
-                    this.bowTime = 0;
-                    this.attackStart = this.timer.getTime();
-                }
-                if (this.game.B) {
-                    this.state = 3;
-                    if (this.velocity.y > 500) this.state = 0;
-                } else if (!this.game.A && !this.game.B && !this.game.right && !this.game.left) {
-                    this.state = 0;
-                }
-                if (this.game.C) {
-                    if (this.game.left || this.game.right) {
-                        this.state = 4;
+                    if (this.game.right) {
+                        this.facing = 0;
+                        this.state = 1;
+                    } else if (this.game.left) {
+                        this.facing = 1;
+                        this.state = 1;
+                    } else if (this.game.A) {
+                        this.state = 2;
+                        this.attacking = true;
+                        if (yVel < 20) {
+                            this.velocity.x = 0;
+                        }
+                        this.bowTime = 0;
+                        this.attackStart = this.timer.getTime();
                     }
-                    acc_run = ACC_SPRINT;
-                    max_run = MAX_SPRINT;
-                }
-                if (this.game.A && this.game.B) {
-                    if (this.velocity.y > 200) this.state = 0;
-                    else this.state = 3;
-                }
-                if (this.game.B && this.game.C && (this.game.right || this.game.left)) {
-                    this.state = 0;
+                    if (this.game.B) {
+                        this.state = 3;
+                        if (this.velocity.y > 500) this.state = 0;
+                    } else if (!this.game.A && !this.game.B && !this.game.right && !this.game.left) {
+                        this.state = 0;
+                    }
+                    if (this.game.C) {
+                        if (this.game.left || this.game.right) {
+                            this.state = 4;
+                        }
+                        acc_run = ACC_SPRINT;
+                        max_run = MAX_SPRINT;
+                    }
+                    if (this.game.A && this.game.B) {
+                        if (this.velocity.y > 200) this.state = 0;
+                        else this.state = 3;
+                    }
+                    if (this.game.B && this.game.C && (this.game.right || this.game.left)) {
+                        this.state = 0;
+                    }
+
+                    //if moving right and then face left, skid
+                    if (this.game.left && this.velocity.x > 0 && yVel < 20) {
+                        this.velocity.x -= TURN_SKID;
+                    }
+                    //if moving left ann then face right, skid
+                    if (this.game.right && this.velocity.x < 0 && yVel < 20) {
+                        this.velocity.x += TURN_SKID;
+                    }
+                    //if you unpress left and right while moving right
+                    if (!this.game.right && !this.game.left) {
+                        if (this.facing === 0) { //moving right
+                            if (this.velocity.x > 0 && yVel < 20) {
+                                this.velocity.x -= DEC_SKID * TICK;
+                            } else if (yVel < 20) {
+                                this.velocity.x = 0;
+                            } else if (this.velocity.x > 0) { //this is where you control horizontal deceleration when in air
+                                this.velocity.x -= AIR_DEC;
+                            }
+                        } else { //if you unpress left and right while moving left
+                            if (this.velocity.x < 0 && yVel < 20) {
+                                this.velocity.x += DEC_SKID * TICK;
+                            } else if (yVel < 20) {
+                                this.velocity.x = 0;
+                            } else if (this.velocity.x < 0) { //this is where you control horizontal deceleration when in air
+                                this.velocity.x += AIR_DEC;
+                            }
+                        }
+                    }
+                    //Run physics
+                    if (this.facing === 0) {                        //facing right
+                        if (this.game.right && !this.game.left) {   //and pressing right.
+                            if (yVel < 10 && !this.game.B) {        //makes sure you are on ground
+                                this.velocity.x += acc_run * TICK;
+                            }
+                        }
+                    } else if (this.facing === 1) {                  //facing left
+                        if (!this.game.right && this.game.left) {   //and pressing left.
+                            if (yVel < 10 && !this.game.B) {        //makes sure you are on ground
+                                this.velocity.x -= acc_run * TICK;
+                            }
+                        }
+                    }
+
+                    if (this.game.B) {
+                        let timeDiff = this.time2 - this.time1;
+                        if (this.velocity.y === 0) { // add double jump later
+                            this.time1 = this.timer.getTime();
+                            this.velocity.y -= JUMP_ACC;
+                            this.fallAcc = STOP_FALL;
+                            this.jumpFlag = true;
+                        } else if (!this.jumpFlag && timeDiff > 100 && timeDiff < 200) {
+                            this.velocity.y -= DBL_JUMP_MOD;
+                            this.fallAcc = STOP_FALL;
+                        }
+                    }
                 }
 
-                //if moving right and then face left, skid
-                if (this.game.left && this.velocity.x > 0 && yVel < 20) {
-                    this.velocity.x -= TURN_SKID;
-                }
-                //if moving left ann then face right, skid
-                if (this.game.right && this.velocity.x < 0 && yVel < 20) {
-                    this.velocity.x += TURN_SKID;
-                }
-                //if you unpress left and right while moving right
-                if (!this.game.right && !this.game.left) {
-                    if (this.facing === 0) { //moving right
-                        if (this.velocity.x > 0 && yVel < 20) {
-                            this.velocity.x -= DEC_SKID * TICK;
-                        } else if (yVel < 20) {
-                            this.velocity.x = 0;
-                        } else if (this.velocity.x > 0) { //this is where you control horizontal deceleration when in air
-                            this.velocity.x -= AIR_DEC;
-                        }
-                    } else { //if you unpress left and right while moving left
-                        if (this.velocity.x < 0 && yVel < 20) {
-                            this.velocity.x += DEC_SKID * TICK;
-                        } else if (yVel < 20) {
-                            this.velocity.x = 0;
-                        } else if (this.velocity.x < 0) { //this is where you control horizontal deceleration when in air
-                            this.velocity.x += AIR_DEC;
-                        }
-                    }
-                }
-                //Run physics
-                if (this.facing === 0) {                        //facing right
-                    if (this.game.right && !this.game.left) {   //and pressing right.
-                        if (yVel < 10 && !this.game.B) {        //makes sure you are on ground
-                            this.velocity.x += acc_run * TICK;
-                        }
-                    }
-                } else if (this.facing === 1) {                  //facing left
-                    if (!this.game.right && this.game.left) {   //and pressing left.
-                        if (yVel < 10 && !this.game.B) {        //makes sure you are on ground
-                            this.velocity.x -= acc_run * TICK;
-                        }
-                    }
-                }
+                // max speed calculation
+                if (this.velocity.x >= max_run) this.velocity.x = max_run;
+                if (this.velocity.x <= -max_run) this.velocity.x = -max_run;
+                // update position
+                this.velocity.y += this.fallAcc * TICK;
+                this.y += this.velocity.y * TICK * PARAMS.SCALE;
+                if (this.velocity.y >= MAX_FALL) this.velocity.y = MAX_FALL;
+                if (this.velocity.y <= -MAX_JUMP) this.velocity.y = -MAX_FALL;
 
-                if (this.game.B) {
-                    let timeDiff = this.time2 - this.time1;
-                    if (this.velocity.y === 0) { // add double jump later
-                        this.time1 = this.timer.getTime();
-                        this.velocity.y -= JUMP_ACC;
-                        this.fallAcc = STOP_FALL;
-                        this.jumpFlag = true;
-                    } else if (!this.jumpFlag && timeDiff > 100 && timeDiff < 200) {
-                        this.velocity.y -= DBL_JUMP_MOD;
-                        this.fallAcc = STOP_FALL;
-                    }
-                }
+                this.x += this.velocity.x * TICK * PARAMS.SCALE;
+
+                this.updateBB(); //Update your bounding box every tick
             }
-
-            // max speed calculation
-            if (this.velocity.x >= max_run) this.velocity.x = max_run;
-            if (this.velocity.x <= -max_run) this.velocity.x = -max_run;
-            // update position
-            this.velocity.y += this.fallAcc * TICK;
-            this.y += this.velocity.y * TICK * PARAMS.SCALE;
-            if (this.velocity.y >= MAX_FALL) this.velocity.y = MAX_FALL;
-            if (this.velocity.y <= -MAX_JUMP) this.velocity.y = -MAX_FALL;
-
-            this.x += this.velocity.x * TICK * PARAMS.SCALE;
-
-            this.updateBB(); //Update your bounding box every tick
         }
     };
 

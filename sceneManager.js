@@ -49,6 +49,8 @@ class SceneManager {
         this.game.addEntity(bVine);
         bVine = new BackgroundLayer(this.game, -1000, -200, 0, 4);
         this.game.addEntity(bVine);
+        bVine = new BackgroundLayer(this.game, -1000, -200, 0, -1);
+        this.game.addEntity(bVine);
 
 
         let ceil = new Ceiling(this.game, -1500, -700);
@@ -71,29 +73,57 @@ class SceneManager {
             this.game.addEntity(grass);
         }
 
-        let land = new Land(this.game, -930, 100, 0);
-        this.game.addEntity(land);
-        land = new Land(this.game, 0, 100, 0);
-        this.game.addEntity(land);
-        land = new Land(this.game, 930, 100, 0);
-        this.game.addEntity(land);
-        land = new Land(this.game, 1860, 100, 0);
-        this.game.addEntity(land);
+
 
         let caveWall = new CaveWall(this.game, -900, -650, 1, 0);
         this.game.addEntity(caveWall);
         caveWall = new CaveWall(this.game, 3000, -650, 1, 1);
         this.game.addEntity(caveWall);
-        caveWall = new CaveWall(this.game, 3000, 550, .5, 3);
+        caveWall = new CaveWall(this.game, 3000, 230, .7, 3);
         this.game.addEntity(caveWall);
+
+        let land = new Land(this.game, -930, 100, 'L');
+        this.game.addEntity(land);
+        land = new Land(this.game, 0, 100, 0);
+        this.game.addEntity(land);
+        land = new Land(this.game, 930, 100, 0);
+        this.game.addEntity(land);
+        land = new Land(this.game, 1860, 100, 'R');
+        this.game.addEntity(land);
+
 
         //one level down
         land = new Land(this.game, 2700, 800, 0);
         this.game.addEntity(land);
-        land = new Land(this.game, 1770, 800, 0);
+        land = new Land(this.game, 1770, 800, 'L');
         this.game.addEntity(land);
-        land = new Land(this.game, 840, 800, 0);
+
+        let floating = new FloatingLand(this.game, 1300, 1000, 1);
+        this.game.addEntity(floating);
+        floating = new FloatingLand(this.game, 850, 1000, 0);
+        this.game.addEntity(floating);
+        floating = new FloatingLand(this.game, 350, 950, 1);
+        this.game.addEntity(floating);
+
+        //past first enemies
+
+        land = new Land(this.game, -1000, 950, 'R');
         this.game.addEntity(land);
+        land = new Land(this.game, -1930, 950, 0);
+        this.game.addEntity(land);
+        land = new Land(this.game, -2860, 950, 'L');
+        this.game.addEntity(land);
+
+
+        let redEye = new RedEye(this.game, 901, 915);
+        this.game.addEntity(redEye);
+
+        let shadowWarr = new ShadowWarrior(this.game, 1898, 800);
+        this.game.addEntity(shadowWarr);
+
+
+
+
 
         // let floating = new Land(this.game, 250, 1000, 1);
         // this.game.addEntity(floating);
@@ -107,14 +137,14 @@ class SceneManager {
         let weaponIcon = new WeaponIcons(this.game);
         this.game.addEntity(weaponIcon);
 
-        let shadowWarrior = new ShadowWarrior(this.game, 600, 0);
-        this.game.addEntity(shadowWarrior);
 
-        this.assassin = new Assassin(this.game,-200, 0, healthBar, weaponIcon);
+
+        this.assassin = new Assassin(this.game,0, 0, healthBar, weaponIcon);
         this.game.addEntity(this.assassin);
 
-        //let redEye = new RedEye(this.game, 0, 0);
-        //this.game.addEntity(redEye);
+        let healthPotion = new HealthPotion(this.game, 920, 955);
+        this.game.addEntity(healthPotion);
+
 
         this.startMenu = new StartMenu(this.game);
         this.game.addEntity(this.startMenu);
@@ -133,27 +163,23 @@ class SceneManager {
             ASSET_MANAGER.playAsset("./audio/background_music.mp3");
         }
 
-
     }
 
     update() {
-        PARAMS.DEBUG = true;
+        PARAMS.DEBUG = false;
         if (PARAMS.START === true) {
             if (this.startMenu) {
                 this.startMenu.exists = false;
             }
         }
         let midpoint = PARAMS.CANVAS_WIDTH/2 - 30;
-        let midpointY = PARAMS.CANVAS_HEIGHT/1.2 - 160;
+        let midpointY = PARAMS.CANVAS_HEIGHT/2;
         this.updateAudio();
-        // let midpointY = PARAMS.CANVAS_HEIGHT/2 - 60;
 
-        // if (this.x < this.knight.x - midpoint) this.x = this.knight.x - midpoint;
-        //always start center
         if (this.assassin.x - midpoint > -1965 || this.count === 0) {
             this.count++;
             this.x = this.assassin.x - midpoint;
-            this.parallax = this.assassin.x/1.8 - midpoint;
+            this.parallax = this.assassin.x/1.1 - midpoint;
             //TODO delete
             this.title = false;
         }

@@ -1,23 +1,24 @@
 class Land {
     constructor(game, x, y, type) {
-        Object.assign(this, {game, x, y});
+        Object.assign(this, {game, x, y, type});
         switch (type) {
-            case 0: //landblock
-                this.spritesheet = ASSET_MANAGER.getAsset("./sprites/landblock.png");
+            case 'R': //landblock right end piece
+                this.spritesheet = ASSET_MANAGER.getAsset("./sprites/landendR.png");
                 this.w = 930;
                 this.h = 345;
                 this.BB = new BoundingBox(this.x, this.y + 96, this.w, this.h - 120);
                 break;
-            case 1: //floating rock
-                this.spritesheet = ASSET_MANAGER.getAsset("./sprites/floating_land.png");
-                this.h = 353;
-                this.w = 377;
-                this.BB = new BoundingBox(this.x, this.y + 10, this.w, this.h);
+            case 'L': //landblock left end piece
+                this.spritesheet = ASSET_MANAGER.getAsset("./sprites/landendL.png");
+                this.w = 930;
+                this.h = 345;
+                this.BB = new BoundingBox(this.x, this.y + 96, this.w, this.h - 120);
                 break;
-            default: //sky land
-                this.spritesheet = ASSET_MANAGER.getAsset("./sprites/sky_land.png");
-                this.h = 145;
-                this.BB = new BoundingBox(this.x, this.y, this.w - 20, 60);
+            default: //center land block
+                this.spritesheet = ASSET_MANAGER.getAsset("./sprites/landblock.png");
+                this.w = 930;
+                this.h = 345;
+                this.BB = new BoundingBox(this.x, this.y + 96, this.w, this.h - 120);
                 break;
         }
     };
@@ -40,19 +41,23 @@ class CaveWall {
     constructor(game, x, y, scale, type) {
         Object.assign(this, {game, x, y, scale, type});
         this.w = 572;
-        this.h = 1200 * this.scale;
+
         switch (this.type) {
             case 0:
                 this.spritesheet = ASSET_MANAGER.getAsset("./sprites/cavewall_left.png");
+                this.h = 1053 * this.scale;
                 break;
             case 1:
                 this.spritesheet = ASSET_MANAGER.getAsset("./sprites/cavewall_right.png");
+                this.h = 1053 * this.scale;
                 break;
             case 2:
                 this.spritesheet = ASSET_MANAGER.getAsset("./sprites/cavewall_left2.png")
+                this.h = 1220 * this.scale;
                 break;
             default:
                 this.spritesheet = ASSET_MANAGER.getAsset("./sprites/cavewall_right2.png")
+                this.h = 1220 * this.scale;
                 break;
 
         }
@@ -109,3 +114,37 @@ class Ceiling {
 
     };
 }
+
+class FloatingLand {
+    constructor(game, x, y, type) {
+        Object.assign(this, {game, x, y, type});
+        this.spritesheet = ASSET_MANAGER.getAsset("./sprites/floating_land.png");
+        switch (type) {
+            case 0:
+                this.xLoc = 0;
+                this.yLoc = 0;
+                this.w = 189;
+                this.h = 174;
+                break;
+            default:
+                this.xLoc = 0;
+                this.yLoc = 192;
+                this.w = 265;
+                this.h = 110;
+                break;
+        }
+        this.BB = new BoundingBox(this.x, this.y + 10, this.w, this.h);
+    };
+
+    update() {
+    };
+
+    draw(ctx) {
+        ctx.drawImage(this.spritesheet, this.xLoc, this.yLoc, this.w, this.h, this.x - this.game.camera.x, this.y - this.game.camera.y, this.w, this.h);
+
+        if (PARAMS.DEBUG) {
+            ctx.strokeStyle = 'Red';
+            ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y - this.game.camera.y, this.BB.width, this.BB.height);
+        }
+    };
+};
