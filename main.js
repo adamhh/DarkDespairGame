@@ -29,6 +29,8 @@ ASSET_MANAGER.queueDownload("./sprites/arrow_left.png");
 ASSET_MANAGER.queueDownload("./sprites/start_menu.png");
 ASSET_MANAGER.queueDownload("./sprites/red_eye_bow.png");
 ASSET_MANAGER.queueDownload("./sprites/ingame_items.png");
+ASSET_MANAGER.queueDownload("./sprites/knight.png");
+
 
 ASSET_MANAGER.queueDownload("./audio/background_music.mp3");
 

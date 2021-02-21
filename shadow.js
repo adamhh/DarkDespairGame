@@ -16,6 +16,7 @@ class ShadowWarrior {
         this.velocity = { x: 0, y: 0 };
         this.width = 55;
         this.height = 90;
+        //this.locations = { 1 : { x: -1000, y: 800 }, 2: { x: -1000, y: 950 }, 3: { x: -5000, y: -5000 }};
 
         this.animations = [];
         this.disappearAnim = [];
@@ -28,7 +29,7 @@ class ShadowWarrior {
         this.dead = false;
         this.disappear = false;
         this.health = 100;
-        this.deathCount = 3;
+        this.deathCount = 0;
     }
 
     loadAnimations() {
@@ -76,7 +77,7 @@ class ShadowWarrior {
     updateBB() {
         this.lastBB = this.BB;
         this.BB = new BoundingBox(this.x, this.y, this.width, this.height);
-        this.sight = new BoundingBox(this.x - 650, this.y, 1225, this.height);
+        this.sight = new BoundingBox(this.x - 650, this.y - 100, 1225, this.height + 100);
         if (this.disappear) {
             this.ABB = new BoundingBox(0, 0, 0, 0);
         } else if (this.state === 2) {
@@ -100,12 +101,13 @@ class ShadowWarrior {
         this.BB = new BoundingBox(0,0,0,0);
         this.time1 = this.timer.getTime();
         this.velocity.x = 0;
-        this.deathCount > 0 ? this.disappear = true : this.die();
+        this.velocity.y = 0;
+        this.disappear = true;
         this.updateBB();
     }
 
     update() {
-        //console.log(this.health);
+        if (this.velocity.y > 50) this.vanish();
         if (PARAMS.START) {
             if (this.health < 1 && this.disappear === false) {
                 this.time1 = this.timer.getTime();
@@ -148,6 +150,7 @@ class ShadowWarrior {
                             }
                             moveTo = entity.BB.x;
                         }
+
                         if (entity.ABB && that.BB.collide(entity.ABB)) {
                             that.health-= 2.5;
                             //that.facing === 0 ? that.x -= 5 : that.x += 5;
@@ -209,13 +212,21 @@ class ShadowWarrior {
 
                 //if dead
             } else {
-                this.time2 = this.timer.getTime();
-                if (this.time2 - this.time1 > 750) {
-                    this.x = -5000;
-                    this.y = -5000;
-                    this.disappear = false;
-                    this.health = 100;
-                }
+                //this.time2 = this.timer.getTime();
+                // if (this.time2 - this.time1 > 750) {
+                //     this.deathCount++;
+                //     console.log(this.deathCount);
+                //     if (this.deathCount > 0 && this.deathCount < 4) {
+                //         this.x = this.locations[this.deathCount].x;
+                //         this.y = this.locations[this.deathCount].y;
+                //     } else {
+                //         this.x = this.locations["3"].x;
+                //         this.y = this.locations["3"].y;
+                //     }
+                //     this.disappear = false;
+                //     this.health = 100;
+                this.removeFromWorld = true;
+                //}
             }
         }
 
@@ -322,7 +333,7 @@ class RedEye {
     updateBB() {
         this.lastBB = this.BB;
         this.BB = new BoundingBox(this.x, this.y, this.width, this.height);
-        this.sight = new BoundingBox(this.x - 650, this.y, 1225, this.height);
+        this.sight = new BoundingBox(this.x - 650, this.y - 200, 1225, this.height + 200);
         if (this.disappear) {
             this.ABB = new BoundingBox(0, 0, 0, 0);
         }

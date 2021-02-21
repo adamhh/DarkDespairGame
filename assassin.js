@@ -36,6 +36,7 @@ class Assassin {
         this.jumpFlag = false;
         this.velocity = {x: 0, y: 0};
         this.fallAcc = 2000;
+        this.fallOffZone = 1800;
 
 
         //load animation
@@ -241,9 +242,8 @@ class Assassin {
                     this.ABB = new BoundingBox(this.x + xOff, this.y + 50, 40, 20);
                     break;
                 case 1:
-                    if (this.facing === 0) xOff = 60;
-                    else xOff = -68;
-                    this.ABB = new BoundingBox(this.x + xOff, this.y + 30, 50, 60);
+                    this.facing === 0 ? xOff = 40 : xOff = -60;
+                    this.ABB = new BoundingBox(this.x + xOff, this.y + 30, 85, 60);
                     break;
                 case 2:
                     //console.log(this.bowTime);
@@ -261,17 +261,12 @@ class Assassin {
 
     };
 
-    die() {
-        this.velocity.y = -640;
-        this.dead = true;
-
-    };
-
     update() {
+        console.log(this.x + " " + this.y);
         if (this.healthBar.isDead()) {
             this.dead = true;
         }
-        if (this.y > 1800) this.dead = true;
+        if (this.y > this.fallOffZone) this.dead = true;
         const TICK = this.game.clockTick;
         this.time2 = this.timer.getTime();
         this.attackEnd = this.timer.getTime();
@@ -296,10 +291,8 @@ class Assassin {
         const STOP_FALL = 1575;
         //in air deceleration
         const AIR_DEC = 2;
-        // if (this.y > 1000 ) this.dead = true;
 
         // console.log("(" + Math.floor(this.x) + "," + this.y + ")");
-       // console.log(this.velocity.y);
         if (PARAMS.START) {
             if (this.dead) {
                 this.velocity.y = 0;
@@ -308,7 +301,6 @@ class Assassin {
             } else {
                 // collision
                 var that = this;
-                let canFall = true;
                 this.game.entities.forEach(function (entity) {
                     if (entity.BB && that.BB.collide(entity.BB)) {
                         if (entity instanceof Arrow && !entity.isAssassin) {
@@ -320,9 +312,6 @@ class Assassin {
                                 that.velocity.y = 0;
                                 that.y = entity.BB.top - that.BB.height;
                                 that.updateBB();
-                                //that.velocity.y === 0;
-                                //if(that.state === 4) that.state = 0; // set state to idle
-
                             }
                         }
                         if (that.velocity.y < 0) { // jumping
@@ -352,6 +341,9 @@ class Assassin {
                                 entity.drank = true;
                             }
                         }
+                        if (entity instanceof RedEye) {
+                            that.velocity.x *=9;
+                        }
 
                     }
                     if (entity instanceof ShadowWarrior && entity.BB && that.BB.collide(entity.BB)) {
@@ -362,11 +354,6 @@ class Assassin {
                     }
                 });
 
-                // if (this.y > 3000) {
-                //     this.velocity.x = 0;
-                //     this.x = -1700;
-                //     this.y = 1800;
-                // }
                 let yVel = Math.abs(this.velocity.y);
                 //this physics will need a fine tuning;
                 let attackLength = 350;
@@ -563,9 +550,9 @@ class Assassin {
                 } else if (this.state === 3 && this.facing === 1) {
                     xOffset = -45;
                     yOffset = 0;
-                } else {
-                     // xOffset = 100;
-                    // yOffset = 0;
+                } else if (this.state === 4 && this.facing === 1){
+                     xOffset = -20;
+                    yOffset = -5;
                 }
             } else { //if bow
                 //console.log(this.facing + " " + this.state);

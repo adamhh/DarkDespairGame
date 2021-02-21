@@ -107,19 +107,21 @@ class SceneManager {
 
         //past first enemies
 
-        land = new Land(this.game, -1000, 950, 'R');
+        land = new Land(this.game, -900, 950, 'R');
         this.game.addEntity(land);
-        land = new Land(this.game, -1930, 950, 0);
+        land = new Land(this.game, -1830, 950, 0);
         this.game.addEntity(land);
-        land = new Land(this.game, -2860, 950, 'L');
+        land = new Land(this.game, -2760, 950, 'L');
         this.game.addEntity(land);
 
 
         let redEye = new RedEye(this.game, 901, 915);
         this.game.addEntity(redEye);
 
-        let shadowWarr = new ShadowWarrior(this.game, 1898, 800);
-        this.game.addEntity(shadowWarr);
+        let shadowWarrior = new ShadowWarrior(this.game, 1898, 800);
+        this.game.addEntity(shadowWarrior);
+        shadowWarrior = new ShadowWarrior(this.game, -1000, 800);
+        this.game.addEntity(shadowWarrior);
 
 
 
@@ -137,6 +139,8 @@ class SceneManager {
         let weaponIcon = new WeaponIcons(this.game);
         this.game.addEntity(weaponIcon);
 
+        let knight = new Knight(this.game, 800, -100);
+        this.game.addEntity(knight);
 
 
         this.assassin = new Assassin(this.game,0, 0, healthBar, weaponIcon);
@@ -154,7 +158,7 @@ class SceneManager {
     };
 
     updateAudio() {
-        let mute = document.getElementById("mute").checked;
+        let mute = !document.getElementById("mute").checked;
         let volume = document.getElementById("volume").value;
         ASSET_MANAGER.muteAudio(mute);
         ASSET_MANAGER.adjustVolume(volume);
@@ -166,7 +170,7 @@ class SceneManager {
     }
 
     update() {
-        PARAMS.DEBUG = false;
+        PARAMS.DEBUG = true;
         if (PARAMS.START === true) {
             if (this.startMenu) {
                 this.startMenu.exists = false;
