@@ -89,9 +89,7 @@ class ShadowWarrior {
             this.ABB = new BoundingBox(0, 0, 0, 0);
         }
     }
-    hit() {
-        this.health -= .5;
-    }
+
     die() {
         this.BB = new BoundingBox(0,0,0,0);
         this.velocity.x = 0
@@ -154,6 +152,13 @@ class ShadowWarrior {
                             that.health-= 2.5;
                             //that.facing === 0 ? that.x -= 5 : that.x += 5;
                             that.updateBB();
+                        }
+                    }
+                    if (entity instanceof Arrow) {
+                        if (entity.BB && that.BB.collide(entity.BB)) {
+                            if (entity.isAssassin === true) {
+                                that.health--;
+                            }
                         }
                     }
                 });
@@ -329,9 +334,6 @@ class RedEye {
             }
         }
     }
-    hit() {
-        this.health -= .5;
-    }
 
     vanish() {
         this.disappear = true;
@@ -381,7 +383,14 @@ class RedEye {
                         if (entity.ABB && that.BB.collide(entity.ABB)) {
                             that.health-= 10;
                         }
+
                     }
+                    if (entity instanceof Arrow && entity.BB && that.BB.collide(entity.BB)) {
+                        if (entity.isAssassin) {
+                            that.health--;
+                        }
+                    }
+
                 });
                 if (inSight) {
                     this.state = 1;
@@ -391,22 +400,6 @@ class RedEye {
                     this.bowTime = 0;
                     this.updateBB();
                 }
-                // let playerDiff = 0;
-                // if (this.facing === 1 && inSight) {
-                //     playerDiff = this.x - moveTo;
-                //     //console.log(playerDiff + " <-");
-                //     // if (playerDiff < 525 && playerDiff > 75) {
-                //     //     this.attacking = true;
-                //     // }
-                //
-                // } else if (inSight) {
-                //     playerDiff = moveTo - this.x;
-                //     //console.log(playerDiff + " ->");
-                //     // if (playerDiff < 550 && playerDiff > 110) {
-                //     //     this.attacking = true;
-                //     // }
-                // }
-
                 // update position
 
                 this.velocity.y += FALL_ACC;
