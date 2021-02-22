@@ -30,6 +30,8 @@ class Assassin {
         this.attackEnd = this.attackStart;
         this.attackWindow = false;
         this.bowTime = this.time2;
+        this.isKeyed = false;
+        this.teleport = false;
 
 
         //boolean flag for double jump
@@ -262,9 +264,9 @@ class Assassin {
     };
 
     update() {
-        console.log(this.x + " " + this.y);
         if (this.healthBar.isDead()) {
             this.dead = true;
+            this.game.camera.restartState();
         }
         if (this.y > this.fallOffZone) this.dead = true;
         const TICK = this.game.clockTick;
@@ -293,7 +295,7 @@ class Assassin {
         const AIR_DEC = 2;
 
         // console.log("(" + Math.floor(this.x) + "," + this.y + ")");
-        if (PARAMS.START) {
+        if (PARAMS.START && !PARAMS.PAUSE) {
             if (this.dead) {
                 this.velocity.y = 0;
                 this.velocity.x = 0;
@@ -304,7 +306,8 @@ class Assassin {
                 this.game.entities.forEach(function (entity) {
                     if (entity.BB && that.BB.collide(entity.BB)) {
                         if (entity instanceof Arrow && !entity.isAssassin) {
-                            that.healthBar.updateHealth(-.4);
+                            that.healthBar.updateHealth(-.4 - PARAMS.DIFFICULTY);
+                            that.velocity.x*=.95;
                         }
                         if (that.velocity.y > 0) { // falling
                             if ((entity instanceof Land || entity instanceof FloatingLand) // landing
@@ -341,8 +344,20 @@ class Assassin {
                                 entity.drank = true;
                             }
                         }
-                        if (entity instanceof RedEye) {
-                            that.velocity.x *=9;
+                        if (entity instanceof Soul) {
+                            if (entity.isKey) {
+                                PARAMS.SOULS += entity.value;
+                                entity.consumed = true;
+                                that.isKeyed = true;
+                            } else {
+                                PARAMS.SOULS += entity.value;
+                                entity.consumed = true;
+                            }
+                        }
+                        if (entity instanceof Portal) {
+                            if (that.isKeyed) {
+                                that.teleport = true;
+                            }
                         }
 
                     }
@@ -350,7 +365,12 @@ class Assassin {
                         that.velocity.x *= .9;
                     }
                     if (entity.ABB && entity instanceof ShadowWarrior && that.BB.collide(entity.ABB)) {
-                        if (that.state !== 3) that.healthBar.updateHealth(-.1);
+                        if (that.state !== 3) {
+                            that.healthBar.updateHealth(-.07 - PARAMS.DIFFICULTY);
+                        }
+                    }
+                    if (entity.ABB && entity instanceof Knight && that.BB.collide(entity.ABB)) {
+                        that.healthBar.updateHealth(-.04 - PARAMS.DIFFICULTY);
                     }
                 });
 
@@ -385,7 +405,6 @@ class Assassin {
                 }
                 this.updateBB();
                 if (!this.attacking) {
-                    //console.log("HEARD")
                     if (!this.game.B) {
                         this.jumpFlag = false;
                     }
@@ -492,6 +511,12 @@ class Assassin {
                 if (this.velocity.y <= -MAX_JUMP) this.velocity.y = -MAX_FALL;
 
                 this.x += this.velocity.x * TICK * PARAMS.SCALE;
+                if (this.teleport) {
+                    this.x = 0;
+                    this.y = 0;
+                    this.isKeyed = false;
+                    this.teleport = false;
+                }
 
                 this.updateBB(); //Update your bounding box every tick
             }

@@ -34,4 +34,12 @@ const PARAMS = {
     SCALE: .75,
     PLAY: false,
     START: false,
+    CONTROLS: false,
+    PAUSE: false,
+    VOLUME: 20,
+    DIFFICULTY: .03,
+    EASY : -.008,
+    NORMAL : .03,
+    HARD : .1,
+    SOULS: 0,
 };

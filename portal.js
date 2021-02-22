@@ -1,6 +1,6 @@
 class Portal {
-    constructor(game, x, y, n) {
-        Object.assign(this, {game, x, y, n});
+    constructor(game, x, y, n, assassin) {
+        Object.assign(this, {game, x, y, n, assassin});
         this.anim = false;
         switch(n){
             case 0:
@@ -29,7 +29,10 @@ class Portal {
 
     draw(ctx) {
         if (this.anim) {
-            this.animation.drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - this.game.camera.y, 1);
+            if (this.assassin.isKeyed) {
+                this.animation.drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - this.game.camera.y, 1);
+            }
+
         } else {
             ctx.drawImage(this.spritesheet, this.x - this.game.camera.x, this.y - this.game.camera.y, this.w, this.h);
         }

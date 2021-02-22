@@ -107,8 +107,10 @@ class Knight {
     }
 
     update() {
-        //console.log(this.health);
-        if (PARAMS.START) {
+        if (this.velocity.y > 50) {
+            this.vanish();
+        }
+        if (PARAMS.START && !PARAMS.PAUSE) {
             if (this.health < 1 && this.disappear === false) {
                 this.time1 = this.timer.getTime();
                 this.time2 = this.time1;
@@ -213,10 +215,9 @@ class Knight {
             } else {
                 this.time2 = this.timer.getTime();
                 if (this.time2 - this.time1 > 500) {
-                    this.x = -5000;
-                    this.y = -5000;
-                    this.disappear = false;
-                    this.health = 100;
+                    this.game.addEntity(new Soul(this.game, this.x + 20, this.y + 20, 50, false));
+                    this.removeFromWorld = true;
+
                 }
             }
         }

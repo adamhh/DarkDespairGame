@@ -3,18 +3,25 @@ class SceneManager {
         this.game = game;
         this.game.camera = this;
         this.parallax = 0;
-        this.parallaxY = 0;
         this.x = 0;
         this.y = 0;
-        this.health = 100;
-        this.lives = 3;
         this.count = 0;
         this.title = true;
         this.loadLevelOne();
     };
 
-    clearEntities() {
+    restartState() {
         this.game.entities = [];
+        PARAMS.PLAY = false;
+        PARAMS.START = false;
+        PARAMS.CONTROLS = false;
+        PARAMS.PAUSE = false;
+        PARAMS.SOULS = 0;
+        this.title = true;
+        this.count = 0;
+        this.loadLevelOne();
+
+
     };
 
     loadLevelOne() {
@@ -27,6 +34,11 @@ class SceneManager {
             ASSET_MANAGER.pauseBackgroundMusic();
             ASSET_MANAGER.playAsset("audio/background_music.mp3");
         }
+        //assets for assassin
+        let healthBar = new HealthBar(this.game);
+        let weaponIcon = new WeaponIcons(this.game);
+        this.assassin = new Assassin(this.game,0, 0, healthBar, weaponIcon);
+
 
         let bLayer = new BackgroundLayer(this.game, 0, 0, 1, 0);
         this.game.addEntity(bLayer);
@@ -106,6 +118,10 @@ class SceneManager {
         this.game.addEntity(floating);
 
         //past first enemies
+        let portal = new Portal(this.game, -1700, 875, 1, this.assassin);
+        this.game.addEntity(portal);
+        portal = new Portal(this.game, -1715, 875, 0, this.assassin);
+        this.game.addEntity(portal);
 
         land = new Land(this.game, -900, 950, 'R');
         this.game.addEntity(land);
@@ -118,13 +134,10 @@ class SceneManager {
         let redEye = new RedEye(this.game, 901, 915);
         this.game.addEntity(redEye);
 
-        let shadowWarrior = new ShadowWarrior(this.game, 1898, 800);
+        let shadowWarrior = new ShadowWarrior(this.game, 1898, 800 , false);
         this.game.addEntity(shadowWarrior);
-        shadowWarrior = new ShadowWarrior(this.game, -1000, 800);
+        shadowWarrior = new ShadowWarrior(this.game, -1000, 800, true);
         this.game.addEntity(shadowWarrior);
-
-
-
 
 
         // let floating = new Land(this.game, 250, 1000, 1);
@@ -132,25 +145,25 @@ class SceneManager {
         // floating = new Land(this.game, -350, 1150, 1);
         // this.game.addEntity(floating);
 
+        this.volumeSlider = new VolumeSlider();
+        this.game.addEntity(this.volumeSlider);
+        this.difficulty = new Difficulty();
+        this.game.addEntity(this.difficulty);
 
-        //assets for assassin
-        let healthBar = new HealthBar(this.game);
-        this.game.addEntity(healthBar);
-        let weaponIcon = new WeaponIcons(this.game);
-        this.game.addEntity(weaponIcon);
 
         let knight = new Knight(this.game, 800, -100);
         this.game.addEntity(knight);
 
-
-        this.assassin = new Assassin(this.game,0, 0, healthBar, weaponIcon);
+        //initialized up higher to use in portal and keep appropriate favor of drawing in front of each other
+        this.game.addEntity(weaponIcon);
+        this.game.addEntity(healthBar);
         this.game.addEntity(this.assassin);
 
         let healthPotion = new HealthPotion(this.game, 920, 955);
         this.game.addEntity(healthPotion);
 
 
-        this.startMenu = new StartMenu(this.game);
+        this.startMenu = new Menus(this.game);
         this.game.addEntity(this.startMenu);
 
 
@@ -158,24 +171,25 @@ class SceneManager {
     };
 
     updateAudio() {
-        let mute = !document.getElementById("mute").checked;
-        let volume = document.getElementById("volume").value;
+        let mute = PARAMS.VOLUME === 0;
+        let volume = PARAMS.VOLUME/100;
         ASSET_MANAGER.muteAudio(mute);
         ASSET_MANAGER.adjustVolume(volume);
         if (PARAMS.START) {
-            //console.log("HEARD");
-            ASSET_MANAGER.playAsset("./audio/background_music.mp3");
+            ASSET_MANAGER.playAsset("./audio/midnight_blade.mp3");
         }
 
     }
 
     update() {
-        PARAMS.DEBUG = true;
-        if (PARAMS.START === true) {
+        PARAMS.DEBUG = false;
+        if (PARAMS.CONTROLS === true) {
             if (this.startMenu) {
                 this.startMenu.exists = false;
+                this.startMenu.optionsExists = true;
             }
         }
+
         let midpoint = PARAMS.CANVAS_WIDTH/2 - 30;
         let midpointY = PARAMS.CANVAS_HEIGHT/2;
         this.updateAudio();
@@ -199,6 +213,17 @@ class SceneManager {
     };
 
     draw(ctx) {
+        if (PARAMS.PAUSE) {
+            //<input type ="checkbox" id="mute">Mute <input type="range" id="volume" min="0" max="1" value="0.2" step="0.05"> Volume
+            this.volumeSlider.draw(ctx)
+            this.difficulty.draw(ctx);
+
+        }
+        if (PARAMS.START) {
+            ctx.font = 18 + 'px "MedievalSharp"';
+            ctx.fillStyle = "White";
+            ctx.fillText("SOUL FORCE: " + PARAMS.SOULS, 5, 50);
+        }
         // ctx.font = 48 + 'px "MedievalSharp"';
         // ctx.fillStyle = "White";
         // ctx.fillText("TEST", 5, 40);

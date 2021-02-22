@@ -1,6 +1,6 @@
 class ShadowWarrior {
-    constructor(game, x, y) {
-        Object.assign(this, {game, x, y});
+    constructor(game, x, y, isKey) {
+        Object.assign(this, {game, x, y, isKey});
         //spritesheets
         this.setFields();
         this.updateBB();
@@ -108,7 +108,7 @@ class ShadowWarrior {
 
     update() {
         if (this.velocity.y > 50) this.vanish();
-        if (PARAMS.START) {
+        if (PARAMS.START && !PARAMS.PAUSE) {
             if (this.health < 1 && this.disappear === false) {
                 this.time1 = this.timer.getTime();
                 this.time2 = this.time1;
@@ -161,6 +161,7 @@ class ShadowWarrior {
                         if (entity.BB && that.BB.collide(entity.BB)) {
                             if (entity.isAssassin === true) {
                                 that.health--;
+                                that.velocity.x *= .7;
                             }
                         }
                     }
@@ -212,8 +213,8 @@ class ShadowWarrior {
 
                 //if dead
             } else {
-                //this.time2 = this.timer.getTime();
-                // if (this.time2 - this.time1 > 750) {
+                this.time2 = this.timer.getTime();
+                if (this.time2 - this.time1 > 750) {
                 //     this.deathCount++;
                 //     console.log(this.deathCount);
                 //     if (this.deathCount > 0 && this.deathCount < 4) {
@@ -225,8 +226,9 @@ class ShadowWarrior {
                 //     }
                 //     this.disappear = false;
                 //     this.health = 100;
+                this.game.addEntity(new Soul(this.game, this.x + 20, this.y + 30, 100, this.isKey))
                 this.removeFromWorld = true;
-                //}
+                }
             }
         }
 
@@ -300,7 +302,6 @@ class RedEye {
 
         this.bowTime = 0;
         this.disappear = false;
-        this.attacking = false;
         this.health = 100;
     }
 
@@ -353,8 +354,7 @@ class RedEye {
     }
 
     update() {
-        //console.log(this.health);
-        if (PARAMS.START) {
+        if (PARAMS.START && !PARAMS.PAUSE) {
             if (this.health < 1 && this.disappear === false) {
                 this.time1 = this.timer.getTime();
                 this.time2 = this.time1;
@@ -422,10 +422,8 @@ class RedEye {
             } else {
                 this.time2 = this.timer.getTime();
                 if (this.time2 - this.time1 > 600) {
-                    this.x = -5000;
-                    this.y = -5000;
-                    this.disappear = false;
-                    this.health = 100;
+                    this.game.addEntity(new Soul(this.game, this.x + 20, this.y + 30, 75, false));
+                    this.removeFromWorld = true;
                 }
             }
         }

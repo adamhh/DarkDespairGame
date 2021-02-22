@@ -30,14 +30,17 @@ ASSET_MANAGER.queueDownload("./sprites/start_menu.png");
 ASSET_MANAGER.queueDownload("./sprites/red_eye_bow.png");
 ASSET_MANAGER.queueDownload("./sprites/ingame_items.png");
 ASSET_MANAGER.queueDownload("./sprites/knight.png");
+ASSET_MANAGER.queueDownload("./sprites/intro_menu.png");
+ASSET_MANAGER.queueDownload("./sprites/pause_menu.png");
 
 
-ASSET_MANAGER.queueDownload("./audio/background_music.mp3");
+
+ASSET_MANAGER.queueDownload("./audio/midnight_blade.mp3");
 
 ASSET_MANAGER.downloadAll(function () {
 	var gameEngine = new GameEngine();
 
-	ASSET_MANAGER.autoRepeat("./audio/background_music.mp3");
+	ASSET_MANAGER.autoRepeat("./audio/midnight_blade.mp3");
 
 	var canvas = document.getElementById('gameWorld');
 	var ctx = canvas.getContext('2d');

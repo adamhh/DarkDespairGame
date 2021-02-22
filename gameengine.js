@@ -42,11 +42,29 @@ class GameEngine {
         if (PARAMS.START === false) {
             this.ctx.canvas.addEventListener("click", function (e) {
                 let click = getXandY(e);
-                console.log(click)
                 if (click.x > 344 && click.x < 602 && click.y > 344 && click.y < 494) {
                     PARAMS.PLAY = true;
                 }
+                if (PARAMS.CONTROLS && click) {
+                    PARAMS.CONTROLS = false;
+                    PARAMS.START = true;
+                }
+                if (PARAMS.PAUSE) {
+                    if (click.y > 465 && click.y < 480) {
+                        if (click.x > 335 && click.x < 385) {
+                            PARAMS.VOLUME = 0;
+                        } else if (click.x > 390 && click.x < 640) {
+                            PARAMS.VOLUME = Math.floor((click.x - 390) / 2.5);
+                        }
+
+                    } else if (click.y > 504 && click.y < 540) {
+                        if (click.x > 353 && click.x < 445) PARAMS.DIFFICULTY = PARAMS.EASY;
+                        if (click.x > 465 && click.x < 615) PARAMS.DIFFICULTY = PARAMS.NORMAL;
+                        if (click.x > 640 && click.x < 734) PARAMS.DIFFICULTY = PARAMS.HARD;
+                    }
+                }
             }, false);
+
         }
         var getXandY = function (e) {
             var x = e.clientX - that.ctx.canvas.getBoundingClientRect().left;
@@ -101,6 +119,8 @@ class GameEngine {
                     that.Two = false;
                     that.Three = true;
                     break;
+                case "Escape":
+                    PARAMS.PAUSE = !PARAMS.PAUSE;
             }
         }, false);
 
