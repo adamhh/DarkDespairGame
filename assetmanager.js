@@ -73,7 +73,7 @@ class AssetManager {
         }
     };
 
-
+//test
     getAsset(path) {
         return this.cache[path];
     };

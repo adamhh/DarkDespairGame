@@ -117,7 +117,7 @@ class SceneManager {
         floating = new FloatingLand(this.game, 350, 950, 1);
         this.game.addEntity(floating);
 
-        //past first enemies
+        //past first nonplayables
         let portal = new Portal(this.game, -1700, 875, 1, this.assassin);
         this.game.addEntity(portal);
         portal = new Portal(this.game, -1715, 875, 0, this.assassin);
