@@ -268,7 +268,7 @@ class Assassin {
             this.dead = true;
             this.game.camera.restartState();
         }
-        if (this.y > this.fallOffZone) this.dead = true;
+        if (this.y > this.fallOffZone) this.healthBar.updateHealth(-18);
         const TICK = this.game.clockTick;
         this.time2 = this.timer.getTime();
         this.attackEnd = this.timer.getTime();
