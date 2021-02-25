@@ -38,8 +38,8 @@ class SceneManager {
         //assets for assassin
         let healthBar = new HealthBar(this.game);
         let weaponIcon = new WeaponIcons(this.game);
-        this.assassin = new Assassin(this.game,2600, 4000, healthBar, weaponIcon);
-        // this.assassin = new Assassin(this.game,0, 0, healthBar, weaponIcon);
+        // this.assassin = new Assassin(this.game,2600, 4000, healthBar, weaponIcon);
+        this.assassin = new Assassin(this.game,0, 0, healthBar, weaponIcon);
 
 
         let bLayer = new BackgroundLayer(this.game, 0, 0, 1, 0);
