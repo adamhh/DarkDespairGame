@@ -8,6 +8,7 @@ class SceneManager {
         this.count = 0;
         this.title = true;
         this.loadLevelOne();
+        PARAMS.DEBUG = true;
     };
 
     restartState() {
@@ -37,7 +38,8 @@ class SceneManager {
         //assets for assassin
         let healthBar = new HealthBar(this.game);
         let weaponIcon = new WeaponIcons(this.game);
-        this.assassin = new Assassin(this.game,0, 0, healthBar, weaponIcon);
+        this.assassin = new Assassin(this.game,2600, 4000, healthBar, weaponIcon);
+        // this.assassin = new Assassin(this.game,0, 0, healthBar, weaponIcon);
 
 
         let bLayer = new BackgroundLayer(this.game, 0, 0, 1, 0);
@@ -60,6 +62,8 @@ class SceneManager {
         bVine = new BackgroundLayer(this.game, -1000, -200, 0, 3);
         this.game.addEntity(bVine);
         bVine = new BackgroundLayer(this.game, -1000, -200, 0, 4);
+        this.game.addEntity(bVine);
+        bVine = new BackgroundLayer(this.game, -1000, -200, 0, 5);
         this.game.addEntity(bVine);
         bVine = new BackgroundLayer(this.game, -1000, -200, 0, -1);
         this.game.addEntity(bVine);
@@ -130,14 +134,74 @@ class SceneManager {
         land = new Land(this.game, -2760, 950, 'L');
         this.game.addEntity(land);
 
+        //after portal
+        land = new Land(this.game, 2860, 4000, 'R');
+        this.game.addEntity(land);
+        land = new Land(this.game, 1930, 4000, 0);
+        this.game.addEntity(land);
+        land = new Land(this.game, 1000, 4000, 'L');
+        this.game.addEntity(land);
+
+        let landCube = new FloatingLand(this.game, 2700, 3970, 2);
+        this.game.addEntity(landCube);
+        landCube = new FloatingLand(this.game, 3100, 3800, 2);
+        this.game.addEntity(landCube);
+        landCube = new FloatingLand(this.game, 4250, 3900, 2);
+        this.game.addEntity(landCube);
+
+        landCube = new FloatingLand(this.game, 4500, 4100, 2);
+        this.game.addEntity(landCube);
+        landCube = new FloatingLand(this.game, 4800, 4100, 2);
+        this.game.addEntity(landCube);
+        landCube = new FloatingLand(this.game, 5100, 4100, 2);
+        this.game.addEntity(landCube);
+
+
+        landCube = new FloatingLand(this.game, 5330, 4100, 2);
+        this.game.addEntity(landCube);
+        landCube = new FloatingLand(this.game, 5730, 3700, 2);
+        this.game.addEntity(landCube);
+        landCube = new FloatingLand(this.game, 5330, 4240, 2);
+        this.game.addEntity(landCube);
+        landCube = new FloatingLand(this.game, 5730, 3840, 2);
+        this.game.addEntity(landCube);
+        landCube = new FloatingLand(this.game, 5730, 3980, 2);
+        this.game.addEntity(landCube);
+
+        floating = new FloatingLand(this.game, 3650, 3800, 1);
+        this.game.addEntity(floating);
+
+        land = new Land(this.game, 4500, 4600, 'L');
+        this.game.addEntity(land);
+        land = new Land(this.game, 5430, 4600, 0);
+        this.game.addEntity(land);
+        land = new Land(this.game, 6360, 4600, 'R');
+        this.game.addEntity(land);
 
         let redEye = new RedEye(this.game, 901, 915);
         this.game.addEntity(redEye);
+        redEye = new RedEye(this.game, 3690, 3700);
+        this.game.addEntity(redEye);
+
+        redEye = new RedEye(this.game, 5100, 4580);
+        this.game.addEntity(redEye);
+        // redEye = new RedEye(this.game, 5800, 4580);
+        // this.game.addEntity(redEye);
 
         let shadowWarrior = new ShadowWarrior(this.game, 1898, 800 , false);
         this.game.addEntity(shadowWarrior);
         shadowWarrior = new ShadowWarrior(this.game, -1000, 800, true);
         this.game.addEntity(shadowWarrior);
+
+        let knight = new Knight(this.game, 800, -100, 160, 1200);
+        this.game.addEntity(knight);
+        knight = new Knight(this.game, 4300, 3750, 100, 100);
+        this.game.addEntity(knight);
+
+        knight = new Knight(this.game, 5200, 4550, 100, 1200);
+        this.game.addEntity(knight);
+        knight = new Knight(this.game, 5700, 4550, 100, 1200);
+        this.game.addEntity(knight);
 
 
         // let floating = new Land(this.game, 250, 1000, 1);
@@ -151,8 +215,7 @@ class SceneManager {
         this.game.addEntity(this.difficulty);
 
 
-        let knight = new Knight(this.game, 800, -100);
-        this.game.addEntity(knight);
+
 
         //initialized up higher to use in portal and keep appropriate favor of drawing in front of each other
         this.game.addEntity(weaponIcon);
@@ -161,6 +224,10 @@ class SceneManager {
 
         let healthPotion = new HealthPotion(this.game, 920, 955);
         this.game.addEntity(healthPotion);
+
+        healthPotion = new HealthPotion(this.game, 5400, 4000);
+        this.game.addEntity(healthPotion);
+
 
 
         this.startMenu = new Menus(this.game);
@@ -182,7 +249,6 @@ class SceneManager {
     }
 
     update() {
-        PARAMS.DEBUG = false;
         if (PARAMS.CONTROLS === true) {
             if (this.startMenu) {
                 this.startMenu.exists = false;

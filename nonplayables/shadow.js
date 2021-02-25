@@ -334,7 +334,7 @@ class RedEye {
     updateBB() {
         this.lastBB = this.BB;
         this.BB = new BoundingBox(this.x, this.y, this.width, this.height);
-        this.sight = new BoundingBox(this.x - 650, this.y - 200, 1225, this.height + 200);
+        this.sight = new BoundingBox(this.x - 900, this.y - 200, 1910, this.height + 200);
         if (this.disappear) {
             this.ABB = new BoundingBox(0, 0, 0, 0);
         }

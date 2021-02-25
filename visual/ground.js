@@ -121,18 +121,21 @@ class FloatingLand {
         this.spritesheet = ASSET_MANAGER.getAsset("./sprites/backgroundassets/floating_land.png");
         switch (type) {
             case 0:
-                this.xLoc = 0;
                 this.yLoc = 0;
                 this.w = 189;
                 this.h = 174;
                 break;
-            default:
-                this.xLoc = 0;
+            case 1:
                 this.yLoc = 192;
                 this.w = 265;
                 this.h = 110;
                 break;
+            default:
+                this.yLoc = 313;
+                this.w = 225;
+                this.h = 140;
         }
+        this.xLoc = 0;
         this.BB = new BoundingBox(this.x, this.y + 10, this.w, this.h);
     };
 

@@ -38,7 +38,10 @@ class Assassin {
         this.jumpFlag = false;
         this.velocity = {x: 0, y: 0};
         this.fallAcc = 2000;
-        this.fallOffZone = 1800;
+        this.fallOffCount = 1;
+        this.portalCount = 0;
+        this.yFallBounds = [1800, 4900];
+        this.portalLocations = [{x: 2000, y: 1990}, {x: 0, y: 0}];
 
 
         //load animation
@@ -228,8 +231,6 @@ class Assassin {
             .07, 35.05, true, false);
 
 
-
-
     };
 
     updateBB() {
@@ -268,7 +269,7 @@ class Assassin {
             this.dead = true;
             this.game.camera.restartState();
         }
-        if (this.y > this.fallOffZone) this.healthBar.updateHealth(-18);
+        if (this.y > this.yFallBounds[this.fallOffCount]) this.healthBar.updateHealth(-18);
         const TICK = this.game.clockTick;
         this.time2 = this.timer.getTime();
         this.attackEnd = this.timer.getTime();
@@ -307,25 +308,25 @@ class Assassin {
                     if (entity.BB && that.BB.collide(entity.BB)) {
                         if (entity instanceof Arrow && !entity.isAssassin) {
                             that.healthBar.updateHealth(-.4 - PARAMS.DIFFICULTY);
-                            that.velocity.x*=.95;
-                        }
-                        if (that.velocity.y > 0) { // falling
+                            that.velocity.x *= .95;
+                        } else if (that.velocity.y > 0) { // falling
                             if ((entity instanceof Land || entity instanceof FloatingLand) // landing
                                 && (that.lastBB.bottom) <= entity.BB.top) { // was above last tick
                                 that.velocity.y = 0;
                                 that.y = entity.BB.top - that.BB.height;
                                 that.updateBB();
                             }
-                        }
-                        if (that.velocity.y < 0) { // jumping
-                            if ((entity instanceof CaveWall) // hit ceiling
-                                && (that.lastBB.top) >= entity.BB.bottom // was below last tick
-                                && that.BB.collide(entity.BB.left) && that.BB.collide(entity.BB.right)) { // collide with the center point of the brick
-                                that.velocity.y = 0;
+                        } else if (that.velocity.y < 0) { // jumping
+                            if (entity instanceof FloatingLand) {
+                                if (that.lastBB.top > entity.BB.bottom) {
+                                    that.velocity.y *= -.2;
+                                    that.y = that.lastBB.y;
+                                    that.updateBB();
+                                }
                             }
                         }
                         if ((entity instanceof CaveWall || entity instanceof Land || entity instanceof FloatingLand)
-                            && entity.BB.top - that.BB.bottom < -100) {
+                            && entity.BB.top - that.BB.bottom < -5) {
                             if (that.BB.left < entity.BB.left) {
                                 that.x = entity.BB.left - (that.BB.width * 2) + 20;
                                 if (that.velocity.x > 0) {
@@ -336,15 +337,14 @@ class Assassin {
                                     that.velocity.x *= -.2;
                                 }
                                 that.x = that.lastBB.left - 5;
+                                that.updateBB();
                             }
-                        }
-                        if (entity instanceof HealthPotion) {
+                        } else if (entity instanceof HealthPotion) {
                             if (!that.healthBar.isFull()) {
                                 that.healthBar.updateHealth(10);
                                 entity.drank = true;
                             }
-                        }
-                        if (entity instanceof Soul) {
+                        } else if (entity instanceof Soul) {
                             if (entity.isKey) {
                                 PARAMS.SOULS += entity.value;
                                 entity.consumed = true;
@@ -353,8 +353,7 @@ class Assassin {
                                 PARAMS.SOULS += entity.value;
                                 entity.consumed = true;
                             }
-                        }
-                        if (entity instanceof Portal) {
+                        } else if (entity instanceof Portal) {
                             if (that.isKeyed) {
                                 that.teleport = true;
                             }
@@ -363,13 +362,11 @@ class Assassin {
                     }
                     if (entity instanceof ShadowWarrior && entity.BB && that.BB.collide(entity.BB)) {
                         that.velocity.x *= .9;
-                    }
-                    if (entity.ABB && entity instanceof ShadowWarrior && that.BB.collide(entity.ABB)) {
+                    } else if (entity.ABB && entity instanceof ShadowWarrior && that.BB.collide(entity.ABB)) {
                         if (that.state !== 3) {
                             that.healthBar.updateHealth(-.07 - PARAMS.DIFFICULTY);
                         }
-                    }
-                    if (entity.ABB && entity instanceof Knight && that.BB.collide(entity.ABB)) {
+                    } else if (entity.ABB && entity instanceof Knight && that.BB.collide(entity.ABB)) {
                         that.healthBar.updateHealth(-.04 - PARAMS.DIFFICULTY);
                     }
                 });
@@ -512,8 +509,11 @@ class Assassin {
 
                 this.x += this.velocity.x * TICK * PARAMS.SCALE;
                 if (this.teleport) {
-                    this.x = 0;
-                    this.y = 0;
+                    this.x = this.portalLocations[0].x;
+                    this.y = this.portalLocations[0].y;
+                    console.log(this.x + " " + this.y);
+                    this.portalCount++;
+                    this.yFallBounds++;
                     this.isKeyed = false;
                     this.teleport = false;
                 }
@@ -550,10 +550,10 @@ class Assassin {
             }
             if (this.facing === 0) {
                 this.deadAnimR[this.weapon].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x + xOffset,
-                                                      this.y - this.game.camera.y + yOffset, 1);
+                    this.y - this.game.camera.y + yOffset, 1);
             } else {
                 this.deadAnimL[this.weapon].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x + xOffset,
-                                                      this.y - this.game.camera.y + yOffset, 1);
+                    this.y - this.game.camera.y + yOffset, 1);
             }
         } else {
             if (this.weapon === 0) {
@@ -562,7 +562,7 @@ class Assassin {
             } else if (this.weapon === 1) {
                 if (this.state === 0) {
                     if (this.facing === 1) yOffset = 1;
-                    this.facing === 0 ? xOffset = 0: xOffset = -27;
+                    this.facing === 0 ? xOffset = 0 : xOffset = -27;
                 } else if (this.state === 1 && this.facing === 1) {
                     xOffset = -15;
                     yOffset = 0;
@@ -575,8 +575,8 @@ class Assassin {
                 } else if (this.state === 3 && this.facing === 1) {
                     xOffset = -45;
                     yOffset = 0;
-                } else if (this.state === 4 && this.facing === 1){
-                     xOffset = -20;
+                } else if (this.state === 4 && this.facing === 1) {
+                    xOffset = -20;
                     yOffset = -5;
                 }
             } else { //if bow

@@ -1,6 +1,6 @@
 class Knight {
-    constructor(game, x, y) {
-        Object.assign(this, {game, x, y});
+    constructor(game, x, y, sh, sw) {
+        Object.assign(this, {game, x, y, sh, sw});
         //spritesheets
         this.setFields();
         this.updateBB();
@@ -78,7 +78,7 @@ class Knight {
     updateBB() {
         this.lastBB = this.BB;
         this.BB = new BoundingBox(this.x, this.y, this.width, this.height);
-        this.sight = new BoundingBox(this.x - 650, this.y - 100, 1225, this.height + 100);
+        this.sight = new BoundingBox(this.x - this.sw/2, this.y, 148 + this.sw, this.sh);
         if (this.disappear) {
             this.ABB = new BoundingBox(0, 0, 0, 0);
         } else if (this.state === 2) {
