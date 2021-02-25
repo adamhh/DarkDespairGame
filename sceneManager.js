@@ -8,7 +8,7 @@ class SceneManager {
         this.count = 0;
         this.title = true;
         this.loadLevelOne();
-        PARAMS.DEBUG = true;
+        PARAMS.DEBUG = false;
     };
 
     restartState() {
