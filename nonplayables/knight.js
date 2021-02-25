@@ -154,7 +154,12 @@ class Knight {
                         }
                         if (entity.ABB && that.BB.collide(entity.ABB)) {
                             that.health-= 2.5;
-                            //that.facing === 0 ? that.x -= 5 : that.x += 5;
+                            if (that.velocity.x > 0 || that.velocity.x < 0) {
+                                that.velocity.x *= .7;
+                            } else {
+                                that.facing === 0 ? that.x -= 3 : that.x += 3;
+                            }
+
                             that.updateBB();
                         }
                     }
@@ -162,6 +167,7 @@ class Knight {
                         if (entity.BB && that.BB.collide(entity.BB)) {
                             if (entity.isAssassin === true) {
                                 that.health--;
+                                that.velocity.x *= .7;
                             }
                         }
                     }

@@ -586,6 +586,8 @@ class Assassin {
                     this.facing === 0 ? xOffset = 0 : xOffset = 0;
                 } else if (this.state === 2) {
                     this.facing === 0 ? xOffset = 0 : xOffset = -7;
+                } else if (this.state === 4) {
+                    yOffset = 5;
                 }
 
             }

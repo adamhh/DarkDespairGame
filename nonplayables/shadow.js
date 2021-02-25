@@ -161,7 +161,7 @@ class ShadowWarrior {
                         if (entity.BB && that.BB.collide(entity.BB)) {
                             if (entity.isAssassin === true) {
                                 that.health--;
-                                that.velocity.x *= .7;
+                                that.velocity.x *= .6;
                             }
                         }
                     }
