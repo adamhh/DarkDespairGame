@@ -3,9 +3,9 @@ class Arrow {
         Object.assign(this, { game, x, y, isLeft, isAssassin});
         //console.log(this.left)
         if (this.isLeft) {
-            this.spritesheet = ASSET_MANAGER.getAsset('./sprites/arrow_left.png');
+            this.spritesheet = ASSET_MANAGER.getAsset('./sprites/gameassets/arrow_left.png');
         } else {
-            this.spritesheet = ASSET_MANAGER.getAsset('./sprites/arrow_right.png');
+            this.spritesheet = ASSET_MANAGER.getAsset('./sprites/gameassets/arrow_right.png');
         }
 
         this.animations = new Animator(this.spritesheet, 0, 0, 355, 42, 1, 1, 0, false, true);
