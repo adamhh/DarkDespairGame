@@ -8,14 +8,15 @@ class SceneManager {
         this.count = 0;
         this.title = true;
         this.loadLevelOne();
-        PARAMS.DEBUG = false;
+        PARAMS.DEBUG = true;
     };
-
+    //add checkpoint
     restartState() {
         this.game.entities = [];
         PARAMS.PLAY = false;
         PARAMS.START = false;
         PARAMS.CONTROLS = false;
+        PARAMS.GAMEOVER = false;
         PARAMS.PAUSE = false;
         PARAMS.SOULS = 0;
         this.title = true;
@@ -39,7 +40,8 @@ class SceneManager {
         let healthBar = new HealthBar(this.game);
         let weaponIcon = new WeaponIcons(this.game);
         // this.assassin = new Assassin(this.game,2600, 4000, healthBar, weaponIcon);
-        this.assassin = new Assassin(this.game,0, 0, healthBar, weaponIcon);
+        // this.assassin = new Assassin(this.game,0, 0, healthBar, weaponIcon);
+        this.assassin = new Assassin(this.game,2200, 600, healthBar, weaponIcon);
 
 
         let bLayer = new BackgroundLayer(this.game, 0, 0, 1, 0);
@@ -256,6 +258,19 @@ class SceneManager {
             }
         }
 
+        if (PARAMS.GAMEOVER) {
+            ASSET_MANAGER.pauseBackgroundMusic();
+        }
+        if (PARAMS.STARTOVER) {
+            PARAMS.STARTOVER = false;
+            this.restartState();
+        }
+        //TODO CHANGE TO UNIQUE BEHAVIOR
+        if (PARAMS.RESPAWN) {
+            PARAMS.RESPAWN = false;
+            this.restartState();
+        }
+
         let midpoint = PARAMS.CANVAS_WIDTH/2 - 30;
         let midpointY = PARAMS.CANVAS_HEIGHT/2;
         this.updateAudio();
@@ -269,33 +284,21 @@ class SceneManager {
         }
 
         this.y = this.assassin.y - midpointY;
-        this.parallaxY = this.assassin.y/1.1 - midpointY;
 
 
-        // if (this.knight.dead && this.knight.y > PARAMS.BLOCKWIDTH * 16) {
-        //     this.clearEntities();
-        //     this.loadLevelOne();
-        // };
     };
 
     draw(ctx) {
         if (PARAMS.PAUSE) {
-            //<input type ="checkbox" id="mute">Mute <input type="range" id="volume" min="0" max="1" value="0.2" step="0.05"> Volume
             this.volumeSlider.draw(ctx)
             this.difficulty.draw(ctx);
 
         }
-        if (PARAMS.START) {
+        if (PARAMS.START && !PARAMS.GAMEOVER) {
             ctx.font = 18 + 'px "MedievalSharp"';
             ctx.fillStyle = "White";
             ctx.fillText("SOUL FORCE: " + PARAMS.SOULS, 5, 50);
         }
-        // ctx.font = 48 + 'px "MedievalSharp"';
-        // ctx.fillStyle = "White";
-        // ctx.fillText("TEST", 5, 40);
-        // ctx.fillText(("TODO"), .2 * PARAMS.BLOCKWIDTH, 1.5 * PARAMS.BLOCKWIDTH);
-        // ctx.fillText("HEALTH", 3 * PARAMS.BLOCKWIDTH, 1 * PARAMS.BLOCKWIDTH);
-        // ctx.fillText("TODO", 3 * PARAMS.BLOCKWIDTH, 1.5 * PARAMS.BLOCKWIDTH);
 
 
     };

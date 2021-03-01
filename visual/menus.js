@@ -4,6 +4,7 @@ class Menus {
         this.spritesheet = ASSET_MANAGER.getAsset("./sprites/menus/start_menu.png");
         this.controls = ASSET_MANAGER.getAsset("./sprites/menus/intro_menu.png");
         this.pause = ASSET_MANAGER.getAsset("./sprites/menus/pause_menu.png");
+        this.gameOver = ASSET_MANAGER.getAsset("./sprites/menus/gameover_menu.png")
         this.exists = true;
         this.playCounter = 0;
         this.startCounter = 0;
@@ -40,6 +41,9 @@ class Menus {
         if (PARAMS.PAUSE) {
             ctx.drawImage(this.pause, 0, 0, 950, 750);
         }
+        if (PARAMS.GAMEOVER) {
+            ctx.drawImage(this.gameOver, 0, 0, 950, 750);
+        }
 
 
     };
@@ -50,7 +54,6 @@ class VolumeSlider {
     constructor(game) {
         Object.assign(this, { game });
         this.exists = true;
-        this.volume = 10
     }
 
     update() {

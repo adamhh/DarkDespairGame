@@ -34,6 +34,7 @@ ASSET_MANAGER.queueDownload("./sprites/gameassets/ingame_items.png");
 ASSET_MANAGER.queueDownload("./sprites/menus/start_menu.png");
 ASSET_MANAGER.queueDownload("./sprites/menus/intro_menu.png");
 ASSET_MANAGER.queueDownload("./sprites/menus/pause_menu.png");
+ASSET_MANAGER.queueDownload("./sprites/menus/gameover_menu.png");
 ASSET_MANAGER.queueDownload("./sprites/menus/weaponicons.png");
 
 

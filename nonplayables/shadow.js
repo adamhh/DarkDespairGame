@@ -15,7 +15,7 @@ class ShadowWarrior {
 
         this.velocity = { x: 0, y: 0 };
         this.width = 55;
-        this.height = 90;
+        this.height = 45;
         //this.locations = { 1 : { x: -1000, y: 800 }, 2: { x: -1000, y: 950 }, 3: { x: -5000, y: -5000 }};
 
         this.animations = [];
@@ -29,7 +29,6 @@ class ShadowWarrior {
         this.dead = false;
         this.disappear = false;
         this.health = 100;
-        this.deathCount = 0;
     }
 
     loadAnimations() {
@@ -77,14 +76,14 @@ class ShadowWarrior {
     updateBB() {
         this.lastBB = this.BB;
         this.BB = new BoundingBox(this.x, this.y, this.width, this.height);
-        this.sight = new BoundingBox(this.x - 650, this.y - 100, 1225, this.height + 100);
+        this.sight = new BoundingBox(this.x - 650, this.y, 1225, this.height);
         if (this.disappear) {
             this.ABB = new BoundingBox(0, 0, 0, 0);
         } else if (this.state === 2) {
             if (this.facing === 0) {
-                this.ABB = new BoundingBox(this.x + 60, this.y + 55, 75, 15); //facing 0
+                this.ABB = new BoundingBox(this.x + 60, this.y, 75, 15); //facing 0
             } else {
-                this.ABB = new BoundingBox(this.x - 45, this.y + 55, 75, 15);
+                this.ABB = new BoundingBox(this.x - 45, this.y, 75, 15);
             }
         } else {
             this.ABB = new BoundingBox(0, 0, 0, 0);
@@ -250,6 +249,7 @@ class ShadowWarrior {
                 yOffset = -45;
                 this.facing === 0 ? xOffset = 0 : xOffset = -60;
             }
+            yOffset -= 45;
             this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x + xOffset,
                 this.y - this.game.camera.y + yOffset, 1);
         }

@@ -121,6 +121,12 @@ class GameEngine {
                     break;
                 case "Escape":
                     PARAMS.PAUSE = !PARAMS.PAUSE;
+                    break;
+                case "KeyQ":
+                    if (PARAMS.GAMEOVER) PARAMS.STARTOVER = true;
+                    break;
+                case "KeyR":
+                    if (PARAMS.GAMEOVER) PARAMS.RESPAWN = true;
             }
         }, false);
 

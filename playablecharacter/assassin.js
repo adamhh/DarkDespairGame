@@ -32,6 +32,7 @@ class Assassin {
         this.bowTime = this.time2;
         this.isKeyed = false;
         this.teleport = false;
+        this.deadCount = 0;
 
 
         //boolean flag for double jump
@@ -265,15 +266,20 @@ class Assassin {
     };
 
     update() {
-        if (this.healthBar.isDead()) {
-            this.dead = true;
-            this.game.camera.restartState();
-        }
+
         if (this.y > this.yFallBounds[this.fallOffCount]) this.healthBar.updateHealth(-18);
         const TICK = this.game.clockTick;
         this.time2 = this.timer.getTime();
         this.attackEnd = this.timer.getTime();
         this.bowTime += TICK;
+        if (this.healthBar.isDead()) {
+            this.dead = true;
+            this.deadCount+= this.game.clockTick;
+            if (this.deadCount > 1.5) {
+                PARAMS.GAMEOVER = true;
+            }
+
+        }
 
         //-------------adjust constants to alter physics-----------
         //run
