@@ -8,7 +8,7 @@ class SceneManager {
         this.count = 0;
         this.title = true;
         this.loadLevelOne();
-        PARAMS.DEBUG = true;
+        PARAMS.DEBUG = false;
     };
     //add checkpoint
     restartState() {
@@ -19,12 +19,23 @@ class SceneManager {
         PARAMS.GAMEOVER = false;
         PARAMS.PAUSE = false;
         PARAMS.SOULS = 0;
+        PARAMS.XSPAWN = 0;
+        PARAMS.YSPAWN = 0;
         this.title = true;
         this.count = 0;
         this.loadLevelOne();
-
-
     };
+
+    respawn() {
+        this.game.entities = [];
+        PARAMS.CONTROLS = true;
+        PARAMS.GAMEOVER = false;
+        PARAMS.RESPAWN = false;
+        this.title = true;
+        this.count = 0;
+        this.loadLevelOne();
+    };
+
 
     loadLevelOne() {
         this.x = 0;
@@ -39,9 +50,9 @@ class SceneManager {
         //assets for assassin
         let healthBar = new HealthBar(this.game);
         let weaponIcon = new WeaponIcons(this.game);
-        // this.assassin = new Assassin(this.game,2600, 4000, healthBar, weaponIcon);
+        // this.assassin = new Assassin(this.game,-2000, 950, healthBar, weaponIcon);
         // this.assassin = new Assassin(this.game,0, 0, healthBar, weaponIcon);
-        this.assassin = new Assassin(this.game,2200, 600, healthBar, weaponIcon);
+        this.assassin = new Assassin(this.game, PARAMS.XSPAWN, PARAMS.YSPAWN, healthBar, weaponIcon);
 
 
         let bLayer = new BackgroundLayer(this.game, 0, 0, 1, 0);
@@ -267,8 +278,8 @@ class SceneManager {
         }
         //TODO CHANGE TO UNIQUE BEHAVIOR
         if (PARAMS.RESPAWN) {
-            PARAMS.RESPAWN = false;
-            this.restartState();
+            //PARAMS.RESPAWN = false;
+            this.respawn();
         }
 
         let midpoint = PARAMS.CANVAS_WIDTH/2 - 30;

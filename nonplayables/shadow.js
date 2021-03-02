@@ -225,7 +225,7 @@ class ShadowWarrior {
                 //     }
                 //     this.disappear = false;
                 //     this.health = 100;
-                this.game.addEntity(new Soul(this.game, this.x + 20, this.y + 30, 100, this.isKey))
+                this.game.addEntity(new Soul(this.game, this.x + 20, this.y - 15, 100, this.isKey))
                 this.removeFromWorld = true;
                 }
             }
@@ -238,12 +238,14 @@ class ShadowWarrior {
         let xOffset = 0;
         if (this.disappear) {
             yOffset = -22;
+            yOffset -= 45;
             this.facing === 0 ? xOffset = -10 : xOffset = -18;
             this.disappearAnim[this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x + xOffset,
                 this.y - this.game.camera.y + yOffset, 1);
         } else if (this.dead) {
+            yOffset -= 45;
             this.deadAnim[this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x,
-                this.y - this.game.camera.y, 1);
+                this.y - this.game.camera.y + yOffset, 1);
         } else {
             if (this.state === 2) {
                 yOffset = -45;
