@@ -28,6 +28,7 @@ class Assassin {
         this.attacking = false;
         this.attackStart = this.timer.getTime();
         this.attackEnd = this.attackStart;
+        this.hitFlag = true;
         this.attackWindow = false;
         this.bowTime = this.time2;
         this.isKeyed = false;
@@ -146,11 +147,11 @@ class Assassin {
         //attacking animation
         // facing right
         this.animations[2][0][1] = new Animator(this.spritesheetSword, 18, 615, 155, 105, 10,
-            0.05, 35.05, false, true);
+            0.045, 35.05, false, true);
 
         // facing left
         this.animations[2][1][1] = new Animator(this.spritesheetSword, 0, 722, 155, 105, 10,
-            0.05, 35.05, true, true);
+            0.045, 35.05, true, true);
 
         //jumping
         // facing right
@@ -251,6 +252,7 @@ class Assassin {
                     this.ABB = new BoundingBox(this.x + xOff, this.y + 50, 40, 20);
                     break;
                 case 1:
+                    ASSET_MANAGER.playAsset("./audio/sword_swing.mp3");
                     this.facing === 0 ? xOff = 40 : xOff = -60;
                     this.ABB = new BoundingBox(this.x + xOff, this.y + 30, 85, 60);
                     break;
@@ -375,11 +377,12 @@ class Assassin {
                         that.velocity.x *= .9;
                     } else if (entity.ABB && entity instanceof ShadowWarrior && that.BB.collide(entity.ABB)) {
                         if (that.state !== 3) {
-                            that.healthBar.updateHealth(-.07 - PARAMS.DIFFICULTY);
+                            that.healthBar.updateHealth(-PARAMS.DIFFICULTY);
                         }
                     } else if (entity.ABB && entity instanceof Knight && that.BB.collide(entity.ABB)) {
-                        that.healthBar.updateHealth(-.04 - PARAMS.DIFFICULTY);
+                        that.healthBar.updateHealth(-PARAMS.DIFFICULTY);
                     }
+
                 });
 
                 let yVel = Math.abs(this.velocity.y);
@@ -392,7 +395,7 @@ class Assassin {
                 }
                 if (this.game.Two) {
                     this.weapon = 1;
-                    attackLength = 400;
+                    attackLength = 490;
                     this.weaponIcon.updateWeapon(1);
                 }
                 if (this.game.Three) {
@@ -409,6 +412,7 @@ class Assassin {
                     this.state === 2) {
                     this.attackWindow = true;
                 } else {
+
                     this.attackWindow = false;
                 }
                 this.updateBB();
@@ -431,6 +435,7 @@ class Assassin {
                         this.bowTime = 0;
                         this.attackStart = this.timer.getTime();
                     }
+
                     if (this.game.B) {
                         this.state = 3;
                         if (this.velocity.y > 500) this.state = 0;

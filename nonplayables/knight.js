@@ -25,6 +25,9 @@ class Knight {
         this.time1 = this.timer.getTime();
         this.time2 = this.time1;
 
+        this.attackTick = 0;
+        this.attackWindow = false;
+
         this.dead = false;
         this.disappear = false;
         this.health = 60;
@@ -81,7 +84,7 @@ class Knight {
         this.sight = new BoundingBox(this.x - this.sw/2, this.y, 148 + this.sw, this.sh);
         if (this.disappear) {
             this.ABB = new BoundingBox(0, 0, 0, 0);
-        } else if (this.state === 2) {
+        } else if (this.state === 2 && this.attackWindow) {
             if (this.facing === 0) {
                 this.ABB = new BoundingBox(this.x + 60, this.y + 55, 75, 15); //facing 0
             } else {
@@ -116,11 +119,15 @@ class Knight {
                 this.time2 = this.time1;
                 this.vanish();
             }
+
             const TICK = this.game.clockTick;
+            this.attackTick += TICK;
             const MAX_RUN = 150;
             const RUN_ACC = 20;
             const MAX_FALL = 100;
             const FALL_ACC = .5;
+            const ATTACK_WINDOW = .5;
+
             let moveTo = 0;
             let that = this;
             let inSight = false;
@@ -140,7 +147,7 @@ class Knight {
                     }
 
                     if (entity instanceof Assassin) {
-                        if (entity.BB && that.sight.collide(entity.BB)) { //if dragon sees assassin
+                        if (entity.BB && that.sight.collide(entity.BB)) {
                             inSight = true;
                             let flipX = 0;
                             that.facing === 1 ? flipX = 22 : flipX = 20;
@@ -154,6 +161,7 @@ class Knight {
                         }
                         if (entity.ABB && that.BB.collide(entity.ABB)) {
                             that.health-= 2.5;
+                            ASSET_MANAGER.playAsset("./audio/sword_hit_metal2.mp3")
                             if (that.velocity.x > 0 || that.velocity.x < 0) {
                                 that.velocity.x *= .7;
                             } else {
@@ -204,9 +212,15 @@ class Knight {
                     this.state = 0;
                     this.velocity.x = 0;
                 }
+                if (this.attackTick > ATTACK_WINDOW) {
+                    this.attackWindow = true;
+                    this.attackTick = false;
+                }
+                else {
+                    this.attackWindow = false;
+                }
 
                 // update position
-
                 this.velocity.y += FALL_ACC;
                 if (this.velocity.y >= MAX_FALL) this.velocity.y = MAX_FALL;
                 //if (this.velocity.y <= -MAX_FALL) this.velocity.y = -MAX_FALL;

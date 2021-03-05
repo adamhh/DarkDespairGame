@@ -20,7 +20,9 @@ class HealthBar {
             this.health = 1;
         }
     }
-
+    getHealth() {
+        return this.health;
+    }
     isFull() {
         return this.health > 17;
     }

@@ -22,6 +22,8 @@ class ShadowWarrior {
         this.disappearAnim = [];
         this.deadAnim = [];
 
+        this.attackWindow = false;
+        this.attackTick = 0;
         this.timer = new Timer();
         this.time1 = this.timer.getTime();
         this.time2 = this.time1;
@@ -79,7 +81,7 @@ class ShadowWarrior {
         this.sight = new BoundingBox(this.x - 650, this.y, 1225, this.height);
         if (this.disappear) {
             this.ABB = new BoundingBox(0, 0, 0, 0);
-        } else if (this.state === 2) {
+        } else if (this.state === 2 && this.attackWindow) {
             if (this.facing === 0) {
                 this.ABB = new BoundingBox(this.x + 60, this.y, 75, 15); //facing 0
             } else {
@@ -114,10 +116,13 @@ class ShadowWarrior {
                 this.vanish();
             }
             const TICK = this.game.clockTick;
+            this.attackTick += TICK;
+
             const MAX_RUN = 350;
             const RUN_ACC = 20;
             const MAX_FALL = 100;
             const FALL_ACC = .5;
+            const ATTACK_WINDOW = .3;
             let moveTo = 0;
             let that = this;
             let inSight = false;
@@ -152,6 +157,7 @@ class ShadowWarrior {
 
                         if (entity.ABB && that.BB.collide(entity.ABB)) {
                             that.health-= 2.5;
+                            ASSET_MANAGER.playAsset("./audio/sword_thud.mp3")
                             //that.facing === 0 ? that.x -= 5 : that.x += 5;
                             that.updateBB();
                         }
@@ -160,6 +166,7 @@ class ShadowWarrior {
                         if (entity.BB && that.BB.collide(entity.BB)) {
                             if (entity.isAssassin === true) {
                                 that.health--;
+
                                 that.velocity.x *= .6;
                             }
                         }
@@ -197,9 +204,15 @@ class ShadowWarrior {
                     this.state = 0;
                     this.velocity.x = 0;
                 }
+                if (this.attackTick > ATTACK_WINDOW) {
+                    this.attackWindow = true;
+                    this.attackTick = false;
+                }
+                else {
+                    this.attackWindow = false;
+                }
 
                 // update position
-
                 this.velocity.y += FALL_ACC;
                 if (this.velocity.y >= MAX_FALL) this.velocity.y = MAX_FALL;
                 //if (this.velocity.y <= -MAX_FALL) this.velocity.y = -MAX_FALL;
@@ -214,17 +227,6 @@ class ShadowWarrior {
             } else {
                 this.time2 = this.timer.getTime();
                 if (this.time2 - this.time1 > 750) {
-                //     this.deathCount++;
-                //     console.log(this.deathCount);
-                //     if (this.deathCount > 0 && this.deathCount < 4) {
-                //         this.x = this.locations[this.deathCount].x;
-                //         this.y = this.locations[this.deathCount].y;
-                //     } else {
-                //         this.x = this.locations["3"].x;
-                //         this.y = this.locations["3"].y;
-                //     }
-                //     this.disappear = false;
-                //     this.health = 100;
                 this.game.addEntity(new Soul(this.game, this.x + 20, this.y - 15, 100, this.isKey))
                 this.removeFromWorld = true;
                 }
@@ -394,6 +396,7 @@ class RedEye {
                             }
                         }
                         if (entity.ABB && that.BB.collide(entity.ABB)) {
+                            ASSET_MANAGER.playAsset("./audio/sword_thud.mp3")
                             that.health-= 10;
                         }
 

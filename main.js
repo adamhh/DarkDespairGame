@@ -40,6 +40,10 @@ ASSET_MANAGER.queueDownload("./sprites/menus/weaponicons.png");
 
 
 ASSET_MANAGER.queueDownload("./audio/midnight_blade.mp3");
+ASSET_MANAGER.queueDownload("./audio/sword_swing_metal.mp3");
+ASSET_MANAGER.queueDownload("./audio/sword_swing.mp3");
+ASSET_MANAGER.queueDownload("./audio/sword_hit_metal2.mp3");
+ASSET_MANAGER.queueDownload("./audio/sword_thud.mp3");
 
 ASSET_MANAGER.downloadAll(function () {
 	var gameEngine = new GameEngine();
