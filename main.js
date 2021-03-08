@@ -40,10 +40,22 @@ ASSET_MANAGER.queueDownload("./sprites/menus/weaponicons.png");
 
 
 ASSET_MANAGER.queueDownload("./audio/midnight_blade.mp3");
+ASSET_MANAGER.queueDownload("./audio/background_diablo.mp3");
 ASSET_MANAGER.queueDownload("./audio/sword_swing_metal.mp3");
 ASSET_MANAGER.queueDownload("./audio/sword_swing.mp3");
+ASSET_MANAGER.queueDownload("./audio/sword_swing_enemy.mp3");
 ASSET_MANAGER.queueDownload("./audio/sword_hit_metal2.mp3");
 ASSET_MANAGER.queueDownload("./audio/sword_thud.mp3");
+ASSET_MANAGER.queueDownload("./audio/arrow_whoosh.mp3");
+ASSET_MANAGER.queueDownload("./audio/arrow_impact_soft.mp3");
+ASSET_MANAGER.queueDownload("./audio/player_death.mp3");
+ASSET_MANAGER.queueDownload("./audio/portal_open.mp3");
+ASSET_MANAGER.queueDownload("./audio/teleport.mp3");
+ASSET_MANAGER.queueDownload("./audio/kick.mp3");
+ASSET_MANAGER.queueDownload("./audio/sword_hit_player2.mp3");
+ASSET_MANAGER.queueDownload("./audio/sword_hit_player_knight.mp3");
+ASSET_MANAGER.queueDownload("./audio/game_over_music.mp3");
+
 
 ASSET_MANAGER.downloadAll(function () {
 	var gameEngine = new GameEngine();

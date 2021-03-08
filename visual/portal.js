@@ -2,6 +2,7 @@ class Portal {
     constructor(game, x, y, n, assassin) {
         Object.assign(this, {game, x, y, n, assassin});
         this.anim = false;
+        this.portalOpenSound = false;
         switch(n){
             case 0:
                 this.spritesheet = ASSET_MANAGER.getAsset("./sprites/backgroundassets/portal.png");
@@ -31,6 +32,11 @@ class Portal {
         if (this.anim) {
             if (this.assassin.isKeyed) {
                 this.animation.drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - this.game.camera.y, 1);
+                if (!this.portalOpenSound) {
+                    ASSET_MANAGER.playAsset("./audio/portal_open.mp3")
+                    this.portalOpenSound = true;
+                }
+
             }
 
         } else {

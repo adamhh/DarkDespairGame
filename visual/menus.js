@@ -5,6 +5,7 @@ class Menus {
         this.controls = ASSET_MANAGER.getAsset("./sprites/menus/intro_menu.png");
         this.pause = ASSET_MANAGER.getAsset("./sprites/menus/pause_menu.png");
         this.gameOver = ASSET_MANAGER.getAsset("./sprites/menus/gameover_menu.png")
+        this.gameOverMusic = true;
         this.exists = true;
         this.playCounter = 0;
         this.startCounter = 0;
@@ -43,6 +44,7 @@ class Menus {
         }
         if (PARAMS.GAMEOVER) {
             ctx.drawImage(this.gameOver, 0, 0, 950, 750);
+
         }
 
 

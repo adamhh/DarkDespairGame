@@ -31,6 +31,18 @@ class Arrow {
         } else {
             this.x += this.velocity.x * this.game.clockTick;
         }
+        var that = this;
+        this.game.entities.forEach(function (entity) {
+            if (entity.BB && entity.BB.collide(that.BB)) {
+                if (!that.isAssassin && (entity instanceof Assassin || entity instanceof CaveWall)) {
+                    that.y = 2000;
+                } else if (that.isAssassin && (entity instanceof ShadowWarrior || entity instanceof Knight ||
+                            entity instanceof RedEye || entity instanceof CaveWall)) {
+                    that.y = 2000;
+                }
+            }
+
+        });
         //this.y += .75
 
     }

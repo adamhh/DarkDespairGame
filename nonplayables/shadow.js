@@ -82,6 +82,7 @@ class ShadowWarrior {
         if (this.disappear) {
             this.ABB = new BoundingBox(0, 0, 0, 0);
         } else if (this.state === 2 && this.attackWindow) {
+            ASSET_MANAGER.playAsset("./audio/sword_swing_enemy.mp3")
             if (this.facing === 0) {
                 this.ABB = new BoundingBox(this.x + 60, this.y, 75, 15); //facing 0
             } else {
@@ -156,7 +157,7 @@ class ShadowWarrior {
                         }
 
                         if (entity.ABB && that.BB.collide(entity.ABB)) {
-                            that.health-= 2.5;
+                            that.health-= (2.5 + PARAMS.SOULS/200) ;
                             ASSET_MANAGER.playAsset("./audio/sword_thud.mp3")
                             //that.facing === 0 ? that.x -= 5 : that.x += 5;
                             that.updateBB();
@@ -165,8 +166,7 @@ class ShadowWarrior {
                     if (entity instanceof Arrow) {
                         if (entity.BB && that.BB.collide(entity.BB)) {
                             if (entity.isAssassin === true) {
-                                that.health--;
-
+                                that.health-= (20 + PARAMS.SOULS/100);
                                 that.velocity.x *= .6;
                             }
                         }
@@ -397,13 +397,13 @@ class RedEye {
                         }
                         if (entity.ABB && that.BB.collide(entity.ABB)) {
                             ASSET_MANAGER.playAsset("./audio/sword_thud.mp3")
-                            that.health-= 10;
+                            that.health-= (10 + PARAMS.SOULS/100);
                         }
 
                     }
                     if (entity instanceof Arrow && entity.BB && that.BB.collide(entity.BB)) {
                         if (entity.isAssassin) {
-                            that.health--;
+                            that.health-= (25 + PARAMS.SOULS/100);
                         }
                     }
 

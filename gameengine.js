@@ -123,10 +123,18 @@ class GameEngine {
                     PARAMS.PAUSE = !PARAMS.PAUSE;
                     break;
                 case "KeyQ":
-                    if (PARAMS.GAMEOVER) PARAMS.STARTOVER = true;
+                    if (PARAMS.GAMEOVER) {
+                        ASSET_MANAGER.pauseBackgroundMusic();
+                        PARAMS.STARTOVER = true;
+
+                    }
                     break;
                 case "KeyR":
-                    if (PARAMS.GAMEOVER) PARAMS.RESPAWN = true;
+                    if (PARAMS.GAMEOVER) {
+                        ASSET_MANAGER.pauseBackgroundMusic()
+                        PARAMS.RESPAWN = true;
+
+                    }
             }
         }, false);
 

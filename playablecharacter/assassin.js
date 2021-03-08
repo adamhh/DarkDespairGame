@@ -28,7 +28,7 @@ class Assassin {
         this.attacking = false;
         this.attackStart = this.timer.getTime();
         this.attackEnd = this.attackStart;
-        this.hitFlag = true;
+        this.arrowFlag = true;
         this.attackWindow = false;
         this.bowTime = this.time2;
         this.isKeyed = false;
@@ -41,14 +41,15 @@ class Assassin {
         this.velocity = {x: 0, y: 0};
         this.fallAcc = 2000;
         this.fallOffCount = 0;
-        if (PARAMS.YSPAWN === 3900)  {
+        this.deadAudio = true;
+        if (PARAMS.YSPAWN > 3000)  {
             this.fallOffCount++;
             this.portalCount++;
         }
         this.portalCount = 0;
         this.yFallBounds = [1800, 4900];
-        this.portalLocations = [{x: 2000, y: 3900}, {x: 0, y: 0}];
-        this.checkpoints = [ {x:0, y: 0} , {x: 2000, y: 3900}, {x: 0, y: 0}]
+        this.portalLocations = [{x: 2770, y: 3800}, {x: 0, y: 0}];
+        this.checkpoints = [ {x:0, y: 0} , {x: 2770, y: 3800}, {x: 0, y: 0}]
 
 
         //load animation
@@ -93,11 +94,11 @@ class Assassin {
         //attacking animation
         // facing right
         this.animations[2][0][0] = new Animator(this.spritesheet, 35, 630, 95, 91, 10,
-            0.05, 95.05, false, true);
+            0.038, 95.05, false, true);
 
         // facing left
         this.animations[2][1][0] = new Animator(this.spritesheet, 50, 735, 95, 91, 10,
-            0.05, 95.05, true, true);
+            0.038, 95.05, true, true);
 
         //jumping
         // facing right
@@ -248,6 +249,7 @@ class Assassin {
             let yOff = 0;
             switch (this.weapon) {
                 case 0:
+                    ASSET_MANAGER.playAsset("./audio/kick.mp3")
                     if (this.facing === 0) xOff = 55;
                     this.ABB = new BoundingBox(this.x + xOff, this.y + 50, 40, 20);
                     break;
@@ -259,8 +261,13 @@ class Assassin {
                 case 2:
                     //console.log(this.bowTime);
                     if (this.bowTime < 0.6 && this.bowTime > .4) {
-                        this.game.addEntity(new Arrow(this.game, this.x, this.y,
-                            this.facing === 1, true));
+                        if (this.arrowFlag) {
+                            this.game.addEntity(new Arrow(this.game, this.x, this.y,
+                                this.facing === 1, true));
+                            ASSET_MANAGER.playAsset("./audio/arrow_whoosh.mp3")
+                            this.arrowFlag = false;
+                        }
+
                     } else {
                         this.bowTime = 0;
                     }
@@ -284,6 +291,7 @@ class Assassin {
             this.deadCount+= this.game.clockTick;
             if (this.deadCount > 1.5) {
                 PARAMS.GAMEOVER = true;
+
             }
 
         }
@@ -307,7 +315,6 @@ class Assassin {
         const STOP_FALL = 1575;
         //in air deceleration
         const AIR_DEC = 2;
-
         // console.log("(" + Math.floor(this.x) + "," + this.y + ")");
         if (PARAMS.START && !PARAMS.PAUSE) {
             if (this.dead) {
@@ -320,7 +327,8 @@ class Assassin {
                 this.game.entities.forEach(function (entity) {
                     if (entity.BB && that.BB.collide(entity.BB)) {
                         if (entity instanceof Arrow && !entity.isAssassin) {
-                            that.healthBar.updateHealth(-.4 - PARAMS.DIFFICULTY);
+                            that.healthBar.updateHealth(-PARAMS.DIFFICULTY);
+                            ASSET_MANAGER.playAsset("./audio/arrow_impact_soft.mp3")
                             that.velocity.x *= .95;
                         } else if (that.velocity.y > 0) { // falling
                             if ((entity instanceof Land || entity instanceof FloatingLand) // landing
@@ -373,29 +381,32 @@ class Assassin {
                         }
 
                     }
-                    if (entity instanceof ShadowWarrior && entity.BB && that.BB.collide(entity.BB)) {
+                    if ((entity instanceof ShadowWarrior || entity instanceof Knight || entity instanceof RedEye)
+                        && entity.BB && that.BB.collide(entity.BB)) {
                         that.velocity.x *= .9;
                     } else if (entity.ABB && entity instanceof ShadowWarrior && that.BB.collide(entity.ABB)) {
                         if (that.state !== 3) {
                             that.healthBar.updateHealth(-PARAMS.DIFFICULTY);
+                            ASSET_MANAGER.playAsset("./audio/sword_hit_player2.mp3");
                         }
                     } else if (entity.ABB && entity instanceof Knight && that.BB.collide(entity.ABB)) {
                         that.healthBar.updateHealth(-PARAMS.DIFFICULTY);
+                        ASSET_MANAGER.playAsset("./audio/sword_hit_player_knight.mp3");
                     }
 
                 });
 
                 let yVel = Math.abs(this.velocity.y);
                 //this physics will need a fine tuning;
-                let attackLength = 350;
+                let attackLength = 0;
                 if (this.game.One) {
                     this.weapon = 0;
-                    attackLength = 350;
+                    attackLength = 380;
                     this.weaponIcon.updateWeapon(0);
                 }
                 if (this.game.Two) {
                     this.weapon = 1;
-                    attackLength = 490;
+                    attackLength = 450;
                     this.weaponIcon.updateWeapon(1);
                 }
                 if (this.game.Three) {
@@ -414,6 +425,7 @@ class Assassin {
                 } else {
 
                     this.attackWindow = false;
+                    this.arrowFlag = true;
                 }
                 this.updateBB();
                 if (!this.attacking) {
@@ -428,7 +440,6 @@ class Assassin {
                         this.state = 1;
                     } else if (this.game.A) {
                         this.state = 2;
-                        this.attacking = true;
                         if (yVel < 20) {
                             this.velocity.x = 0;
                         }
@@ -525,6 +536,7 @@ class Assassin {
 
                 this.x += this.velocity.x * TICK * PARAMS.SCALE;
                 if (this.teleport) {
+                    ASSET_MANAGER.playAsset("./audio/teleport.mp3")
                     this.x = this.portalLocations[0].x;
                     this.y = this.portalLocations[0].y;
                     PARAMS.XSPAWN = this.x;
@@ -545,6 +557,11 @@ class Assassin {
         let xOffset = 0;
         let yOffset = 0;
         if (this.dead) {
+            if (this.deadAudio) {
+                ASSET_MANAGER.playAsset("./audio/player_death.mp3")
+                this.deadAudio = false;
+            }
+
             if (this.weapon === 0 && this.facing === 0) {
                 xOffset = -45;
                 yOffset = -23;

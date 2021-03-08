@@ -7,6 +7,7 @@ class SceneManager {
         this.y = 0;
         this.count = 0;
         this.title = true;
+        this.gameOverMusic = true;
         this.loadLevelOne();
         PARAMS.DEBUG = false;
     };
@@ -45,7 +46,7 @@ class SceneManager {
 
         if (!this.title) {
             ASSET_MANAGER.pauseBackgroundMusic();
-            ASSET_MANAGER.playAsset("audio/background_music.mp3");
+            //ASSET_MANAGER.playAsset("audio/background_diablo.mp3");
         }
         //assets for assassin
         let healthBar = new HealthBar(this.game);
@@ -61,8 +62,8 @@ class SceneManager {
         this.game.addEntity(bLayer);
         bLayer = new BackgroundLayer(this.game, 0, 0, 1, -1);
         this.game.addEntity(bLayer);
-        // bLayer = new BackgroundLayer(this.game, -950, 0, 1, 3);
-        // this.game.addEntity(bLayer);
+        bLayer = new BackgroundLayer(this.game, 0, 0, 1, 2);
+        this.game.addEntity(bLayer);
         // bLayer = new BackgroundLayer(this.game, -950, 0, 1, 4);
         // this.game.addEntity(bLayer);
 
@@ -77,6 +78,8 @@ class SceneManager {
         bVine = new BackgroundLayer(this.game, -1000, -200, 0, 4);
         this.game.addEntity(bVine);
         bVine = new BackgroundLayer(this.game, -1000, -200, 0, 5);
+        this.game.addEntity(bVine);
+        bVine = new BackgroundLayer(this.game, -1000, -200, 0, 6);
         this.game.addEntity(bVine);
         bVine = new BackgroundLayer(this.game, -1000, -200, 0, -1);
         this.game.addEntity(bVine);
@@ -147,15 +150,20 @@ class SceneManager {
         land = new Land(this.game, -2760, 950, 'L');
         this.game.addEntity(land);
 
-        //after portal
-        land = new Land(this.game, 2860, 4000, 'R');
-        this.game.addEntity(land);
-        land = new Land(this.game, 1930, 4000, 0);
-        this.game.addEntity(land);
-        land = new Land(this.game, 1000, 4000, 'L');
-        this.game.addEntity(land);
+        let redEye = new RedEye(this.game, 901, 915);
+        this.game.addEntity(redEye);
 
-        let landCube = new FloatingLand(this.game, 2700, 3970, 2);
+        let knight = new Knight(this.game, 800, -100, 160, 1200);
+        this.game.addEntity(knight);
+
+        let shadowWarrior = new ShadowWarrior(this.game, 1898, 800 , false);
+        this.game.addEntity(shadowWarrior);
+        shadowWarrior = new ShadowWarrior(this.game, -1000, 800, true);
+        this.game.addEntity(shadowWarrior);
+
+        //after portal
+
+        let landCube = new FloatingLand(this.game, 2700, 3950, 2);
         this.game.addEntity(landCube);
         landCube = new FloatingLand(this.game, 3100, 3800, 2);
         this.game.addEntity(landCube);
@@ -191,31 +199,20 @@ class SceneManager {
         land = new Land(this.game, 6360, 4600, 'R');
         this.game.addEntity(land);
 
-        let redEye = new RedEye(this.game, 901, 915);
-        this.game.addEntity(redEye);
+
         redEye = new RedEye(this.game, 3690, 3700);
         this.game.addEntity(redEye);
-
         redEye = new RedEye(this.game, 5100, 4580);
         this.game.addEntity(redEye);
-        // redEye = new RedEye(this.game, 5800, 4580);
-        // this.game.addEntity(redEye);
+        redEye = new RedEye(this.game, 5800, 4580);
+        this.game.addEntity(redEye);
 
-        let shadowWarrior = new ShadowWarrior(this.game, 1898, 800 , false);
-        this.game.addEntity(shadowWarrior);
-        shadowWarrior = new ShadowWarrior(this.game, -1000, 800, true);
-        this.game.addEntity(shadowWarrior);
-
-        let knight = new Knight(this.game, 800, -100, 160, 1200);
-        this.game.addEntity(knight);
         knight = new Knight(this.game, 4300, 3750, 100, 100);
         this.game.addEntity(knight);
-
         knight = new Knight(this.game, 5200, 4550, 100, 1200);
         this.game.addEntity(knight);
         knight = new Knight(this.game, 5700, 4550, 100, 1200);
         this.game.addEntity(knight);
-
 
         // let floating = new Land(this.game, 250, 1000, 1);
         // this.game.addEntity(floating);
@@ -256,7 +253,7 @@ class SceneManager {
         ASSET_MANAGER.muteAudio(mute);
         ASSET_MANAGER.adjustVolume(volume);
         if (PARAMS.START) {
-            ASSET_MANAGER.playAsset("./audio/midnight_blade.mp3");
+            ASSET_MANAGER.playAsset("./audio/background_diablo.mp3");
         }
 
     }
@@ -270,7 +267,12 @@ class SceneManager {
         }
 
         if (PARAMS.GAMEOVER) {
-            ASSET_MANAGER.pauseBackgroundMusic();
+            if (this.gameOverMusic) {
+                ASSET_MANAGER.pauseBackgroundMusic();
+                ASSET_MANAGER.playAsset("./audio/game_over_music.mp3")
+                this.gameOverMusic = false;
+            }
+
         }
         if (PARAMS.STARTOVER) {
             PARAMS.STARTOVER = false;

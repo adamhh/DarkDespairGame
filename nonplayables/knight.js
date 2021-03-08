@@ -26,6 +26,7 @@ class Knight {
         this.time2 = this.time1;
 
         this.attackTick = 0;
+        this.attackStart = 0;
         this.attackWindow = false;
 
         this.dead = false;
@@ -122,6 +123,7 @@ class Knight {
 
             const TICK = this.game.clockTick;
             this.attackTick += TICK;
+            this.attackStart += TICK;
             const MAX_RUN = 150;
             const RUN_ACC = 20;
             const MAX_FALL = 100;
@@ -160,7 +162,7 @@ class Knight {
                             moveTo = entity.BB.x;
                         }
                         if (entity.ABB && that.BB.collide(entity.ABB)) {
-                            that.health-= 2.5;
+                            that.health-= (2.5 + PARAMS.SOULS/300);
                             ASSET_MANAGER.playAsset("./audio/sword_hit_metal2.mp3")
                             if (that.velocity.x > 0 || that.velocity.x < 0) {
                                 that.velocity.x *= .7;
@@ -174,7 +176,7 @@ class Knight {
                     if (entity instanceof Arrow) {
                         if (entity.BB && that.BB.collide(entity.BB)) {
                             if (entity.isAssassin === true) {
-                                that.health--;
+                                that.health-= (20 + PARAMS.SOULS/10);
                                 that.velocity.x *= .7;
                             }
                         }

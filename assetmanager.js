@@ -73,7 +73,6 @@ class AssetManager {
         }
     };
 
-//test
     getAsset(path) {
         return this.cache[path];
     };
@@ -101,6 +100,7 @@ class AssetManager {
             }
         }
     };
+
 
     pauseBackgroundMusic() {
         for (var key in this.cache) {
