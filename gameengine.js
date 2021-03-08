@@ -132,6 +132,7 @@ class GameEngine {
                 case "KeyR":
                     if (PARAMS.GAMEOVER) {
                         ASSET_MANAGER.pauseBackgroundMusic()
+                        PARAMS.SOULS = 0;
                         PARAMS.RESPAWN = true;
 
                     }

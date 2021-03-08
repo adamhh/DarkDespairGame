@@ -42,10 +42,10 @@ class Assassin {
         this.fallAcc = 2000;
         this.fallOffCount = 0;
         this.deadAudio = true;
-        // if (PARAMS.YSPAWN > 3000)  {
-        //     this.fallOffCount++;
-        //     this.portalCount++;
-        // }
+        if (PARAMS.YSPAWN > 3000)  {
+            this.fallOffCount++;
+            this.portalCount++;
+        }
         this.portalCount = 0;
         this.yFallBounds = [1800, 4900, 0, 0];
         this.portalLocations = [{x: 2770, y: 3800}, {x: 0, y: 0}];
@@ -281,10 +281,9 @@ class Assassin {
 
     update() {
         //console.log(this.x + " " + this.y)
+        console.log(this.fallOffCount)
         if (this.y > this.yFallBounds[this.fallOffCount]) {
             this.healthBar.updateHealth(-18);
-        } else {
-            console.log(this.fallOffCount + " " + this.yFallBounds[this.fallOffCount])
         }
         const TICK = this.game.clockTick;
         this.time2 = this.timer.getTime();
@@ -388,12 +387,14 @@ class Assassin {
                     if ((entity instanceof ShadowWarrior || entity instanceof Knight || entity instanceof RedEye)
                         && entity.BB && that.BB.collide(entity.BB)) {
                         that.velocity.x *= .9;
-                    } else if (entity.ABB && entity instanceof ShadowWarrior && that.BB.collide(entity.ABB)) {
+                    }
+                    if (entity.ABB && entity instanceof ShadowWarrior && that.BB.collide(entity.ABB)) {
                         if (that.state !== 3) {
-                            that.healthBar.updateHealth(-PARAMS.DIFFICULTY);
+                            that.healthBar.updateHealth(-(1 + PARAMS.DIFFICULTY));
                             ASSET_MANAGER.playAsset("./audio/sword_hit_player2.mp3");
                         }
-                    } else if (entity.ABB && entity instanceof Knight && that.BB.collide(entity.ABB)) {
+                    }
+                    if (entity.ABB && entity instanceof Knight && that.BB.collide(entity.ABB)) {
                         that.healthBar.updateHealth(-PARAMS.DIFFICULTY);
                         ASSET_MANAGER.playAsset("./audio/sword_hit_player_knight.mp3");
                     }

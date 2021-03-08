@@ -9,7 +9,7 @@ class SceneManager {
         this.title = true;
         this.gameOverMusic = true;
         this.loadLevelOne();
-        PARAMS.DEBUG = false;
+        PARAMS.DEBUG = true;
     };
     //add checkpoint
     restartState() {
@@ -35,6 +35,7 @@ class SceneManager {
         this.title = true;
         this.count = 0;
         this.loadLevelOne();
+
     };
 
 
