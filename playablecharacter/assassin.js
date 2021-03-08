@@ -389,7 +389,7 @@ class Assassin {
                     }
                     if (entity.ABB && entity instanceof ShadowWarrior && that.BB.collide(entity.ABB)) {
                         if (that.state !== 3) {
-                            that.healthBar.updateHealth(-(1 + PARAMS.DIFFICULTY));
+                            that.healthBar.updateHealth(-(.5 + PARAMS.DIFFICULTY));
                             ASSET_MANAGER.playAsset("./audio/sword_hit_player2.mp3");
                         }
                     }
@@ -540,11 +540,11 @@ class Assassin {
 
                 this.x += this.velocity.x * TICK * PARAMS.SCALE;
                 if (this.teleport) {
-                    this.fallOffCount++;
-                    this.portalCount++;
                     ASSET_MANAGER.playAsset("./audio/teleport.mp3")
+                    this.fallOffCount++;
                     this.x = this.portalLocations[this.portalCount].x;
                     this.y = this.portalLocations[this.portalCount].y;
+                    this.portalCount++;
                     PARAMS.XSPAWN = this.x;
                     PARAMS.YSPAWN = this.y;
                     this.isKeyed = false;

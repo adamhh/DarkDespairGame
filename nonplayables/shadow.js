@@ -82,7 +82,6 @@ class ShadowWarrior {
         if (this.disappear) {
             this.ABB = new BoundingBox(0, 0, 0, 0);
         } else if (this.state === 2 && this.attackWindow) {
-        } else if (this.state === 2 && this.attackWindow) {
             ASSET_MANAGER.playAsset("./audio/sword_swing_enemy.mp3")
             if (this.facing === 0) {
                 this.ABB = new BoundingBox(this.x + 60, this.y, 75, 15); //facing 0
@@ -94,11 +93,6 @@ class ShadowWarrior {
         }
     }
 
-    die() {
-        this.BB = new BoundingBox(0,0,0,0);
-        this.velocity.x = 0
-        this.dead = true;
-    }
 
     vanish() {
         this.BB = new BoundingBox(0,0,0,0);

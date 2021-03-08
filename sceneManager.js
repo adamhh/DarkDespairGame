@@ -11,7 +11,7 @@ class SceneManager {
         this.loadLevelOne();
         PARAMS.DEBUG = false;
     };
-    //add checkpoint
+
     restartState() {
         this.game.entities = [];
         PARAMS.PLAY = false;
@@ -349,7 +349,7 @@ class SceneManager {
         if (PARAMS.GAMEOVER) {
             if (this.gameOverMusic) {
                 ASSET_MANAGER.pauseBackgroundMusic();
-                ASSET_MANAGER.playAsset("./audio/game_over_music.mp3")
+                ASSET_MANAGER.playAsset("./audio/game_over_music2.mp3")
                 this.gameOverMusic = false;
             }
 

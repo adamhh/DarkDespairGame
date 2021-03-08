@@ -54,7 +54,7 @@ ASSET_MANAGER.queueDownload("./audio/teleport.mp3");
 ASSET_MANAGER.queueDownload("./audio/kick.mp3");
 ASSET_MANAGER.queueDownload("./audio/sword_hit_player2.mp3");
 ASSET_MANAGER.queueDownload("./audio/sword_hit_player_knight.mp3");
-ASSET_MANAGER.queueDownload("./audio/game_over_music.mp3");
+ASSET_MANAGER.queueDownload("./audio/game_over_music2.mp3");
 
 
 ASSET_MANAGER.downloadAll(function () {
