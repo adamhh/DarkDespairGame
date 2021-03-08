@@ -42,12 +42,12 @@ class Assassin {
         this.fallAcc = 2000;
         this.fallOffCount = 0;
         this.deadAudio = true;
-        if (PARAMS.YSPAWN > 3000)  {
-            this.fallOffCount++;
-            this.portalCount++;
-        }
+        // if (PARAMS.YSPAWN > 3000)  {
+        //     this.fallOffCount++;
+        //     this.portalCount++;
+        // }
         this.portalCount = 0;
-        this.yFallBounds = [1800, 4900];
+        this.yFallBounds = [1800, 4900, 0, 0];
         this.portalLocations = [{x: 2770, y: 3800}, {x: 0, y: 0}];
         this.checkpoints = [ {x:0, y: 0} , {x: 2770, y: 3800}, {x: 0, y: 0}]
 
@@ -281,7 +281,11 @@ class Assassin {
 
     update() {
         //console.log(this.x + " " + this.y)
-        if (this.y > this.yFallBounds[this.fallOffCount]) this.healthBar.updateHealth(-18);
+        if (this.y > this.yFallBounds[this.fallOffCount]) {
+            this.healthBar.updateHealth(-18);
+        } else {
+            console.log(this.fallOffCount + " " + this.yFallBounds[this.fallOffCount])
+        }
         const TICK = this.game.clockTick;
         this.time2 = this.timer.getTime();
         this.attackEnd = this.timer.getTime();
@@ -536,13 +540,13 @@ class Assassin {
 
                 this.x += this.velocity.x * TICK * PARAMS.SCALE;
                 if (this.teleport) {
+                    this.fallOffCount++;
+                    this.portalCount++;
                     ASSET_MANAGER.playAsset("./audio/teleport.mp3")
                     this.x = this.portalLocations[0].x;
                     this.y = this.portalLocations[0].y;
                     PARAMS.XSPAWN = this.x;
                     PARAMS.YSPAWN = this.y;
-                    this.portalCount++;
-                    this.yFallBounds++;
                     this.isKeyed = false;
                     this.teleport = false;
                 }
