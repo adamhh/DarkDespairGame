@@ -9,7 +9,7 @@ class SceneManager {
         this.title = true;
         this.gameOverMusic = true;
         this.loadLevelOne();
-        PARAMS.DEBUG = true;
+        PARAMS.DEBUG = false;
     };
     //add checkpoint
     restartState() {
@@ -65,8 +65,10 @@ class SceneManager {
         this.game.addEntity(bLayer);
         bLayer = new BackgroundLayer(this.game, 0, 0, 1, 2);
         this.game.addEntity(bLayer);
-        // bLayer = new BackgroundLayer(this.game, -950, 0, 1, 4);
-        // this.game.addEntity(bLayer);
+        bLayer = new BackgroundLayer(this.game, 0, 0, 1, 3);
+        this.game.addEntity(bLayer);
+        bLayer = new BackgroundLayer(this.game, 0, 0, 1, 4);
+        this.game.addEntity(bLayer)
 
         let bVine = new BackgroundLayer(this.game, -1000, -200, 0, 0);
         this.game.addEntity(bVine);
@@ -82,7 +84,11 @@ class SceneManager {
         this.game.addEntity(bVine);
         bVine = new BackgroundLayer(this.game, -1000, -200, 0, 6);
         this.game.addEntity(bVine);
+        bVine = new BackgroundLayer(this.game, -1000, -200, 0, 7);
+        this.game.addEntity(bVine);
         bVine = new BackgroundLayer(this.game, -1000, -200, 0, -1);
+        this.game.addEntity(bVine);
+        bVine = new BackgroundLayer(this.game, -1000, -200, 0, 8);
         this.game.addEntity(bVine);
 
 
@@ -200,6 +206,79 @@ class SceneManager {
         land = new Land(this.game, 6360, 4600, 'R');
         this.game.addEntity(land);
 
+        floating = new FloatingLand(this.game, 7400, 4700, 1);
+        this.game.addEntity(floating);
+
+        landCube = new FloatingLand(this.game, 7600, 4900, 2);
+        this.game.addEntity(landCube);
+        landCube = new FloatingLand(this.game, 7900, 4900, 2);
+        this.game.addEntity(landCube);
+
+
+        //right stack tube b4 portal
+        landCube = new FloatingLand(this.game, 8550, 4650, 2);
+        this.game.addEntity(landCube);
+        landCube = new FloatingLand(this.game, 8550, 4800, 2);
+        this.game.addEntity(landCube);
+        landCube = new FloatingLand(this.game, 8550, 4950, 2);
+        this.game.addEntity(landCube);
+        landCube = new FloatingLand(this.game, 8550, 5100, 2);
+        this.game.addEntity(landCube);
+        landCube = new FloatingLand(this.game, 8550, 5250, 2);
+        this.game.addEntity(landCube);
+        landCube = new FloatingLand(this.game, 8550, 5400, 2);
+        this.game.addEntity(landCube);
+        landCube = new FloatingLand(this.game, 8550, 5550, 2);
+        this.game.addEntity(landCube);
+
+
+        //left stack tube b4 portal
+        landCube = new FloatingLand(this.game, 8200, 5100, 2);
+        this.game.addEntity(landCube);
+        landCube = new FloatingLand(this.game, 8200, 5250, 2);
+        this.game.addEntity(landCube);
+        landCube = new FloatingLand(this.game, 8200, 5400, 2);
+        this.game.addEntity(landCube);
+        landCube = new FloatingLand(this.game, 8200, 5550, 2);
+        this.game.addEntity(landCube);
+
+        //landing spot
+        landCube = new FloatingLand(this.game, 8400, 5950, 2);
+        this.game.addEntity(landCube);
+
+        floating = new FloatingLand(this.game, 8000, 5950, 1);
+        this.game.addEntity(floating);
+        floating = new FloatingLand(this.game, 8800, 5950, 1);
+        this.game.addEntity(floating);
+
+
+        portal = new Portal(this.game, 10600, 5880, 1, this.assassin);
+        this.game.addEntity(portal);
+        portal = new Portal(this.game, 10585, 5880, 0, this.assassin);
+        this.game.addEntity(portal);
+
+        //platform of second portal
+        land = new Land(this.game, 9100, 5950, 'L');
+        this.game.addEntity(land);
+        land = new Land(this.game, 10030, 5950, 0);
+        this.game.addEntity(land);
+        land = new Land(this.game, 10930, 5950, 'R');
+        this.game.addEntity(land);
+
+
+        shadowWarrior = new ShadowWarrior(this.game, 9600, 5900 , false);
+        this.game.addEntity(shadowWarrior);
+        shadowWarrior = new ShadowWarrior(this.game, 10700, 5900, true);
+        this.game.addEntity(shadowWarrior);
+
+
+
+        redEye = new RedEye(this.game, 8050, 5800);
+        this.game.addEntity(redEye);
+        redEye = new RedEye(this.game, 8850, 5800);
+        this.game.addEntity(redEye);
+
+
 
         redEye = new RedEye(this.game, 3690, 3700);
         this.game.addEntity(redEye);
@@ -236,7 +315,7 @@ class SceneManager {
         let healthPotion = new HealthPotion(this.game, 920, 955);
         this.game.addEntity(healthPotion);
 
-        healthPotion = new HealthPotion(this.game, 5400, 4000);
+        healthPotion = new HealthPotion(this.game, 5400, 4020);
         this.game.addEntity(healthPotion);
 
 

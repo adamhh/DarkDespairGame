@@ -45,6 +45,6 @@ const PARAMS = {
     NORMAL : 1,
     HARD : 2,
     SOULS: 0,
-    XSPAWN : 0,
-    YSPAWN : 0
+    XSPAWN : 2770,
+    YSPAWN : 3800
 };

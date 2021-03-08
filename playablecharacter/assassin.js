@@ -47,9 +47,9 @@ class Assassin {
             this.portalCount++;
         }
         this.portalCount = 0;
-        this.yFallBounds = [1800, 4900, 0, 0];
+        this.yFallBounds = [1800, 6500, 1800, 0];
         this.portalLocations = [{x: 2770, y: 3800}, {x: 0, y: 0}];
-        this.checkpoints = [ {x:0, y: 0} , {x: 2770, y: 3800}, {x: 0, y: 0}]
+        //this.checkpoints = [ {x:0, y: 0} , {x: 2770, y: 3800}, {x: 0, y: 0}]
 
 
         //load animation
@@ -281,7 +281,6 @@ class Assassin {
 
     update() {
         //console.log(this.x + " " + this.y)
-        console.log(this.fallOffCount)
         if (this.y > this.yFallBounds[this.fallOffCount]) {
             this.healthBar.updateHealth(-18);
         }
@@ -544,14 +543,13 @@ class Assassin {
                     this.fallOffCount++;
                     this.portalCount++;
                     ASSET_MANAGER.playAsset("./audio/teleport.mp3")
-                    this.x = this.portalLocations[0].x;
-                    this.y = this.portalLocations[0].y;
+                    this.x = this.portalLocations[this.portalCount].x;
+                    this.y = this.portalLocations[this.portalCount].y;
                     PARAMS.XSPAWN = this.x;
                     PARAMS.YSPAWN = this.y;
                     this.isKeyed = false;
                     this.teleport = false;
                 }
-
                 this.updateBB(); //Update your bounding box every tick
             }
         }
