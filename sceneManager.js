@@ -1,4 +1,4 @@
-class SceneManager {
+    class SceneManager {
     constructor(game) {
         this.game = game;
         this.game.camera = this;
@@ -38,25 +38,214 @@ class SceneManager {
 
     };
 
+    loadPhaseOne() {
+        let ceil = new Ceiling(this.game, -1500, -700);
+        this.game.addEntityP1(ceil);
+        ceil = new Ceiling(this.game, -500, -700);
+        this.game.addEntityP1(ceil);
+        ceil = new Ceiling(this.game, 500, -700);
+        this.game.addEntityP1(ceil);
+        ceil = new Ceiling(this.game, 1500, -700);
+        this.game.addEntityP1(ceil);
+        ceil = new Ceiling(this.game, 2500, -700);
+        this.game.addEntityP1(ceil);
 
-    loadLevelOne() {
-        this.x = 0;
-        this.y = 0;
-        this.parallax = 0;
-        this.parallaxY = 0;
-
-        if (!this.title) {
-            ASSET_MANAGER.pauseBackgroundMusic();
-            //ASSET_MANAGER.playAsset("audio/background_diablo.mp3");
+        //grass
+        let grass = null;
+        for (var i = 0; i < 20; i++) {
+            //starting block
+            grass = new Grass(this.game, randomInt(2500) - 500, 120 + randomInt(5), 0);
+            this.game.addEntityP1(grass);
         }
-        //assets for assassin
-        let healthBar = new HealthBar(this.game);
-        let weaponIcon = new WeaponIcons(this.game);
-        // this.assassin = new Assassin(this.game,-2000, 950, healthBar, weaponIcon);
-        // this.assassin = new Assassin(this.game,0, 0, healthBar, weaponIcon);
-        this.assassin = new Assassin(this.game, PARAMS.XSPAWN, PARAMS.YSPAWN, healthBar, weaponIcon);
+
+        let caveWall = new CaveWall(this.game, -900, -650, 1, 0);
+        this.game.addEntityP1(caveWall);
+        caveWall = new CaveWall(this.game, 3000, -650, 1, 1);
+        this.game.addEntityP1(caveWall);
+        caveWall = new CaveWall(this.game, 3000, 230, .7, 3);
+        this.game.addEntityP1(caveWall);
+
+        let land = new Land(this.game, -930, 100, 'L');
+        this.game.addEntityP1(land);
+        land = new Land(this.game, 0, 100, 0);
+        this.game.addEntityP1(land);
+        land = new Land(this.game, 930, 100, 0);
+        this.game.addEntityP1(land);
+        land = new Land(this.game, 1860, 100, 'R');
+        this.game.addEntityP1(land);
 
 
+        //one level down
+        land = new Land(this.game, 2700, 800, 0);
+        this.game.addEntityP1(land);
+        land = new Land(this.game, 1770, 800, 'L');
+        this.game.addEntityP1(land);
+
+        let floating = new FloatingLand(this.game, 1300, 1000, 1);
+        this.game.addEntityP1(floating);
+        floating = new FloatingLand(this.game, 850, 1000, 0);
+        this.game.addEntityP1(floating);
+        floating = new FloatingLand(this.game, 350, 950, 1);
+        this.game.addEntityP1(floating);
+
+        //past first nonplayables
+        let portal = new Portal(this.game, -1700, 875, 1, this.assassin);
+        this.game.addEntityP1(portal);
+        portal = new Portal(this.game, -1715, 875, 0, this.assassin);
+        this.game.addEntityP1(portal);
+
+        land = new Land(this.game, -900, 950, 'R');
+        this.game.addEntityP1(land);
+        land = new Land(this.game, -1830, 950, 0);
+        this.game.addEntityP1(land);
+        land = new Land(this.game, -2760, 950, 'L');
+        this.game.addEntityP1(land);
+
+        let redEye = new RedEye(this.game, 901, 915);
+        this.game.addEntityP1(redEye);
+
+        let knight = new Knight(this.game, 800, -100, 160, 1200);
+        this.game.addEntityP1(knight);
+
+        let shadowWarrior = new ShadowWarrior(this.game, 1898, 800 , false);
+        this.game.addEntityP1(shadowWarrior);
+        shadowWarrior = new ShadowWarrior(this.game, -1000, 800, true);
+        this.game.addEntityP1(shadowWarrior);
+
+        let healthPotion = new HealthPotion(this.game, 920, 955);
+        this.game.addEntityP1(healthPotion);
+
+    }
+
+    loadPhaseTwo() {
+        let landCube = new FloatingLand(this.game, 2700, 3950, 2);
+        this.game.addEntityP2(landCube);
+        landCube = new FloatingLand(this.game, 3100, 3800, 2);
+        this.game.addEntityP2(landCube);
+        landCube = new FloatingLand(this.game, 4250, 3900, 2);
+        this.game.addEntityP2(landCube);
+
+        landCube = new FloatingLand(this.game, 4500, 4100, 2);
+        this.game.addEntityP2(landCube);
+        landCube = new FloatingLand(this.game, 4800, 4100, 2);
+        this.game.addEntityP2(landCube);
+        landCube = new FloatingLand(this.game, 5100, 4100, 2);
+        this.game.addEntityP2(landCube);
+
+
+        landCube = new FloatingLand(this.game, 5330, 4100, 2);
+        this.game.addEntityP2(landCube);
+        landCube = new FloatingLand(this.game, 5730, 3700, 2);
+        this.game.addEntityP2(landCube);
+        landCube = new FloatingLand(this.game, 5330, 4240, 2);
+        this.game.addEntityP2(landCube);
+        landCube = new FloatingLand(this.game, 5730, 3840, 2);
+        this.game.addEntityP2(landCube);
+        landCube = new FloatingLand(this.game, 5730, 3980, 2);
+        this.game.addEntityP2(landCube);
+
+        let floating = new FloatingLand(this.game, 3650, 3800, 1);
+        this.game.addEntityP2(floating);
+
+        let land = new Land(this.game, 4500, 4600, 'L');
+        this.game.addEntityP2(land);
+        land = new Land(this.game, 5430, 4600, 0);
+        this.game.addEntityP2(land);
+        land = new Land(this.game, 6360, 4600, 'R');
+        this.game.addEntityP2(land);
+
+        floating = new FloatingLand(this.game, 7400, 4700, 1);
+        this.game.addEntityP2(floating);
+
+        landCube = new FloatingLand(this.game, 7600, 4900, 2);
+        this.game.addEntityP2(landCube);
+        landCube = new FloatingLand(this.game, 7900, 4900, 2);
+        this.game.addEntityP2(landCube);
+
+
+        //right stack tube b4 portal
+        landCube = new FloatingLand(this.game, 8550, 4650, 2);
+        this.game.addEntityP2(landCube);
+        landCube = new FloatingLand(this.game, 8550, 4800, 2);
+        this.game.addEntityP2(landCube);
+        landCube = new FloatingLand(this.game, 8550, 4950, 2);
+        this.game.addEntityP2(landCube);
+        landCube = new FloatingLand(this.game, 8550, 5100, 2);
+        this.game.addEntityP2(landCube);
+        landCube = new FloatingLand(this.game, 8550, 5250, 2);
+        this.game.addEntityP2(landCube);
+        landCube = new FloatingLand(this.game, 8550, 5400, 2);
+        this.game.addEntityP2(landCube);
+        landCube = new FloatingLand(this.game, 8550, 5550, 2);
+        this.game.addEntityP2(landCube);
+
+
+        //left stack tube b4 portal
+        landCube = new FloatingLand(this.game, 8200, 5100, 2);
+        this.game.addEntityP2(landCube);
+        landCube = new FloatingLand(this.game, 8200, 5250, 2);
+        this.game.addEntityP2(landCube);
+        landCube = new FloatingLand(this.game, 8200, 5400, 2);
+        this.game.addEntityP2(landCube);
+        landCube = new FloatingLand(this.game, 8200, 5550, 2);
+        this.game.addEntityP2(landCube);
+
+        //landing spot
+        landCube = new FloatingLand(this.game, 8400, 5950, 2);
+        this.game.addEntityP2(landCube);
+
+        floating = new FloatingLand(this.game, 8000, 5950, 1);
+        this.game.addEntityP2(floating);
+        floating = new FloatingLand(this.game, 8800, 5950, 1);
+        this.game.addEntityP2(floating);
+
+
+        let portal = new Portal(this.game, 10600, 5880, 1, this.assassin);
+        this.game.addEntityP2(portal);
+        portal = new Portal(this.game, 10585, 5880, 0, this.assassin);
+        this.game.addEntityP2(portal);
+
+        //platform of second portal
+        land = new Land(this.game, 9100, 5950, 'L');
+        this.game.addEntityP2(land);
+        land = new Land(this.game, 10030, 5950, 0);
+        this.game.addEntityP2(land);
+        land = new Land(this.game, 10930, 5950, 'R');
+        this.game.addEntityP2(land);
+
+        let shadowWarrior = new ShadowWarrior(this.game, 9600, 5900 , false);
+        this.game.addEntityP2(shadowWarrior);
+        shadowWarrior = new ShadowWarrior(this.game, 10700, 5900, true);
+        this.game.addEntityP2(shadowWarrior);
+
+        let redEye = new RedEye(this.game, 8050, 5800);
+        this.game.addEntityP2(redEye);
+        redEye = new RedEye(this.game, 8850, 5800);
+        this.game.addEntityP2(redEye);
+
+        redEye = new RedEye(this.game, 3690, 3700);
+        this.game.addEntityP2(redEye);
+        redEye = new RedEye(this.game, 5100, 4580);
+        this.game.addEntityP2(redEye);
+        redEye = new RedEye(this.game, 5800, 4580);
+        this.game.addEntityP2(redEye);
+
+        let knight = new Knight(this.game, 4300, 3750, 100, 100);
+        this.game.addEntityP2(knight);
+        knight = new Knight(this.game, 5200, 4550, 100, 1200);
+        this.game.addEntityP2(knight);
+        knight = new Knight(this.game, 5700, 4550, 100, 1200);
+        this.game.addEntityP2(knight);
+
+        let healthPotion = new HealthPotion(this.game, 5400, 4020);
+        this.game.addEntityP2(healthPotion);
+    }
+
+    loadPhaseThree() {
+
+    }
+
+    loadBackgroundAssets() {
         let bLayer = new BackgroundLayer(this.game, 0, 0, 1, 0);
         this.game.addEntity(bLayer);
         bLayer = new BackgroundLayer(this.game, 0, 0, 1, 1);
@@ -90,241 +279,37 @@ class SceneManager {
         this.game.addEntity(bVine);
         bVine = new BackgroundLayer(this.game, -1000, -200, 0, 8);
         this.game.addEntity(bVine);
+    }
+    loadLevelOne() {
+        this.x = 0;
+        this.y = 0;
+        this.parallax = 0;
 
-
-        let ceil = new Ceiling(this.game, -1500, -700);
-        this.game.addEntity(ceil);
-        ceil = new Ceiling(this.game, -500, -700);
-        this.game.addEntity(ceil);
-        ceil = new Ceiling(this.game, 500, -700);
-        this.game.addEntity(ceil);
-        ceil = new Ceiling(this.game, 1500, -700);
-        this.game.addEntity(ceil);
-        ceil = new Ceiling(this.game, 2500, -700);
-        this.game.addEntity(ceil);
-
-
-        //grass
-        let grass = null;
-        for (var i = 0; i < 20; i++) {
-            //starting block
-            grass = new Grass(this.game, randomInt(2500) - 500, 120 + randomInt(5), 0);
-            this.game.addEntity(grass);
+        if (!this.title) {
+            ASSET_MANAGER.pauseBackgroundMusic();
+            //ASSET_MANAGER.playAsset("audio/background_diablo.mp3");
         }
-
-
-
-        let caveWall = new CaveWall(this.game, -900, -650, 1, 0);
-        this.game.addEntity(caveWall);
-        caveWall = new CaveWall(this.game, 3000, -650, 1, 1);
-        this.game.addEntity(caveWall);
-        caveWall = new CaveWall(this.game, 3000, 230, .7, 3);
-        this.game.addEntity(caveWall);
-
-        let land = new Land(this.game, -930, 100, 'L');
-        this.game.addEntity(land);
-        land = new Land(this.game, 0, 100, 0);
-        this.game.addEntity(land);
-        land = new Land(this.game, 930, 100, 0);
-        this.game.addEntity(land);
-        land = new Land(this.game, 1860, 100, 'R');
-        this.game.addEntity(land);
-
-
-        //one level down
-        land = new Land(this.game, 2700, 800, 0);
-        this.game.addEntity(land);
-        land = new Land(this.game, 1770, 800, 'L');
-        this.game.addEntity(land);
-
-        let floating = new FloatingLand(this.game, 1300, 1000, 1);
-        this.game.addEntity(floating);
-        floating = new FloatingLand(this.game, 850, 1000, 0);
-        this.game.addEntity(floating);
-        floating = new FloatingLand(this.game, 350, 950, 1);
-        this.game.addEntity(floating);
-
-        //past first nonplayables
-        let portal = new Portal(this.game, -1700, 875, 1, this.assassin);
-        this.game.addEntity(portal);
-        portal = new Portal(this.game, -1715, 875, 0, this.assassin);
-        this.game.addEntity(portal);
-
-        land = new Land(this.game, -900, 950, 'R');
-        this.game.addEntity(land);
-        land = new Land(this.game, -1830, 950, 0);
-        this.game.addEntity(land);
-        land = new Land(this.game, -2760, 950, 'L');
-        this.game.addEntity(land);
-
-        let redEye = new RedEye(this.game, 901, 915);
-        this.game.addEntity(redEye);
-
-        let knight = new Knight(this.game, 800, -100, 160, 1200);
-        this.game.addEntity(knight);
-
-        let shadowWarrior = new ShadowWarrior(this.game, 1898, 800 , false);
-        this.game.addEntity(shadowWarrior);
-        shadowWarrior = new ShadowWarrior(this.game, -1000, 800, true);
-        this.game.addEntity(shadowWarrior);
-
-        //after portal
-
-        let landCube = new FloatingLand(this.game, 2700, 3950, 2);
-        this.game.addEntity(landCube);
-        landCube = new FloatingLand(this.game, 3100, 3800, 2);
-        this.game.addEntity(landCube);
-        landCube = new FloatingLand(this.game, 4250, 3900, 2);
-        this.game.addEntity(landCube);
-
-        landCube = new FloatingLand(this.game, 4500, 4100, 2);
-        this.game.addEntity(landCube);
-        landCube = new FloatingLand(this.game, 4800, 4100, 2);
-        this.game.addEntity(landCube);
-        landCube = new FloatingLand(this.game, 5100, 4100, 2);
-        this.game.addEntity(landCube);
-
-
-        landCube = new FloatingLand(this.game, 5330, 4100, 2);
-        this.game.addEntity(landCube);
-        landCube = new FloatingLand(this.game, 5730, 3700, 2);
-        this.game.addEntity(landCube);
-        landCube = new FloatingLand(this.game, 5330, 4240, 2);
-        this.game.addEntity(landCube);
-        landCube = new FloatingLand(this.game, 5730, 3840, 2);
-        this.game.addEntity(landCube);
-        landCube = new FloatingLand(this.game, 5730, 3980, 2);
-        this.game.addEntity(landCube);
-
-        floating = new FloatingLand(this.game, 3650, 3800, 1);
-        this.game.addEntity(floating);
-
-        land = new Land(this.game, 4500, 4600, 'L');
-        this.game.addEntity(land);
-        land = new Land(this.game, 5430, 4600, 0);
-        this.game.addEntity(land);
-        land = new Land(this.game, 6360, 4600, 'R');
-        this.game.addEntity(land);
-
-        floating = new FloatingLand(this.game, 7400, 4700, 1);
-        this.game.addEntity(floating);
-
-        landCube = new FloatingLand(this.game, 7600, 4900, 2);
-        this.game.addEntity(landCube);
-        landCube = new FloatingLand(this.game, 7900, 4900, 2);
-        this.game.addEntity(landCube);
-
-
-        //right stack tube b4 portal
-        landCube = new FloatingLand(this.game, 8550, 4650, 2);
-        this.game.addEntity(landCube);
-        landCube = new FloatingLand(this.game, 8550, 4800, 2);
-        this.game.addEntity(landCube);
-        landCube = new FloatingLand(this.game, 8550, 4950, 2);
-        this.game.addEntity(landCube);
-        landCube = new FloatingLand(this.game, 8550, 5100, 2);
-        this.game.addEntity(landCube);
-        landCube = new FloatingLand(this.game, 8550, 5250, 2);
-        this.game.addEntity(landCube);
-        landCube = new FloatingLand(this.game, 8550, 5400, 2);
-        this.game.addEntity(landCube);
-        landCube = new FloatingLand(this.game, 8550, 5550, 2);
-        this.game.addEntity(landCube);
-
-
-        //left stack tube b4 portal
-        landCube = new FloatingLand(this.game, 8200, 5100, 2);
-        this.game.addEntity(landCube);
-        landCube = new FloatingLand(this.game, 8200, 5250, 2);
-        this.game.addEntity(landCube);
-        landCube = new FloatingLand(this.game, 8200, 5400, 2);
-        this.game.addEntity(landCube);
-        landCube = new FloatingLand(this.game, 8200, 5550, 2);
-        this.game.addEntity(landCube);
-
-        //landing spot
-        landCube = new FloatingLand(this.game, 8400, 5950, 2);
-        this.game.addEntity(landCube);
-
-        floating = new FloatingLand(this.game, 8000, 5950, 1);
-        this.game.addEntity(floating);
-        floating = new FloatingLand(this.game, 8800, 5950, 1);
-        this.game.addEntity(floating);
-
-
-        portal = new Portal(this.game, 10600, 5880, 1, this.assassin);
-        this.game.addEntity(portal);
-        portal = new Portal(this.game, 10585, 5880, 0, this.assassin);
-        this.game.addEntity(portal);
-
-        //platform of second portal
-        land = new Land(this.game, 9100, 5950, 'L');
-        this.game.addEntity(land);
-        land = new Land(this.game, 10030, 5950, 0);
-        this.game.addEntity(land);
-        land = new Land(this.game, 10930, 5950, 'R');
-        this.game.addEntity(land);
-
-
-        shadowWarrior = new ShadowWarrior(this.game, 9600, 5900 , false);
-        this.game.addEntity(shadowWarrior);
-        shadowWarrior = new ShadowWarrior(this.game, 10700, 5900, true);
-        this.game.addEntity(shadowWarrior);
-
-
-
-        redEye = new RedEye(this.game, 8050, 5800);
-        this.game.addEntity(redEye);
-        redEye = new RedEye(this.game, 8850, 5800);
-        this.game.addEntity(redEye);
-
-
-
-        redEye = new RedEye(this.game, 3690, 3700);
-        this.game.addEntity(redEye);
-        redEye = new RedEye(this.game, 5100, 4580);
-        this.game.addEntity(redEye);
-        redEye = new RedEye(this.game, 5800, 4580);
-        this.game.addEntity(redEye);
-
-        knight = new Knight(this.game, 4300, 3750, 100, 100);
-        this.game.addEntity(knight);
-        knight = new Knight(this.game, 5200, 4550, 100, 1200);
-        this.game.addEntity(knight);
-        knight = new Knight(this.game, 5700, 4550, 100, 1200);
-        this.game.addEntity(knight);
-
-        // let floating = new Land(this.game, 250, 1000, 1);
-        // this.game.addEntity(floating);
-        // floating = new Land(this.game, -350, 1150, 1);
-        // this.game.addEntity(floating);
+        //assets for assassin
+        let healthBar = new HealthBar(this.game);
+        let weaponIcon = new WeaponIcons(this.game);
+        this.assassin = new Assassin(this.game, PARAMS.XSPAWN, PARAMS.YSPAWN, healthBar, weaponIcon);
+        this.loadBackgroundAssets()
+        this.loadPhaseOne();
+        this.loadPhaseTwo();
+        //this.loadPhaseThree();
 
         this.volumeSlider = new VolumeSlider();
         this.game.addEntity(this.volumeSlider);
         this.difficulty = new Difficulty();
         this.game.addEntity(this.difficulty);
 
-
-
-
-        //initialized up higher to use in portal and keep appropriate favor of drawing in front of each other
+        //initialized up higher to use in portal and keep appropriate order of drawing in front of each other
         this.game.addEntity(weaponIcon);
         this.game.addEntity(healthBar);
         this.game.addEntity(this.assassin);
 
-        let healthPotion = new HealthPotion(this.game, 920, 955);
-        this.game.addEntity(healthPotion);
-
-        healthPotion = new HealthPotion(this.game, 5400, 4020);
-        this.game.addEntity(healthPotion);
-
-
-
         this.startMenu = new Menus(this.game);
         this.game.addEntity(this.startMenu);
-
-
-
     };
 
     updateAudio() {

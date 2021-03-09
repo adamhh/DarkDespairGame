@@ -3,6 +3,9 @@
 class GameEngine {
     constructor() {
         this.entities = [];
+        this.phaseOne = [];
+        this.phaseTwo = [];
+        this.phaseThree = [];
         this.ctx = null;
         this.surfaceWidth = null;
         this.surfaceHeight = null;
@@ -176,6 +179,33 @@ class GameEngine {
     addEntity(entity) {
         this.entities.push(entity);
     };
+
+    addEntityP1(entity) {
+        this.phaseOne.push(entity);
+        this.entities.push(entity);
+    };
+
+    addEntityP2(entity) {
+        this.phaseTwo.push(entity);
+        this.entities.push(entity);
+    };
+
+    phaseOneDone(entity) {
+        for (let i = 0; i < this.phaseOne; i++) {
+            this.phaseOne[i].removeFromWorld = true;
+        }
+    }
+
+    phaseTwoDone(entity) {
+        for (let i = 0; i < this.phaseTwo; i++) {
+            this.phaseTwo[i].removeFromWorld = true;
+        }
+    }
+
+    addEntityP3(entity) {
+
+    }
+
 
     draw() {
         this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);

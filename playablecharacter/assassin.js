@@ -30,6 +30,7 @@ class Assassin {
         this.attackEnd = this.attackStart;
         this.arrowFlag = true;
         this.attackWindow = false;
+        this.game.One = true;
         this.bowTime = this.time2;
         this.isKeyed = false;
         this.teleport = false;
@@ -547,6 +548,13 @@ class Assassin {
                     this.portalCount++;
                     PARAMS.XSPAWN = this.x;
                     PARAMS.YSPAWN = this.y;
+                    if (this.portalCount === 1) {
+                        this.game.phaseOneDone();
+                    }
+                    if (this.portalCount === 2) {
+                        //this.game.phaseTwoDone();
+                    }
+                    this.velocity.x = 0;
                     this.isKeyed = false;
                     this.teleport = false;
                 }
@@ -635,9 +643,9 @@ class Assassin {
         }
 
         if (PARAMS.DEBUG) {
-            ctx.strokeStyle = 'Red';
-            ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y - this.game.camera.y, this.BB.width, this.BB.height);
-            ctx.strokeStyle = 'Yellow';
+            // ctx.strokeStyle = 'Red';
+            // ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y - this.game.camera.y, this.BB.width, this.BB.height);
+            ctx.strokeStyle = 'Blue';
             ctx.strokeRect(this.ABB.x - this.game.camera.x, this.ABB.y - this.game.camera.y, this.ABB.width, this.ABB.height);
 
         } else if (this.weapon === 2) {
