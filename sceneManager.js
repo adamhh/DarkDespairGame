@@ -9,7 +9,7 @@
         this.title = true;
         this.gameOverMusic = true;
         this.loadLevelOne();
-        PARAMS.DEBUG = false;
+        PARAMS.DEBUG = true;
     };
 
     restartState() {
@@ -242,6 +242,15 @@
     }
 
     loadPhaseThree() {
+        let land = new Land(this.game, 4000, 100, 'L');
+        this.game.addEntityP1(land);
+        land = new Land(this.game, 4930, 100, 0);
+        this.game.addEntityP1(land);
+        land = new Land(this.game, 5860, 100, 'R');
+        this.game.addEntityP1(land);
+
+        let dragon = new Dragon(this.game, 4500, -800)
+        this.game.addEntity(dragon);
 
     }
 
@@ -296,7 +305,7 @@
         this.loadBackgroundAssets()
         this.loadPhaseOne();
         this.loadPhaseTwo();
-        //this.loadPhaseThree();
+        this.loadPhaseThree();
 
         this.volumeSlider = new VolumeSlider();
         this.game.addEntity(this.volumeSlider);

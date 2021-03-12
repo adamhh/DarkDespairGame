@@ -39,12 +39,13 @@ const PARAMS = {
     GAMEOVER: false,
     STARTOVER: false,
     RESPAWN: false,
-    VOLUME: 20,
+    VOLUME: 0,
     DIFFICULTY: 1,
     EASY : .5,
     NORMAL : 1,
     HARD : 2,
     SOULS: 0,
-    XSPAWN : 0,
-    YSPAWN : 0
+    SAVEDSOULS: 0,
+    XSPAWN : 4300,
+    YSPAWN : -20
 };

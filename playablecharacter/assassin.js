@@ -41,17 +41,18 @@ class Assassin {
         this.jumpFlag = false;
         this.velocity = {x: 0, y: 0};
         this.fallAcc = 2000;
-        this.fallOffCount = 0;
         this.deadAudio = true;
-        if (PARAMS.YSPAWN > 3000)  {
-            this.fallOffCount++;
-            this.portalCount++;
-        }
-        this.portalCount = 0;
-        this.yFallBounds = [1800, 6500, 1800, 0];
-        this.portalLocations = [{x: 2770, y: 3800}, {x: 0, y: 0}];
-        //this.checkpoints = [ {x:0, y: 0} , {x: 2770, y: 3800}, {x: 0, y: 0}]
 
+        this.phase = 0;
+        if (PARAMS.YSPAWN === 3800)  {
+            this.phase++;
+        }
+        if (PARAMS.YSPAWN === -20) {
+            this.phase+=2;
+        }
+
+        this.yFallBounds = [1800, 6500, 1800];
+        this.portalLocations = [{x: 0, y: 0}, {x: 2770, y: 3800}, {x: 4300, y: -20}];
 
         //load animation
         this.animations = [];
@@ -282,7 +283,7 @@ class Assassin {
 
     update() {
         //console.log(this.x + " " + this.y)
-        if (this.y > this.yFallBounds[this.fallOffCount]) {
+        if (this.y > this.yFallBounds[this.phase]) {
             this.healthBar.updateHealth(-18);
         }
         const TICK = this.game.clockTick;
@@ -298,6 +299,7 @@ class Assassin {
             }
 
         }
+
 
         //-------------adjust constants to alter physics-----------
         //run
@@ -317,7 +319,7 @@ class Assassin {
         const MAX_FALL = 1000;  //adjust for fall speed
         const STOP_FALL = 1575;
         //in air deceleration
-        const AIR_DEC = 2;
+        const AIR_DEC = 1;
         // console.log("(" + Math.floor(this.x) + "," + this.y + ")");
         if (PARAMS.START && !PARAMS.PAUSE) {
             if (this.dead) {
@@ -383,6 +385,15 @@ class Assassin {
                             }
                         }
 
+                    }
+                    if ((entity instanceof Dragon)
+                        && entity.BB && that.BB.collide(entity.BB)) {
+                        that.velocity.x *= -.9;
+                        if (that.facing === 0) {
+                            that.x -= 5;
+                        } else {
+                            that.x += 5;
+                        }
                     }
                     if ((entity instanceof ShadowWarrior || entity instanceof Knight || entity instanceof RedEye)
                         && entity.BB && that.BB.collide(entity.BB)) {
@@ -529,7 +540,6 @@ class Assassin {
                         }
                     }
                 }
-
                 // max speed calculation
                 if (this.velocity.x >= max_run) this.velocity.x = max_run;
                 if (this.velocity.x <= -max_run) this.velocity.x = -max_run;
@@ -542,17 +552,16 @@ class Assassin {
                 this.x += this.velocity.x * TICK * PARAMS.SCALE;
                 if (this.teleport) {
                     ASSET_MANAGER.playAsset("./audio/teleport.mp3")
-                    this.fallOffCount++;
-                    this.x = this.portalLocations[this.portalCount].x;
-                    this.y = this.portalLocations[this.portalCount].y;
-                    this.portalCount++;
+                    this.phase++;
+                    this.x = this.portalLocations[this.phase].x;
+                    this.y = this.portalLocations[this.phase].y;
                     PARAMS.XSPAWN = this.x;
                     PARAMS.YSPAWN = this.y;
-                    if (this.portalCount === 1) {
+                    if (this.phase === 1) {
                         this.game.phaseOneDone();
                     }
-                    if (this.portalCount === 2) {
-                        //this.game.phaseTwoDone();
+                    if (this.phase === 2) {
+                        this.game.phaseTwoDone();
                     }
                     this.velocity.x = 0;
                     this.isKeyed = false;
