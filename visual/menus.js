@@ -1,7 +1,7 @@
 class Menus {
     constructor(game) {
         Object.assign(this, { game });
-        this.spritesheet = ASSET_MANAGER.getAsset("./sprites/menus/start_menu.png");
+        this.mainmenu = ASSET_MANAGER.getAsset("./sprites/menus/start_menu.png");
         this.controls = ASSET_MANAGER.getAsset("./sprites/menus/intro_menu.png");
         this.pause = ASSET_MANAGER.getAsset("./sprites/menus/pause_menu.png");
         this.gameOver = ASSET_MANAGER.getAsset("./sprites/menus/gameover_menu.png")
@@ -31,9 +31,9 @@ class Menus {
     draw(ctx){
         if (this.exists) {
             if (!PARAMS.PLAY) {
-                ctx.drawImage(this.spritesheet, 0, 0, 975, 772, 0, 0, 950, 750);
+                ctx.drawImage(this.mainmenu, 0, 0, 975, 772, 0, 0, 950, 750);
             } else if (PARAMS.PLAY) {
-                ctx.drawImage(this.spritesheet, 979, 0, 975, 772, 0, 0, 950, 750);
+                ctx.drawImage(this.mainmenu, 979, 0, 975, 772, 0, 0, 950, 750);
             }
         }
         if (PARAMS.CONTROLS) {

@@ -4,8 +4,8 @@ class Dragon {
         //spritesheets
 
         this.spritesheet = ASSET_MANAGER.getAsset("./sprites/characters/dragon.png");
-        this.width = 300;
-        this.height = 300;
+        this.width = 250;
+        this.height = 250;
         //state variables
         this.facing = 0; //0 for right, 1 for left
         this.state = 2;  //0 for idle, 1 for walking, 2 for attacking, 3 for dead
@@ -82,20 +82,20 @@ class Dragon {
             if (this.facing === 1) {
                 this.BB = new BoundingBox(this.x + xOffset, this.y + yOffset, this.width, this.height - 75);
                 if (this.state === 2) {
-                    this.ABB = new BoundingBox(this.x + 30, this.y + 150, 160, 70);
+                    this.ABB = new BoundingBox(this.x + 30, this.y + 120, 100, 70);
                 }
 
             } else  {
                 this.BB = new BoundingBox(this.x + xOffset, this.y + yOffset, this.width, this.height - 75);
                 if (this.state === 2) {
-                    this.ABB = new BoundingBox(this.x + 400, this.y + 150, 160, 70);
+                    this.ABB = new BoundingBox(this.x + 400, this.y + 120, 100, 70);
                 }
 
             }
         } else {
             this.BB = new BoundingBox(this.x, this.y, 0, this.height - 75);
         }
-        this.sight = new BoundingBox(this.x - 650, this.y, 1900, 200);
+        this.sight = new BoundingBox(this.x - 650, this.y - 150, 1900, 350);
 
     }
 
@@ -116,6 +116,7 @@ class Dragon {
         let moveTo = 0;
         let that = this;
         let inSight = false;
+        let attackZone = false;
 
         if (PARAMS.START && !PARAMS.PAUSE) {
             //collision system
@@ -135,6 +136,11 @@ class Dragon {
                     if (entity instanceof Assassin) {
                         if (entity.BB && that.sight.collide(entity.BB)) { //if dragon sees assassin
                             inSight = true;
+                            attackZone = false;
+                            //console.log(entity.BB.y);
+                            if (entity.BB.y > that.y) {
+                                attackZone = true;
+                            }
                             if ((entity.BB.x - that.sight.x) < (that.sight.x + that.sight.width) - entity.BB.x) {
                                 that.facing = 1;
                                 //console.log(that.sight.x - entity.BB.x);
@@ -145,7 +151,7 @@ class Dragon {
                             moveTo = entity.BB.x;
 
 
-                        } else {
+                        }  else {
                             that.velocity.x = 0;
                             that.state = 0;
                         }
@@ -155,31 +161,31 @@ class Dragon {
                     this.attacking = true;
                 }
                 let playerDiff = 0;
-                if (this.facing === 1 && inSight) {                                 //facing and in sight <-
+                if (this.facing === 1 && inSight) {                                        //facing and in sight <-
                     playerDiff = this.x - moveTo;
-                    console.log(playerDiff);
-                    if (playerDiff < 700 && playerDiff > -25) {                       //if close walk to attack position
+                    //console.log(playerDiff);
+                    if (playerDiff < 700 && playerDiff > -25 && this.x > 4500) {          //if close walk to attack position but don't walk off edge
                         this.velocity.x -= MAX_WALK;
                         this.state = 1;
-                    } else if (playerDiff < -25 && playerDiff > -180) {              //attack if in zone
+                    } else if (playerDiff < -25 && playerDiff > -180 && attackZone) {     //attack if in zone
                         this.velocity.x = 0;
                         this.state = 2;
-                    } else {                                                        //else stop
+                    } else {                                                              //else stop
                         this.velocity.x = 0;
                         this.state = 0;
                     }
 
-                } else if (inSight) {                                               //facing and in sight ->
+                } else if (inSight) {                                                    //facing and in sight ->
                     playerDiff = moveTo - this.x;
-                    console.log(playerDiff);
-                    if (playerDiff < 1500 && playerDiff > 500) {                     //in zone will walk towards and attack
+                    //console.log(playerDiff);
+                    if (playerDiff < 1500 && playerDiff > 450 && this.x < 5600) {       //in zone will walk towards and attack
                         this.velocity.x += MAX_WALK;
                         this.state = 1;
-                    } else if (playerDiff < 500 && playerDiff > 300) {
+                    } else if (playerDiff < 450 && playerDiff > 300 && attackZone) {    //attack if in zone
                         this.velocity.x = 0;
                         this.state = 2;
 
-                    } else {                                                        //else stop
+                    } else {                                                             //else stop
                         this.velocity.x = 0;
                         this.state = 0;
                     }
@@ -211,7 +217,7 @@ class Dragon {
         let xOffset = 0;
 
         if (this.state === 2) {
-            yOffset = 20;
+            yOffset = 15;
         }
         if (this.state === 3) {
             yOffset = 12;
@@ -223,7 +229,7 @@ class Dragon {
             xOffset = 20;
         }
         this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x + xOffset,
-            this.y - this.game.camera.y +yOffset - 75, 2);
+            this.y - this.game.camera.y +yOffset - 85, 1.75);
         if (PARAMS.DEBUG) {
             ctx.strokeStyle = 'Red';
             ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y - this.game.camera.y, this.BB.width, this.BB.height);

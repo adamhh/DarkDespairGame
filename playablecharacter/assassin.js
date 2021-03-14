@@ -52,7 +52,7 @@ class Assassin {
         }
 
         this.yFallBounds = [1800, 6500, 1800];
-        this.portalLocations = [{x: 0, y: 0}, {x: 2770, y: 3800}, {x: 4300, y: -20}];
+        this.portalLocations = [{x: 0, y: 0}, {x: 2770, y: 3800}, {x: 4800, y: -20}];
 
         //load animation
         this.animations = [];
@@ -336,7 +336,7 @@ class Assassin {
                             ASSET_MANAGER.playAsset("./audio/arrow_impact_soft.mp3")
                             that.velocity.x *= .95;
                         } else if (that.velocity.y > 0) { // falling
-                            if ((entity instanceof Land || entity instanceof FloatingLand) // landing
+                            if ((entity instanceof Land || entity instanceof FloatingLand || entity instanceof Bridge) // landing
                                 && (that.lastBB.bottom) <= entity.BB.top) { // was above last tick
                                 that.velocity.y = 0;
                                 that.y = entity.BB.top - that.BB.height;
@@ -534,7 +534,7 @@ class Assassin {
                             this.velocity.y -= JUMP_ACC;
                             this.fallAcc = STOP_FALL;
                             this.jumpFlag = true;
-                        } else if (!this.jumpFlag && timeDiff > 100 && timeDiff < 200) {
+                        } else if (!this.jumpFlag && timeDiff > 100 && timeDiff < 250) {
                             this.velocity.y -= DBL_JUMP_MOD;
                             this.fallAcc = STOP_FALL;
                         }

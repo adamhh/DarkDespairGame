@@ -3,19 +3,19 @@ class Land {
         Object.assign(this, {game, x, y, type});
         switch (type) {
             case 'R': //landblock right end piece
-                this.spritesheet = ASSET_MANAGER.getAsset("./sprites/backgroundassets/landendR.png");
+                this.image = ASSET_MANAGER.getAsset("./sprites/backgroundassets/landendR.png");
                 this.w = 930;
                 this.h = 345;
                 this.BB = new BoundingBox(this.x, this.y + 96, this.w, this.h - 120);
                 break;
             case 'L': //landblock left end piece
-                this.spritesheet = ASSET_MANAGER.getAsset("./sprites/backgroundassets/landendL.png");
+                this.image = ASSET_MANAGER.getAsset("./sprites/backgroundassets/landendL.png");
                 this.w = 930;
                 this.h = 345;
                 this.BB = new BoundingBox(this.x, this.y + 96, this.w, this.h - 120);
                 break;
             default: //center land block
-                this.spritesheet = ASSET_MANAGER.getAsset("./sprites/backgroundassets/landblock.png");
+                this.image = ASSET_MANAGER.getAsset("./sprites/backgroundassets/landblock.png");
                 this.w = 930;
                 this.h = 345;
                 this.BB = new BoundingBox(this.x, this.y + 96, this.w, this.h - 120);
@@ -24,11 +24,10 @@ class Land {
     };
 
     update() {
-
     };
 
     draw(ctx) {
-        ctx.drawImage(this.spritesheet, this.x - this.game.camera.x, this.y - this.game.camera.y, this.w, this.h);
+        ctx.drawImage(this.image, this.x - this.game.camera.x, this.y - this.game.camera.y, this.w, this.h);
 
         if (PARAMS.DEBUG) {
             ctx.strokeStyle = 'Red';
@@ -37,6 +36,31 @@ class Land {
     };
 };
 
+class Bridge {
+    constructor(game, x, y, type) {
+        Object.assign(this, {game, x, y, type});
+        this.image = ASSET_MANAGER.getAsset("./sprites/backgroundassets/bridge.png");
+        this.w = 500;
+        this.h = 30;
+        this.BB = new BoundingBox(this.x + 20, this.y, this.w - 50, this.h);
+
+    };
+
+    update() {
+
+    };
+
+    draw(ctx) {
+        ctx.drawImage(this.image, 0, 0, 1492, 106, this.x - this.game.camera.x, this.y - this.game.camera.y, this.w, this.h);
+
+        if (PARAMS.DEBUG) {
+            ctx.strokeStyle = 'Red';
+            ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y - this.game.camera.y, this.BB.width, this.BB.height);
+        }
+    };
+};
+
+
 class CaveWall {
     constructor(game, x, y, scale, type) {
         Object.assign(this, {game, x, y, scale, type});
@@ -44,19 +68,19 @@ class CaveWall {
 
         switch (this.type) {
             case 0:
-                this.spritesheet = ASSET_MANAGER.getAsset("./sprites/backgroundassets/cavewall_left.png");
+                this.image = ASSET_MANAGER.getAsset("./sprites/backgroundassets/cavewall_left.png");
                 this.h = 1053 * this.scale;
                 break;
             case 1:
-                this.spritesheet = ASSET_MANAGER.getAsset("./sprites/backgroundassets/cavewall_right.png");
+                this.image = ASSET_MANAGER.getAsset("./sprites/backgroundassets/cavewall_right.png");
                 this.h = 1053 * this.scale;
                 break;
             case 2:
-                this.spritesheet = ASSET_MANAGER.getAsset("./sprites/backgroundassets/cavewall_left2.png")
+                this.image = ASSET_MANAGER.getAsset("./sprites/backgroundassets/cavewall_left2.png")
                 this.h = 1220 * this.scale;
                 break;
             default:
-                this.spritesheet = ASSET_MANAGER.getAsset("./sprites/backgroundassets/cavewall_right2.png")
+                this.image = ASSET_MANAGER.getAsset("./sprites/backgroundassets/cavewall_right2.png")
                 this.h = 1220 * this.scale;
                 break;
 
@@ -70,7 +94,7 @@ class CaveWall {
     }
 
     draw(ctx) {
-        ctx.drawImage(this.spritesheet, 0, 0, 573, 1190, this.x - this.game.camera.x, this.y - this.game.camera.y, this.w, this.h);
+        ctx.drawImage(this.image, 0, 0, 573, 1190, this.x - this.game.camera.x, this.y - this.game.camera.y, this.w, this.h);
         if (PARAMS.DEBUG) {
             ctx.strokeStyle = 'Red';
             ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y - this.game.camera.y, this.BB.width, this.BB.height);
@@ -102,7 +126,7 @@ class Ceiling {
         Object.assign(this, {game, x, y});
         this.w = 1000;
         this.h = 850;
-        this.spritesheet = ASSET_MANAGER.getAsset("./sprites/backgroundassets/ceiling.png");
+        this.image = ASSET_MANAGER.getAsset("./sprites/backgroundassets/ceiling.png");
     }
 
     update() {
@@ -110,7 +134,7 @@ class Ceiling {
     }
 
     draw(ctx) {
-        ctx.drawImage(this.spritesheet, this.x - this.game.camera.x, this.y - this.game.camera.y, this.w, this.h);
+        ctx.drawImage(this.image, this.x - this.game.camera.x, this.y - this.game.camera.y, this.w, this.h);
 
     };
 }
@@ -118,7 +142,7 @@ class Ceiling {
 class FloatingLand {
     constructor(game, x, y, type) {
         Object.assign(this, {game, x, y, type});
-        this.spritesheet = ASSET_MANAGER.getAsset("./sprites/backgroundassets/floating_land.png");
+        this.imagesheet = ASSET_MANAGER.getAsset("./sprites/backgroundassets/floating_land.png");
         switch (type) {
             case 0:
                 this.yLoc = 0;
@@ -134,6 +158,7 @@ class FloatingLand {
                 this.yLoc = 313;
                 this.w = 225;
                 this.h = 140;
+                break;
         }
         this.xLoc = 0;
         this.BB = new BoundingBox(this.x, this.y + 10, this.w, this.h);
@@ -143,7 +168,7 @@ class FloatingLand {
     };
 
     draw(ctx) {
-        ctx.drawImage(this.spritesheet, this.xLoc, this.yLoc, this.w, this.h, this.x - this.game.camera.x, this.y - this.game.camera.y, this.w, this.h);
+        ctx.drawImage(this.imagesheet, this.xLoc, this.yLoc, this.w, this.h, this.x - this.game.camera.x, this.y - this.game.camera.y, this.w, this.h);
 
         if (PARAMS.DEBUG) {
             ctx.strokeStyle = 'Red';

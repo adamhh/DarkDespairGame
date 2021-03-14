@@ -23,6 +23,7 @@ ASSET_MANAGER.queueDownload("./sprites/backgroundassets/cavewall_left.png");
 ASSET_MANAGER.queueDownload("./sprites/backgroundassets/cavewall_right.png");
 ASSET_MANAGER.queueDownload("./sprites/backgroundassets/cavewall_left2.png");
 ASSET_MANAGER.queueDownload("./sprites/backgroundassets/cavewall_right2.png");
+ASSET_MANAGER.queueDownload("./sprites/backgroundassets/bridge.png");
 
 
 ASSET_MANAGER.queueDownload("./sprites/gameassets/sign_portal.png");
@@ -36,8 +37,6 @@ ASSET_MANAGER.queueDownload("./sprites/menus/intro_menu.png");
 ASSET_MANAGER.queueDownload("./sprites/menus/pause_menu.png");
 ASSET_MANAGER.queueDownload("./sprites/menus/gameover_menu.png");
 ASSET_MANAGER.queueDownload("./sprites/menus/weaponicons.png");
-
-
 
 ASSET_MANAGER.queueDownload("./audio/midnight_blade.mp3");
 ASSET_MANAGER.queueDownload("./audio/background_diablo.mp3");

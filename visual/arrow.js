@@ -3,12 +3,12 @@ class Arrow {
         Object.assign(this, { game, x, y, isLeft, isAssassin});
         //console.log(this.left)
         if (this.isLeft) {
-            this.spritesheet = ASSET_MANAGER.getAsset('./sprites/gameassets/arrow_left.png');
+            this.image = ASSET_MANAGER.getAsset('./sprites/gameassets/arrow_left.png');
         } else {
-            this.spritesheet = ASSET_MANAGER.getAsset('./sprites/gameassets/arrow_right.png');
+            this.image = ASSET_MANAGER.getAsset('./sprites/gameassets/arrow_right.png');
         }
 
-        this.animations = new Animator(this.spritesheet, 0, 0, 355, 42, 1, 1, 0, false, true);
+        this.animation = new Animator(this.image, 0, 0, 355, 42, 1, 1, 0, false, true);
 
         this.maxSpeed = 1500; // pixels per second
         this.velocity = { x: this.maxSpeed, y: this.maxSpeed };
@@ -48,9 +48,9 @@ class Arrow {
     }
     draw(ctx) {
         if (this.isLeft) {
-            this.animations.drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x - 25, this.y - this.game.camera.y + 40, .1)
+            this.animation.drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x - 25, this.y - this.game.camera.y + 40, .1)
         } else {
-            this.animations.drawFrame(this.game.clockTick, ctx, this.x + 70 - this.game.camera.x, this.y - this.game.camera.y + 40, .1)
+            this.animation.drawFrame(this.game.clockTick, ctx, this.x + 70 - this.game.camera.x, this.y - this.game.camera.y + 40, .1)
         }
         this.updateBB();
 

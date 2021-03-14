@@ -3,7 +3,7 @@ class Sign {
         Object.assign(this, {game, x, y, n});
         switch(n){
             default:
-                this.spritesheet = ASSET_MANAGER.getAsset("./sprites/gameassets/sign_portal.png");
+                this.image = ASSET_MANAGER.getAsset("./sprites/gameassets/sign_portal.png");
                 this.h = 125;
                 this.w = 104;
                 this.BB = new BoundingBox(this.x, this.y + 212, this.w - 20, 60);
@@ -17,7 +17,7 @@ class Sign {
     };
 
     draw(ctx) {
-        ctx.drawImage(this.spritesheet, this.x - this.game.camera.x, this.y - this.game.camera.y, this.w, this.h);
+        ctx.drawImage(this.image, this.x - this.game.camera.x, this.y - this.game.camera.y, this.w, this.h);
 
     };
 }
@@ -25,7 +25,7 @@ class Sign {
 class HealthPotion {
     constructor(game, x, y) {
         Object.assign(this, {game, x, y});
-        this.spritesheet = ASSET_MANAGER.getAsset("./sprites/gameassets/ingame_items.png");
+        this.imagesheet = ASSET_MANAGER.getAsset("./sprites/gameassets/ingame_items.png");
         this.w = 25;
         this.h = 32;
         this.BB = new BoundingBox(this.x, this.y, this.w, this.h);
@@ -50,7 +50,7 @@ class HealthPotion {
             this.step = +.1
         }
         if (!this.drank) {
-            ctx.drawImage(this.spritesheet, 0, 0, 50, 65, this.x - this.game.camera.x, this.y - this.game.camera.y + this.floatY, this.w, this.h);
+            ctx.drawImage(this.imagesheet, 0, 0, 50, 65, this.x - this.game.camera.x, this.y - this.game.camera.y + this.floatY, this.w, this.h);
         }
         if (PARAMS.DEBUG) {
             if (PARAMS.DEBUG) {
@@ -64,7 +64,7 @@ class Soul {
     constructor(game, x, y, value, isKey) {
         Object.assign(this, {game, x, y, value, isKey});
 
-        this.spritesheet = ASSET_MANAGER.getAsset("./sprites/gameassets/ingame_items.png");
+        this.imagesheet = ASSET_MANAGER.getAsset("./sprites/gameassets/ingame_items.png");
         this.w = 35;
         this.h = 45;
         this.sourceY = 0;
@@ -96,7 +96,7 @@ class Soul {
             this.step = +.1
         }
         if (!this.consumed) {
-            ctx.drawImage(this.spritesheet, this.sourceX, this.sourceY, this.sourceW, this.sourceH, this.x - this.game.camera.x,
+            ctx.drawImage(this.imagesheet, this.sourceX, this.sourceY, this.sourceW, this.sourceH, this.x - this.game.camera.x,
                             this.y - this.game.camera.y + this.floatY, this.w, this.h);
         }
         if (PARAMS.DEBUG) {

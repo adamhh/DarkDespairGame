@@ -5,7 +5,7 @@ class Portal {
         this.portalOpenSound = false;
         switch(n){
             case 0:
-                this.spritesheet = ASSET_MANAGER.getAsset("./sprites/backgroundassets/portal.png");
+                this.image = ASSET_MANAGER.getAsset("./sprites/backgroundassets/portal.png");
                 this.h = 181;
                 this.w = 200;
                 this.BB = new BoundingBox(this.x + 50, this.y + 50, this.w-100, this.h-100);
@@ -40,7 +40,7 @@ class Portal {
             }
 
         } else {
-            ctx.drawImage(this.spritesheet, this.x - this.game.camera.x, this.y - this.game.camera.y, this.w, this.h);
+            ctx.drawImage(this.image, this.x - this.game.camera.x, this.y - this.game.camera.y, this.w, this.h);
         }
         if (PARAMS.DEBUG) {
             ctx.strokeStyle = 'Red';

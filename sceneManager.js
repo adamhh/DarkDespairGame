@@ -242,15 +242,29 @@
     }
 
     loadPhaseThree() {
-        let land = new Land(this.game, 4000, 100, 'L');
-        this.game.addEntityP1(land);
-        land = new Land(this.game, 4930, 100, 0);
-        this.game.addEntityP1(land);
-        land = new Land(this.game, 5860, 100, 'R');
-        this.game.addEntityP1(land);
 
-        let dragon = new Dragon(this.game, 4500, -800)
-        this.game.addEntity(dragon);
+        //floating to left and right of block
+        let floating = new FloatingLand(this.game, 4100, 50, 1);
+        this.game.addEntityP2(floating);
+        floating = new FloatingLand(this.game, 6200, 50, 1);
+        this.game.addEntityP2(floating);
+
+        //main landblock
+        let land = new Land(this.game, 4500, 100, 'L');
+        this.game.addEntityP2(land);
+        land = new Land(this.game, 5100, 100, 'R');
+        this.game.addEntityP2(land);
+        // land = new Land(this.game, 5860, 100, 'R');
+        // this.game.addEntityP1(land);
+
+        // bridges above dragon
+        let bridge = new Bridge(this.game, 4650, -75, 'B');
+        this.game.addEntityP2(bridge);
+        bridge = new Bridge(this.game, 5500, -75, 'B');
+        this.game.addEntityP2(bridge);
+
+        let dragon = new Dragon(this.game, 5000, -100)
+        this.game.addEntityP2(dragon);
 
     }
 
