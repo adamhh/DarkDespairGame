@@ -365,7 +365,6 @@ class Assassin {
                                     that.velocity.x *= -.2;
                                 }
                                 that.x = that.lastBB.left - 5;
-                                that.updateBB();
                             }
                         } else if (entity instanceof HealthPotion) {
                             if (!that.healthBar.isFull()) {
@@ -433,8 +432,11 @@ class Assassin {
                         }
                     }
                     if (entity.ABB && entity instanceof Knight && that.BB.collide(entity.ABB)) {
-                        that.healthBar.updateHealth(-PARAMS.DIFFICULTY);
-                        ASSET_MANAGER.playAsset("./audio/sword_hit_player_knight.mp3");
+                        if (that.state !== 3) {
+                            that.healthBar.updateHealth(-PARAMS.DIFFICULTY);
+                            ASSET_MANAGER.playAsset("./audio/sword_hit_player_knight.mp3");
+                        }
+
                     }
 
                 });
