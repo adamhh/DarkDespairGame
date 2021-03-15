@@ -36,6 +36,7 @@ class Assassin {
         this.teleport = false;
         this.hasIceArrow = false;
         this.deadCount = 0;
+        this.hit = false;
 
 
         //boolean flag for double jump
@@ -402,18 +403,23 @@ class Assassin {
                             }
                         }
                         if (entity.ABB && that.BB.collide(entity.ABB)) {
-                            switch (PARAMS.DIFFICULTY) {
-                                case PARAMS.EASY:
-                                    that.healthBar.updateHealth(-1);
-                                    break;
-                                case PARAMS.NORMAL:
-                                    that.healthBar.updateHealth(-3);
-                                    break;
-                                case PARAMS.HARD:
-                                    that.healthBar.updateHealth(-7);
-                                    break;
+                            if (!that.hit) {
+                                switch (PARAMS.DIFFICULTY) {
+                                    case PARAMS.EASY:
+                                        that.healthBar.updateHealth(-1);
+                                        break;
+                                    case PARAMS.NORMAL:
+                                        that.healthBar.updateHealth(-3);
+                                        break;
+                                    case PARAMS.HARD:
+                                        that.healthBar.updateHealth(-7);
+                                        break;
+                                }
+                                that.hit = true;
+                                ASSET_MANAGER.playAsset("./audio/dragon_hit.mp3");
                             }
-                            ASSET_MANAGER.playAsset("./audio/dragon_hit.mp3");
+                        } else {
+                            that.hit = false;
                         }
                     }
                     if ((entity instanceof ShadowWarrior || entity instanceof Knight || entity instanceof RedEye)

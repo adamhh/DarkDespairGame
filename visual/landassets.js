@@ -54,7 +54,7 @@ class Bridge {
                 this.sh = 90;
                 this.w = 250;
                 this.h = 30;
-                this.BB = new BoundingBox(this.x + 20, this.y, this.w - 50, this.h);
+                this.BB = new BoundingBox(this.x + 20, this.y + 5, this.w - 50, this.h);
                 break;
         }
 

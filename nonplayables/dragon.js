@@ -176,10 +176,10 @@ class Dragon {
                 if (this.facing === 1 && inSight) {                                        //facing and in sight <-
                     playerDiff = this.x - moveTo;
                     //console.log(playerDiff);
-                    if (playerDiff < 700 && playerDiff > -20 && this.x > 4500) {          //if close walk to attack position but don't walk off edge
+                    if (playerDiff < 700 && playerDiff > -50 && this.x > 4500) {          //if close walk to attack position but don't walk off edge
                         this.velocity.x -= MAX_WALK;
                         this.state = 1;
-                    } else if (playerDiff < 20 && playerDiff > -180 && attackZone) {     //attack if in zone
+                    } else if (playerDiff < -50 && playerDiff > -180 && attackZone) {     //attack if in zone
                         this.velocity.x = 0;
                         this.state = 2;
                     } else {                                                              //else stop
@@ -255,12 +255,13 @@ class Dragon {
         if (this.state === 5) {
             yOffset = 10;
         }
-        if (this.facing === 1) {
-            xOffset = 20;
+        if (this.facing === 1 && this.state === 2) {
+            xOffset = 0;
         }
 
+
         let healthOffset = 200;
-        if (this.facing === 1) healthOffset = 150;
+        if (this.facing === 1) healthOffset = 250;
         ctx.strokeStyle = "Black";
         ctx.fillStyle = "Green";
         let health = this.health/1.25;

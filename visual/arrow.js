@@ -8,7 +8,7 @@ class Arrow {
                 this.image = ASSET_MANAGER.getAsset('./sprites/gameassets/arrow_left.png');
             }
 
-            this.isAssassin ? this.maxDistance = this.x - 430 : this.maxDistance = this.x - 830;
+            this.isAssassin ? this.maxDistance = this.x - 530 : this.maxDistance = this.x - 830;
 
         } else {
             if (this.isPowered) {
@@ -17,7 +17,7 @@ class Arrow {
                 this.image = ASSET_MANAGER.getAsset('./sprites/gameassets/arrow_right.png');
             }
 
-            this.isAssassin ? this.maxDistance = this.x + 410 : this.maxDistance = this.x + 810;
+            this.isAssassin ? this.maxDistance = this.x + 510 : this.maxDistance = this.x + 810;
 
         }
         this.animation = new Animator(this.image, 0, 0, 355, 42, 1, 1, 0, false, true);

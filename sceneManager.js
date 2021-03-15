@@ -9,7 +9,7 @@
         this.title = true;
         this.gameOverMusic = true;
         this.loadLevelOne();
-        PARAMS.DEBUG = false;
+        PARAMS.DEBUG = true;
     };
 
     restartState() {
@@ -91,6 +91,16 @@
         floating = new FloatingLand(this.game, 350, 950, 1);
         this.game.addEntityP1(floating);
 
+        smallBridge = new Bridge(this.game, 1050, 800, 1);
+        this.game.addEntityP1(smallBridge);
+        smallBridge = new Bridge(this.game, 600, 800, 1);
+        this.game.addEntityP1(smallBridge);
+
+        smallBridge = new Bridge(this.game, 1050, 1100, 1);
+        this.game.addEntityP1(smallBridge);
+        smallBridge = new Bridge(this.game, 600, 1100, 1);
+        this.game.addEntityP1(smallBridge);
+
         //past first nonplayables
         let portal = new Portal(this.game, -1700, 875, 1, this.assassin);
         this.game.addEntityP1(portal);
@@ -117,17 +127,24 @@
 
         let healthPotion = new HealthPotion(this.game, 920, 955);
         this.game.addEntityP1(healthPotion);
+        healthPotion = new HealthPotion(this.game, 1900, 830);
+        this.game.addEntityP1(healthPotion);
 
     }
 
     loadPhaseTwo() {
-        let landCube = new FloatingLand(this.game, 2700, 3950, 2);
-        this.game.addEntityP2(landCube);
-        landCube = new FloatingLand(this.game, 3100, 3800, 2);
-        this.game.addEntityP2(landCube);
-        landCube = new FloatingLand(this.game, 4250, 3900, 2);
-        this.game.addEntityP2(landCube);
 
+
+
+        let smallBridge = new Bridge(this.game, 2700, 3950, 1);
+        this.game.addEntityP2(smallBridge);
+        let bridge = new Bridge(this.game, 3050, 3800, 0);
+        this.game.addEntityP2(bridge);
+        smallBridge = new Bridge(this.game, 4000, 4000, 1);
+        this.game.addEntityP2(smallBridge);
+
+        let landCube = new FloatingLand(this.game, 4250, 3900, 2);
+        this.game.addEntityP2(landCube);
         landCube = new FloatingLand(this.game, 4500, 4100, 2);
         this.game.addEntityP2(landCube);
         landCube = new FloatingLand(this.game, 4800, 4100, 2);
@@ -157,6 +174,9 @@
         land = new Land(this.game, 6360, 4600, 'R');
         this.game.addEntityP2(land);
 
+        let healthPotion = new HealthPotion(this.game, 5900, 4650);
+        this.game.addEntityP2(healthPotion);
+
         floating = new FloatingLand(this.game, 7400, 4700, 1);
         this.game.addEntityP2(floating);
 
@@ -165,6 +185,8 @@
         landCube = new FloatingLand(this.game, 7900, 4900, 2);
         this.game.addEntityP2(landCube);
 
+        healthPotion = new HealthPotion(this.game, 8300, 5500);
+        this.game.addEntityP2(healthPotion);
 
         //right stack tube b4 portal
         landCube = new FloatingLand(this.game, 8550, 4650, 2);
@@ -193,13 +215,14 @@
         landCube = new FloatingLand(this.game, 8200, 5550, 2);
         this.game.addEntityP2(landCube);
 
+
         //landing spot
         landCube = new FloatingLand(this.game, 8400, 5950, 2);
         this.game.addEntityP2(landCube);
 
-        floating = new FloatingLand(this.game, 8000, 5950, 1);
+        floating = new FloatingLand(this.game, 8100, 5950, 1);
         this.game.addEntityP2(floating);
-        floating = new FloatingLand(this.game, 8800, 5950, 1);
+        floating = new FloatingLand(this.game, 8700, 5950, 1);
         this.game.addEntityP2(floating);
 
 
@@ -228,13 +251,12 @@
         redEye = new RedEye(this.game, 5800, 4580);
         this.game.addEntityP2(redEye);
 
-        redEye = new RedEye(this.game, 8050, 5800);
+        redEye = new RedEye(this.game, 8150, 5800);
         this.game.addEntityP2(redEye);
-        redEye = new RedEye(this.game, 8850, 5800);
+        redEye = new RedEye(this.game, 8800, 5800);
         this.game.addEntityP2(redEye);
-        let healthPotion = new HealthPotion(this.game, 9000, 5850);
+        healthPotion = new HealthPotion(this.game, 9000, 5850);
         this.game.addEntityP2(healthPotion);
-
 
 
         let knight = new Knight(this.game, 4300, 3750, 100, 100);
@@ -290,17 +312,22 @@
         this.game.addEntity(iceArrow);
         iceArrow = new IceArrow(this.game, 4700, -122);
         this.game.addEntity(iceArrow);
-
         iceArrow = new IceArrow(this.game, 5600, -120);
         this.game.addEntity(iceArrow);
         iceArrow = new IceArrow(this.game, 5900, -122);
         this.game.addEntity(iceArrow);
-
         iceArrow = new IceArrow(this.game, 5300, -450);
+        this.game.addEntity(iceArrow);
+        iceArrow = new IceArrow(this.game, 4400, -100);
+        this.game.addEntity(iceArrow);
+        iceArrow = new IceArrow(this.game, 6000, 0);
         this.game.addEntity(iceArrow);
 
 
+
         let healthPotion = new HealthPotion(this.game, 4850, -120, 0);
+        this.game.addEntity(healthPotion);
+        healthPotion = new HealthPotion(this.game, 6100, -50, 0);
         this.game.addEntity(healthPotion);
 
         let dragon = new Dragon(this.game, 5800, -100)
