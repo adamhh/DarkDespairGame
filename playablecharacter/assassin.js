@@ -314,7 +314,7 @@ class Assassin {
         const DEC_SKID = 4000;
         const TURN_SKID = 50;
         //jump
-        const JUMP_ACC = 700;     //adjust for maximum jump acc
+        const JUMP_ACC = 500;     //adjust for maximum jump acc
         const MAX_JUMP = 1000;    //adjust for maximum jump height
         const DBL_JUMP_MOD = 100; //adjust for double jump boost
         //falling
@@ -567,6 +567,9 @@ class Assassin {
                             this.velocity.y -= DBL_JUMP_MOD;
                             this.fallAcc = STOP_FALL;
                         }
+                    }
+                    if (this.velocity.y < 0) {
+                        this.state = 3;
                     }
                 }
                 // max speed calculation
