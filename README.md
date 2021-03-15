@@ -4,6 +4,6 @@ Development Stage: Alpha <br/>
 Can try it out at: https://adamhh.github.io/DarkDespairGame/
 
 Asset Credits:</br>
-SFX: zapsplat.com
-PNG images: pngtree.com
+SFX: zapsplat.com</br>
+PNG images: pngtree.com</br>
 Character Assets: graphicriver.net
