@@ -2,18 +2,16 @@
 
 class GameEngine {
     constructor() {
+        //entity lists
         this.entities = [];
         this.phaseOne = [];
         this.phaseTwo = [];
-        this.phaseThree = [];
-        this.ctx = null;
-        this.surfaceWidth = null;
-        this.surfaceHeight = null;
 
+        this.ctx = null;
+
+        //buttons
         this.left = false;
         this.right = false;
-        this.up = false;
-        this.down = false;
         this.A = false;
         this.B = false;
         this.C = false;
@@ -25,14 +23,12 @@ class GameEngine {
 
     init(ctx) { // called after page has loaded
         this.ctx = ctx;
-        this.surfaceWidth = this.ctx.canvas.width;
-        this.surfaceHeight = this.ctx.canvas.height;
         this.startInput();
         this.timer = new Timer();
     };
 
     start() {
-        var that = this;
+        let that = this;
         (function gameLoop() {
             that.loop();
             requestAnimFrame(gameLoop, that.ctx.canvas);
@@ -40,13 +36,31 @@ class GameEngine {
     };
 
     startInput() {
-        var that = this;
+        let that = this;
 
         if (PARAMS.START === false) {
             this.ctx.canvas.addEventListener("click", function (e) {
                 let click = getXandY(e);
                 if (click.x > 344 && click.x < 602 && click.y > 344 && click.y < 494) {
                     PARAMS.PLAY = true;
+                }
+                if (click.y > 650 && click.y < 725) {
+                    if (click.x > 20 && click.x < 100) {
+                        let win = window.open("https://www.linkedin.com/in/adam-hall-874218139/");
+                        if (win) {
+                            win.focus();
+                        } else {
+                            alert("Pop up not allowed: url: https://www.linkedin.com/in/adam-hall-874218139/");
+                        }
+                    } else if (click.x > 840 && click.x < 920) {
+                        let win = window.open("https://github.com/adamhh");
+                        if (win) {
+                            win.focus();
+                        } else {
+                            alert("Pop up not allowed: url: https://github.com/adamhh");
+                        }
+                    }
+
                 }
                 if (PARAMS.CONTROLS && click) {
                     PARAMS.CONTROLS = false;
@@ -69,9 +83,9 @@ class GameEngine {
             }, false);
 
         }
-        var getXandY = function (e) {
-            var x = e.clientX - that.ctx.canvas.getBoundingClientRect().left;
-            var y = e.clientY - that.ctx.canvas.getBoundingClientRect().top;
+        let getXandY = function (e) {
+            let x = e.clientX - that.ctx.canvas.getBoundingClientRect().left;
+            let y = e.clientY - that.ctx.canvas.getBoundingClientRect().top;
 
             return { x: x, y: y };
         }
@@ -202,25 +216,21 @@ class GameEngine {
         }
     }
 
-    addEntityP3(entity) {
-
-    }
-
 
     draw() {
         this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
         this.ctx.save();
-        for (var i = 0; i < this.entities.length; i++) {
+        for (let i = 0; i < this.entities.length; i++) {
             this.entities[i].draw(this.ctx);
         }
         this.camera.draw(this.ctx);
     };
 
     update() {
-        var entitiesCount = this.entities.length;
+        let entitiesCount = this.entities.length;
 
-        for (var i = 0; i < entitiesCount; i++) {
-            var entity = this.entities[i];
+        for (let i = 0; i < entitiesCount; i++) {
+            let entity = this.entities[i];
 
             if (entity && !entity.removeFromWorld) {
                 entity.update();
@@ -228,7 +238,7 @@ class GameEngine {
         }
         this.camera.update();
 
-        for (var i = this.entities.length - 1; i >= 0; --i) {
+        for (let i = this.entities.length - 1; i >= 0; --i) {
             if (this.entities[i].removeFromWorld) {
                 this.entities.splice(i, 1);
             }

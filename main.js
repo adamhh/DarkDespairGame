@@ -24,12 +24,15 @@ ASSET_MANAGER.queueDownload("./sprites/backgroundassets/cavewall_right.png");
 ASSET_MANAGER.queueDownload("./sprites/backgroundassets/cavewall_left2.png");
 ASSET_MANAGER.queueDownload("./sprites/backgroundassets/cavewall_right2.png");
 ASSET_MANAGER.queueDownload("./sprites/backgroundassets/bridge.png");
+ASSET_MANAGER.queueDownload("./sprites/backgroundassets/bridge2.png");
 
 
 ASSET_MANAGER.queueDownload("./sprites/gameassets/sign_portal.png");
 ASSET_MANAGER.queueDownload("./sprites/gameassets/healthbar.png");
 ASSET_MANAGER.queueDownload("./sprites/gameassets/arrow_right.png");
 ASSET_MANAGER.queueDownload("./sprites/gameassets/arrow_left.png");
+ASSET_MANAGER.queueDownload("./sprites/gameassets/arrow_right_ice.png");
+ASSET_MANAGER.queueDownload("./sprites/gameassets/arrow_left_ice.png");
 ASSET_MANAGER.queueDownload("./sprites/gameassets/ingame_items.png");
 
 ASSET_MANAGER.queueDownload("./sprites/menus/start_menu.png");
@@ -37,6 +40,7 @@ ASSET_MANAGER.queueDownload("./sprites/menus/intro_menu.png");
 ASSET_MANAGER.queueDownload("./sprites/menus/pause_menu.png");
 ASSET_MANAGER.queueDownload("./sprites/menus/gameover_menu.png");
 ASSET_MANAGER.queueDownload("./sprites/menus/weaponicons.png");
+ASSET_MANAGER.queueDownload("./sprites/menus/youWON.png");
 
 ASSET_MANAGER.queueDownload("./audio/midnight_blade.mp3");
 ASSET_MANAGER.queueDownload("./audio/background_diablo.mp3");
@@ -54,6 +58,10 @@ ASSET_MANAGER.queueDownload("./audio/kick.mp3");
 ASSET_MANAGER.queueDownload("./audio/sword_hit_player2.mp3");
 ASSET_MANAGER.queueDownload("./audio/sword_hit_player_knight.mp3");
 ASSET_MANAGER.queueDownload("./audio/game_over_music2.mp3");
+ASSET_MANAGER.queueDownload("./audio/growl.mp3");
+ASSET_MANAGER.queueDownload("./audio/you_win.mp3");
+ASSET_MANAGER.queueDownload("./audio/dragon_death.mp3");
+ASSET_MANAGER.queueDownload("./audio/dragon_hit.mp3");
 
 
 ASSET_MANAGER.downloadAll(function () {

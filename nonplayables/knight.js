@@ -18,7 +18,6 @@ class Knight {
         this.height = 90;
 
         this.animations = [];
-        this.disappearAnim = [];
         this.deadAnim = [];
 
         this.timer = new Timer();
@@ -26,7 +25,6 @@ class Knight {
         this.time2 = this.time1;
 
         this.attackTick = 0;
-        this.attackStart = 0;
         this.attackWindow = false;
 
         this.dead = false;
@@ -81,15 +79,15 @@ class Knight {
 
     updateBB() {
         this.lastBB = this.BB;
-        this.BB = new BoundingBox(this.x, this.y, this.width, this.height);
-        this.sight = new BoundingBox(this.x - this.sw/2, this.y, 148 + this.sw, this.sh);
+        this.BB = new BoundingBox(this.x, this.y, this.width, this.height/2);
+        this.sight = new BoundingBox(this.x - this.sw/2, this.y - 54, 148 + this.sw, this.sh);
         if (this.disappear) {
             this.ABB = new BoundingBox(0, 0, 0, 0);
         } else if (this.state === 2 && this.attackWindow) {
             if (this.facing === 0) {
-                this.ABB = new BoundingBox(this.x + 60, this.y + 55, 75, 15); //facing 0
+                this.ABB = new BoundingBox(this.x + 60, this.y + 20, 75, 15); //facing 0
             } else {
-                this.ABB = new BoundingBox(this.x - 45, this.y + 55, 75, 15);
+                this.ABB = new BoundingBox(this.x - 45, this.y + 20, 75, 15);
             }
         } else {
             this.ABB = new BoundingBox(0, 0, 0, 0);
@@ -123,7 +121,6 @@ class Knight {
 
             const TICK = this.game.clockTick;
             this.attackTick += TICK;
-            this.attackStart += TICK;
             const MAX_RUN = 150;
             const RUN_ACC = 20;
             const MAX_FALL = 100;
@@ -216,7 +213,8 @@ class Knight {
                 }
                 if (this.attackTick > ATTACK_WINDOW) {
                     this.attackWindow = true;
-                    this.attackTick = false;
+                    //this.attackTick = false;
+                    this.attackTick = 0;
                 }
                 else {
                     this.attackWindow = false;
@@ -237,7 +235,7 @@ class Knight {
             } else {
                 this.time2 = this.timer.getTime();
                 if (this.time2 - this.time1 > 500) {
-                    this.game.addEntity(new Soul(this.game, this.x + 20, this.y + 20, 50, false));
+                    this.game.addEntity(new Soul(this.game, this.x + 20, this.y - 5, 50, false));
                     this.removeFromWorld = true;
 
                 }
@@ -252,10 +250,10 @@ class Knight {
         if (this.dead || this.disappear) {
             this.facing === 0 ? xOffset = -5 : xOffset = -30;
             this.deadAnim[this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x + xOffset,
-                this.y - this.game.camera.y, .75);
+                this.y - this.game.camera.y - 45, .75);
         } else {
             this.facing === 0 ? xOffset = -10 : xOffset = -40
-            this.facing === 0 ? yOffset = 2 : yOffset = 5;
+            this.facing === 0 ? yOffset = -43 : yOffset = -40;
             this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x + xOffset,
                 this.y - this.game.camera.y + yOffset, .75);
         }

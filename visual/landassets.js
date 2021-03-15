@@ -39,10 +39,25 @@ class Land {
 class Bridge {
     constructor(game, x, y, type) {
         Object.assign(this, {game, x, y, type});
-        this.image = ASSET_MANAGER.getAsset("./sprites/backgroundassets/bridge.png");
-        this.w = 500;
-        this.h = 30;
-        this.BB = new BoundingBox(this.x + 20, this.y, this.w - 50, this.h);
+        switch (type) {
+            case 0:
+                this.image = ASSET_MANAGER.getAsset("./sprites/backgroundassets/bridge.png");
+                this.sw = 1492;
+                this.sh = 106;
+                this.w = 500;
+                this.h = 30;
+                this.BB = new BoundingBox(this.x + 20, this.y, this.w - 50, this.h);
+                break;
+            default:
+                this.image = ASSET_MANAGER.getAsset("./sprites/backgroundassets/bridge2.png");
+                this.sw = 534;
+                this.sh = 90;
+                this.w = 250;
+                this.h = 30;
+                this.BB = new BoundingBox(this.x + 20, this.y, this.w - 50, this.h);
+                break;
+        }
+
 
     };
 
@@ -51,7 +66,7 @@ class Bridge {
     };
 
     draw(ctx) {
-        ctx.drawImage(this.image, 0, 0, 1492, 106, this.x - this.game.camera.x, this.y - this.game.camera.y, this.w, this.h);
+        ctx.drawImage(this.image, 0, 0, this.sw, this.sh, this.x - this.game.camera.x, this.y - this.game.camera.y, this.w, this.h);
 
         if (PARAMS.DEBUG) {
             ctx.strokeStyle = 'Red';

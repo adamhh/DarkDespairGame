@@ -34,6 +34,7 @@ class Assassin {
         this.bowTime = this.time2;
         this.isKeyed = false;
         this.teleport = false;
+        this.hasIceArrow = false;
         this.deadCount = 0;
 
 
@@ -46,12 +47,14 @@ class Assassin {
         this.phase = 0;
         if (PARAMS.YSPAWN === 3800)  {
             this.phase++;
+            PARAMS.SOULS = PARAMS.SAVEDSOULS;
         }
         if (PARAMS.YSPAWN === -20) {
             this.phase+=2;
+            PARAMS.SOULS = PARAMS.SAVEDSOULS;
         }
 
-        this.yFallBounds = [1800, 6500, 1800];
+        this.yFallBounds = [1800, 6500, 1000];
         this.portalLocations = [{x: 0, y: 0}, {x: 2770, y: 3800}, {x: 4800, y: -20}];
 
         //load animation
@@ -261,15 +264,14 @@ class Assassin {
                     this.ABB = new BoundingBox(this.x + xOff, this.y + 30, 85, 60);
                     break;
                 case 2:
-                    //console.log(this.bowTime);
                     if (this.bowTime < 0.6 && this.bowTime > .4) {
                         if (this.arrowFlag) {
                             this.game.addEntity(new Arrow(this.game, this.x, this.y,
-                                this.facing === 1, true));
+                                this.facing === 1, true, this.hasIceArrow));
+                            this.hasIceArrow = false
                             ASSET_MANAGER.playAsset("./audio/arrow_whoosh.mp3")
                             this.arrowFlag = false;
                         }
-
                     } else {
                         this.bowTime = 0;
                     }
@@ -282,7 +284,6 @@ class Assassin {
     };
 
     update() {
-        //console.log(this.x + " " + this.y)
         if (this.y > this.yFallBounds[this.phase]) {
             this.healthBar.updateHealth(-18);
         }
@@ -383,16 +384,36 @@ class Assassin {
                             if (that.isKeyed) {
                                 that.teleport = true;
                             }
+                        } else if (entity instanceof IceArrow) {
+                            if (!that.hasIceArrow) {
+                                that.hasIceArrow = true;
+                                entity.consumed = true;
+                            }
                         }
 
                     }
-                    if ((entity instanceof Dragon)
-                        && entity.BB && that.BB.collide(entity.BB)) {
-                        that.velocity.x *= -.9;
-                        if (that.facing === 0) {
-                            that.x -= 5;
-                        } else {
-                            that.x += 5;
+                    if (entity instanceof Dragon) {
+                        if (entity.BB && that.BB.collide(entity.BB)) {
+                            that.velocity.x *= -.9;
+                            if (that.facing === 0) {
+                                that.x -= 5;
+                            } else {
+                                that.x += 5;
+                            }
+                        }
+                        if (entity.ABB && that.BB.collide(entity.ABB)) {
+                            switch (PARAMS.DIFFICULTY) {
+                                case PARAMS.EASY:
+                                    that.healthBar.updateHealth(-1);
+                                    break;
+                                case PARAMS.NORMAL:
+                                    that.healthBar.updateHealth(-3);
+                                    break;
+                                case PARAMS.HARD:
+                                    that.healthBar.updateHealth(-7);
+                                    break;
+                            }
+                            ASSET_MANAGER.playAsset("./audio/dragon_hit.mp3");
                         }
                     }
                     if ((entity instanceof ShadowWarrior || entity instanceof Knight || entity instanceof RedEye)
@@ -552,6 +573,7 @@ class Assassin {
                 this.x += this.velocity.x * TICK * PARAMS.SCALE;
                 if (this.teleport) {
                     ASSET_MANAGER.playAsset("./audio/teleport.mp3")
+                    PARAMS.SAVEDSOULS = PARAMS.SOULS;
                     this.phase++;
                     this.x = this.portalLocations[this.phase].x;
                     this.y = this.portalLocations[this.phase].y;
@@ -561,6 +583,7 @@ class Assassin {
                         this.game.phaseOneDone();
                     }
                     if (this.phase === 2) {
+                        ASSET_MANAGER.playAsset("./audio/growl.mp3");
                         this.game.phaseTwoDone();
                     }
                     this.velocity.x = 0;

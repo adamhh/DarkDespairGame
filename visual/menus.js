@@ -5,10 +5,11 @@ class Menus {
         this.controls = ASSET_MANAGER.getAsset("./sprites/menus/intro_menu.png");
         this.pause = ASSET_MANAGER.getAsset("./sprites/menus/pause_menu.png");
         this.gameOver = ASSET_MANAGER.getAsset("./sprites/menus/gameover_menu.png")
-        this.gameOverMusic = true;
+        this.winScreen = ASSET_MANAGER.getAsset("./sprites/menus/youWON.png")
         this.exists = true;
         this.playCounter = 0;
         this.startCounter = 0;
+        this.initialWinPlay = true;
     };
 
     update() {
@@ -46,6 +47,15 @@ class Menus {
             ctx.drawImage(this.gameOver, 0, 0, 950, 750);
 
         }
+        if (PARAMS.WIN) {
+            ctx.drawImage(this.winScreen, 0, 0, 950, 750);
+            if (this.initialWinPlay) {
+                PARAMS.START = false;
+                ASSET_MANAGER.pauseBackgroundMusic();
+                ASSET_MANAGER.playAsset("./audio/you_win.mp3")
+                this.initialWinPlay = false;
+            }
+        }
 
 
     };
@@ -59,7 +69,7 @@ class VolumeSlider {
     }
 
     update() {
-        this.exists = PARAMS.PAUSE;
+        this.exists = PARAMS.PAUSE && !PARAMS.WIN;
     }
 
     draw(ctx) {
@@ -83,7 +93,7 @@ class Difficulty {
     }
 
     update() {
-        this.exists = PARAMS.PAUSE;
+        this.exists = PARAMS.PAUSE && !PARAMS.WIN;
     }
 
     draw(ctx) {
@@ -112,4 +122,6 @@ class Difficulty {
         }
     }
 }
+
+
 
