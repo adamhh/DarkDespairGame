@@ -13,7 +13,7 @@ Try it out at: https://adamhh.github.io/DarkDespairGame/
 * HTML
 
 ## **Visuals**
-![screenshot](public/images/portfolio/screenshot.PNG)
+![screenshot](images/DarkDespairSS.PNG)
 
 ## **Credits**
 SFX: zapsplat.com</br>
