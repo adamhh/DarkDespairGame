@@ -3,7 +3,7 @@
 ![GitHub top language](https://img.shields.io/github/languages/top/kbnewlon/project3) ![Libraries.io dependency status for GitHub repo](https://img.shields.io/badge/license-MIT_License-yellowgreen)
 
 ## Description
-This is a mini-game I created, which is inspired by the game Dark Souls.
+This is a mini-game I developed, which is inspired by the game Dark Souls.
 
 ## **Usage**
 Try it out at: https://adamhh.github.io/DarkDespairGame/
