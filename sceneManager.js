@@ -9,7 +9,7 @@
         this.title = true;
         this.gameOverMusic = true;
         this.loadLevelOne();
-        PARAMS.DEBUG = false;
+        PARAMS.DEBUG = true;
     };
 
     restartState() {
