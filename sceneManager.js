@@ -15,7 +15,7 @@ class SceneManager {
         this.title = true;
         this.gameOverMusic = true;
         this.loadLevelOne();
-        PARAMS.DEBUG = true;
+        PARAMS.DEBUG = false;
     };
 
     //Returns game to original starting state
