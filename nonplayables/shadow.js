@@ -1,3 +1,9 @@
+/**
+ * This class is shadow warrior.  It handles the animation,
+ * updating, collision detection, and general behavior of the entities.
+ *
+ * @author Adam Hall
+ */
 class ShadowWarrior {
     constructor(game, x, y, isKey) {
         Object.assign(this, {game, x, y, isKey});
@@ -33,6 +39,7 @@ class ShadowWarrior {
         this.health = 100;
     }
 
+    //Create the animations for each state and direction facing
     loadAnimations() {
         //initialize
         for (var i = 0; i < 3; i++) { //0 idle 1 running 2 attacking
@@ -75,6 +82,7 @@ class ShadowWarrior {
 
     }
 
+    //Update bounding box based on state
     updateBB() {
         this.lastBB = this.BB;
         this.BB = new BoundingBox(this.x, this.y, this.width, this.height);
@@ -93,7 +101,7 @@ class ShadowWarrior {
         }
     }
 
-
+    //called when health = 0
     vanish() {
         this.BB = new BoundingBox(0,0,0,0);
         this.time1 = this.timer.getTime();
@@ -103,6 +111,7 @@ class ShadowWarrior {
         this.updateBB();
     }
 
+    //called continuously to update behavior based on changing game state
     update() {
         if (this.velocity.y > 50) this.vanish();
         if (PARAMS.START && !PARAMS.PAUSE) {
@@ -230,6 +239,7 @@ class ShadowWarrior {
 
     }
 
+    //Draw shadow warrior, offsetting x and y based on state and direction facing
     draw(ctx) {
         let yOffset = 0;
         let xOffset = 0;
@@ -262,16 +272,14 @@ class ShadowWarrior {
             ctx.strokeStyle = "White";
             ctx.strokeRect(this.sight.x - this.game.camera.x, this.sight.y - this.game.camera.y, this.sight.width, this.sight.height);
 
-
-
-
-
         }
-
     }
-
-
 }
+
+/**
+ * This class is for the RedEye enemy.  It handles the animation,
+ * updating, collision detection, and general behavior of the entity.
+ */
 
 class RedEye {
     constructor(game, x, y) {
@@ -304,6 +312,7 @@ class RedEye {
         this.health = 100;
     }
 
+    //Create animations for each state and direction facing from spritesheet
     loadAnimations() {
         for (var i = 0; i < 2; i++) {
             this.animations.push([]);
@@ -330,6 +339,7 @@ class RedEye {
 
     }
 
+    //Update bounding box based on state and direction facing.
     updateBB() {
         this.lastBB = this.BB;
         this.BB = new BoundingBox(this.x, this.y, this.width, this.height);
@@ -346,12 +356,14 @@ class RedEye {
         }
     }
 
+    //Called when health = 0
     vanish() {
         this.disappear = true;
         this.time1 = this.timer.getTime();
         this.updateBB();
     }
 
+    //Called continuously to update behavior based on changing game state
     update() {
         if (PARAMS.START && !PARAMS.PAUSE) {
             if (this.health < 1 && this.disappear === false) {
@@ -430,6 +442,7 @@ class RedEye {
 
     }
 
+    //Draw entity state animation, offsetting x and y based on state
     draw(ctx) {
         let yOffset = 0;
         let xOffset = 0;
@@ -449,11 +462,5 @@ class RedEye {
             ctx.strokeStyle = "White";
             ctx.strokeRect(this.sight.x - this.game.camera.x, this.sight.y - this.game.camera.y, this.sight.width, this.sight.height);
         }
-
     }
-
-
 }
-
-
-

@@ -1,3 +1,10 @@
+/*
+    This class is primarily used for global access PARAMS that are required for play,
+    as well as some general utility functions.
+ */
+
+
+
 // returns a random integer between 0 and n-1
 function randomInt(n) {
     return Math.floor(Math.random() * n);
@@ -25,8 +32,8 @@ window.requestAnimFrame = (function () {
         };
 })();
 
-// add global parameters here
 
+//Global parameters that used for correct game behavior and globally needed data.
 const PARAMS = {
     //note game only designed for 0.75 scale, there is some dynamic scaling going on
     //in the program, but there are some bugs with collisions (bouncing of walls)

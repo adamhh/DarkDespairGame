@@ -1,3 +1,8 @@
+/**
+ * This class handles the menus in the game: start, intro, pause, gameover, and 'you won'.
+ *
+ * @author Adam Hall
+ */
 class Menus {
     constructor(game) {
         Object.assign(this, { game });
@@ -12,6 +17,7 @@ class Menus {
         this.initialWinPlay = true;
     };
 
+    //Based on game PARAMS display menus
     update() {
         if (this.exists) {
             if (PARAMS.PLAY) {
@@ -29,6 +35,8 @@ class Menus {
 
         }
     };
+
+    //Draw the menus, if correct PARAMS are set.
     draw(ctx){
         if (this.exists) {
             if (!PARAMS.PLAY) {
@@ -62,16 +70,23 @@ class Menus {
 
 }
 
+/**
+ * This class handles the volume slider in the pause menu.
+ *
+ * @author Adam Hall
+ */
 class VolumeSlider {
     constructor(game) {
         Object.assign(this, { game });
         this.exists = true;
     }
 
+    //Check if it should show exist
     update() {
         this.exists = PARAMS.PAUSE && !PARAMS.WIN;
     }
 
+    //If it should exist draw on the screen (over pause menu)
     draw(ctx) {
         if(this.exists){
             ctx.strokeStyle = "Black";
@@ -86,16 +101,21 @@ class VolumeSlider {
     }
 }
 
+/**
+ * This class handles the difficulty adjustment in the pause menu.
+ */
 class Difficulty {
     constructor(game) {
         Object.assign(this, { game });
         this.exists = true;
     }
 
+    //Check if it should exist
     update() {
         this.exists = PARAMS.PAUSE && !PARAMS.WIN;
     }
 
+    //If it should exist, draw to canvas.
     draw(ctx) {
         if(this.exists){
             let easyColor = "Black";
@@ -122,6 +142,3 @@ class Difficulty {
         }
     }
 }
-
-
-

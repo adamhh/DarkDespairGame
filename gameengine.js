@@ -1,4 +1,9 @@
-// This game shell was happily modified from Googler Seth Ladd's "Bad Aliens" game and his Google IO talk in 2011
+/**
+ * This code is inspired by Seth Lad's "Bad Aliens" and Chris Marriot's "Super Marriot Brothers"
+ * and has been modified to suit the needs of this game.
+ *
+ * @author Adam Hall
+ */
 
 class GameEngine {
     constructor() {
@@ -35,6 +40,7 @@ class GameEngine {
         })();
     };
 
+    // Check for input or clicks, given what screen the player is on.
     startInput() {
         let that = this;
 

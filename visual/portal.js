@@ -1,3 +1,8 @@
+/**
+ * This class handles the portals in the game.
+ *
+ * @author Adam Hall
+ */
 class Portal {
     constructor(game, x, y, n, assassin) {
         Object.assign(this, {game, x, y, n, assassin});
@@ -24,10 +29,12 @@ class Portal {
 
     };
 
+    //Needed, even if empty.
     update() {
 
     };
 
+    //Draw outer portal, if player has key then display animation and allow player to interact.
     draw(ctx) {
         if (this.anim) {
             if (this.assassin.isKeyed) {

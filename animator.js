@@ -1,3 +1,9 @@
+/**
+ * This class is used to create images, given a sequence of images (spritesheet).
+ * Used from Chris Marriot's 'Super Marriot Brothers' code.
+ *
+ */
+
 class Animator {
     constructor(spritesheet, xStart, yStart, width, height, frameCount, frameDuration, framePadding, reverse, loop) {
         Object.assign(this, { spritesheet, xStart, yStart, height, width, frameCount, frameDuration, framePadding, reverse, loop });

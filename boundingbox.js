@@ -1,3 +1,8 @@
+/**
+ * This code is used to create bounding boxes around image assets to then
+ * detect collisions.
+ */
+
 class BoundingBox {
     constructor(x, y, width, height) {
         Object.assign(this, { x, y, width, height });

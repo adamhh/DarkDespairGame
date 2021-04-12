@@ -1,3 +1,8 @@
+/**
+ * This class handles the weapon icons that show which weapon is equipped.
+ *
+ * @author Adam Hall
+ */
 class WeaponIcons {
     constructor(game) {
         Object.assign(this, {game});
@@ -7,16 +12,19 @@ class WeaponIcons {
         this.sourceY = 2;
     }
 
+    //Needed even if empty.
     update() {
 
     }
 
+    //Mutator method, change state.
     updateWeapon(num) {
         if (num > 2) num = 2;
         if (num < 0) num = 0;
         this.weapon = num;
     }
 
+    //Draw on canvas.
     draw(ctx) {
         switch (this.weapon) {
             case 0:

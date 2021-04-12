@@ -1,3 +1,8 @@
+/**
+ * This class handles the arrow projectile shot by both the playable character and enemies.
+ *
+ * @author Adam Hall
+ */
 class Arrow {
     constructor(game, x, y, isLeft, isAssassin, isPowered) {
         Object.assign(this, { game, x, y, isLeft, isAssassin, isPowered});
@@ -26,7 +31,7 @@ class Arrow {
         this.BB = new BoundingBox(this.x, this.y, 50, 10);
     }
 
-
+    //Setting bounding box of arrow based on direction of user facing
     updateBB() {
         if (this.isLeft) {
             this.BB = new BoundingBox(this.x - 40, this.y + 40, 50, 10);
@@ -35,7 +40,7 @@ class Arrow {
         }
     };
 
-
+    //Update to only allow a finite distance of the arrow being shot.
     update() {
         if (this.isLeft) {
             this.x -= this.velocity.x * this.game.clockTick;
@@ -53,18 +58,18 @@ class Arrow {
             if (entity.BB && entity.BB.collide(that.BB)) {
                 if (!that.isAssassin && (entity instanceof Assassin || entity instanceof CaveWall)) {
                     that.removeFromWorld = true;
-                    //todo verify damage still applies
                 } else if (that.isAssassin && (entity instanceof ShadowWarrior || entity instanceof Knight ||
                             entity instanceof RedEye || entity instanceof CaveWall || entity instanceof Dragon
                             || entity instanceof Land)) {
                     that.removeFromWorld = true;
-                    //todo verify damage still applies
                 }
             }
 
         });
 
     }
+
+    //Draw the arrow flying across canvas
     draw(ctx) {
         if (this.isLeft) {
             this.animation.drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x - 25, this.y - this.game.camera.y + 40, .1);

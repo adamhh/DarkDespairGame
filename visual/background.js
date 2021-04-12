@@ -1,3 +1,7 @@
+/**
+ * This class handles the non-interactive background assets and applies a
+ * parallax effect to the assets.
+ */
 class BackgroundLayer {
     constructor(game, x, y, type, offset) {
         Object.assign(this, {game, x, y, type, offset});
@@ -16,10 +20,11 @@ class BackgroundLayer {
         this.offset *= this.w;
     };
 
+    //Every entity needs this method, even if it is empty.
     update() {
-
     };
 
+    //Draw the entities, apply parallax effect offset.
     draw(ctx) {
         if (this.type === 0) {
             ctx.drawImage(this.image, this.x - this.game.camera.parallax/1.4 + this.offset, this.y, this.w, this.h);

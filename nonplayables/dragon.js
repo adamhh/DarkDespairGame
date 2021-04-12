@@ -1,8 +1,13 @@
+/**
+ * This class is for the final boss, or dragon.  It handles the animation,
+ * updating, collision detection, and general behavior of the dragon.
+ *
+ * @author Adam Hall
+ */
 class Dragon {
     constructor(game, x, y) {
         Object.assign(this, {game, x, y});
-        //spritesheets
-
+        //spritesheet
         this.spritesheet = ASSET_MANAGER.getAsset("./sprites/characters/dragon.png");
         this.width = 250;
         this.height = 250;
@@ -23,6 +28,7 @@ class Dragon {
 
     }
 
+    //Create the animations for each state and direction facing
     loadAnimations() {
         //initialize
         for (var i = 0; i < 6; i++) { //0 = idle, 1 = walking, 2 = attacking, 3 = dead, 4 = battle idle, 5 = breathing fire
@@ -60,6 +66,7 @@ class Dragon {
 
     }
 
+    //Set bounding boxes based on state and direction facing
     updateBB() {
         this.lastBB = this.BB;
         let yOffset = 0;
@@ -97,13 +104,14 @@ class Dragon {
         this.sight = new BoundingBox(this.x - 650, this.y - 150, 1900, 350);
 
     }
-
+    //called when health=0
     die() {
         this.state = 3;
         this.BB = new BoundingBox(this.BB.x, this.BB.y, 0, this.BB.height)
         this.dead = true;
     }
 
+    //Called continuously to react to changing game state
     update() {
         const TICK = this.game.clockTick;
         this.attackTick += TICK;
@@ -242,6 +250,7 @@ class Dragon {
 
     }
 
+    //Draw the dragon, offsetting x and y based on state and facing.
     draw(ctx) {
         let yOffset = 0;
         let xOffset = 0;
@@ -258,7 +267,6 @@ class Dragon {
         if (this.facing === 1 && this.state === 2) {
             xOffset = 0;
         }
-
 
         let healthOffset = 200;
         if (this.facing === 1) healthOffset = 250;
@@ -280,11 +288,6 @@ class Dragon {
             ctx.strokeRect(this.ABB.x - this.game.camera.x, this.ABB.y - this.game.camera.y, this.ABB.width, this.ABB.height);
             ctx.strokeStyle = "White";
             ctx.strokeRect(this.sight.x - this.game.camera.x, this.sight.y - this.game.camera.y, this.sight.width, this.sight.height);
-
-
-
-
-
         }
 
     }

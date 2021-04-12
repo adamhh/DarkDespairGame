@@ -1,4 +1,3 @@
-
 var ASSET_MANAGER = new AssetManager();
 ASSET_MANAGER.queueDownload("./sprites/characters/dragon.png");
 ASSET_MANAGER.queueDownload("./sprites/characters/assassin.png");

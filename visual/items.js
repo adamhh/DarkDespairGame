@@ -1,27 +1,7 @@
-class Sign {
-    constructor(game, x, y, n) {
-        Object.assign(this, {game, x, y, n});
-        switch(n){
-            default:
-                this.image = ASSET_MANAGER.getAsset("./sprites/gameassets/sign_portal.png");
-                this.h = 125;
-                this.w = 104;
-                this.BB = new BoundingBox(this.x, this.y + 212, this.w - 20, 60);
-                break;
-        }
-
-
-    }
-    update() {
-
-    };
-
-    draw(ctx) {
-        ctx.drawImage(this.image, this.x - this.game.camera.x, this.y - this.game.camera.y, this.w, this.h);
-
-    };
-}
-
+/**
+ * This class handles the health potions that the character can pick up.
+ * @author Adam Hall
+ */
 class HealthPotion {
     constructor(game, x, y) {
         Object.assign(this, {game, x, y});
@@ -34,7 +14,7 @@ class HealthPotion {
         this.step = .1;
     }
 
-
+    //Apply a float effect to the object.
     update() {
         this.floatY += this.step;
         if (this.drank) {
@@ -42,6 +22,7 @@ class HealthPotion {
         }
     };
 
+    //Draw the asset with the float effect
     draw(ctx) {
         if (Math.round(parseFloat(this.floatY) * 10) > 50) {
             this.step = -.1
@@ -60,6 +41,13 @@ class HealthPotion {
         }
     }
  }
+
+/**
+ * This class handles the soul that the character acquires, as well as the 'keyed' souls
+ * that allow access to portals.
+ *
+ * @author Adam Hall
+ */
 class Soul {
     constructor(game, x, y, value, isKey) {
         Object.assign(this, {game, x, y, value, isKey});
@@ -80,7 +68,7 @@ class Soul {
         this.step = .1;
     }
 
-
+    //Apply float
     update() {
         this.floatY += this.step;
         if (this.consumed) {
@@ -88,6 +76,7 @@ class Soul {
         }
     };
 
+    //Draws the asset to the canvas with flaot effect
     draw(ctx) {
         if (Math.round(parseFloat(this.floatY) * 10) > 50) {
             this.step = -.1
@@ -107,6 +96,12 @@ class Soul {
         }
     }
 }
+
+/**
+ * A specialty item that the character can pick up.
+ *
+ * @author Adam Hall
+ */
 class IceArrow {
     constructor(game, x, y) {
         Object.assign(this, {game, x, y});
@@ -123,7 +118,7 @@ class IceArrow {
         this.step = .1;
     }
 
-
+    //Apply float
     update() {
         this.floatY += this.step;
         if (this.consumed) {
@@ -132,6 +127,7 @@ class IceArrow {
         }
     };
 
+    //Draw asset with float effect
     draw(ctx) {
         if (Math.round(parseFloat(this.floatY) * 10) > 50) {
             this.step = -.1

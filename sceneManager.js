@@ -1,4 +1,10 @@
-    class SceneManager {
+/**
+ * This class manages all of the assets in the game, as well as the 'camera'.
+ * This class is referred to as game.camera by classes that are passed a reference.
+ * @author Adam Hall
+ */
+
+class SceneManager {
     constructor(game) {
         this.game = game;
         this.game.camera = this;
@@ -12,6 +18,7 @@
         PARAMS.DEBUG = true;
     };
 
+    //Returns game to original starting state
     restartState() {
         this.game.entities = [];
         PARAMS.PLAY = false;
@@ -27,6 +34,7 @@
         this.loadLevelOne();
     };
 
+    //Called if player decides to respawn
     respawn() {
         this.game.entities = [];
         PARAMS.CONTROLS = true;
@@ -38,6 +46,7 @@
 
     };
 
+    //Entities that exist before first portal
     loadPhaseOne() {
         let ceil = new Ceiling(this.game, -1500, -700);
         this.game.addEntityP1(ceil);
@@ -132,10 +141,9 @@
 
     }
 
+
+    //Entities that exist after first portal and before second
     loadPhaseTwo() {
-
-
-
         let smallBridge = new Bridge(this.game, 2700, 3950, 1);
         this.game.addEntityP2(smallBridge);
         let bridge = new Bridge(this.game, 3050, 3800, 0);
@@ -270,6 +278,7 @@
         this.game.addEntityP2(healthPotion);
     }
 
+    //Entities that exist after second portal (final phase)
     loadPhaseThree() {
         //borders
         let caveWall = new CaveWall(this.game, 3500, -1000, 1, 2);
@@ -335,6 +344,7 @@
 
     }
 
+    //None playable assets that don't require collision detection
     loadBackgroundAssets() {
         let bLayer = new BackgroundLayer(this.game, 0, 0, 1, 0);
         this.game.addEntity(bLayer);
@@ -370,6 +380,8 @@
         bVine = new BackgroundLayer(this.game, -1000, -200, 0, 8);
         this.game.addEntity(bVine);
     }
+
+    //Load the assets, start music, then start game
     loadLevelOne() {
         this.x = 0;
         this.y = 0;
@@ -402,6 +414,7 @@
         this.game.addEntity(this.startMenu);
     };
 
+    //Updates the audio if a player changes volume settings in pause menu
     updateAudio() {
         let mute = PARAMS.VOLUME === 0;
         let volume = PARAMS.VOLUME/100;
@@ -413,6 +426,7 @@
 
     }
 
+    //check conditions and move camera/parallax effect
     update() {
         if (PARAMS.CONTROLS === true) {
             if (this.startMenu) {
@@ -456,6 +470,7 @@
 
     };
 
+    //Display volume, difficulty on pause and soul force when playing.
     draw(ctx) {
         if (PARAMS.PAUSE) {
             this.volumeSlider.draw(ctx)

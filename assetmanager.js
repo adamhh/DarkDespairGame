@@ -1,3 +1,9 @@
+/**
+ * This code handles the downloading of image and audio assets.
+ * @author Chris Marriot
+ * @author Adam Hall - made some adjustments.
+ */
+
 class AssetManager {
     constructor() {
         this.successCount = 0;

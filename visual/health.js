@@ -1,3 +1,7 @@
+/**
+ * This class handles the healthbar for the the playable character.
+ * @author Adam Hall
+ */
 class HealthBar {
     constructor(game) {
         Object.assign(this, {game});
@@ -7,10 +11,12 @@ class HealthBar {
         this.y = 2;
     }
 
+    //Every game entity needs an update method, even if it is empty.
     update() {
 
     }
 
+    //Update health if damage taken or health potion acquired.
     updateHealth(num) {
         this.health += num;
         if (this.health > 18) {
@@ -20,15 +26,20 @@ class HealthBar {
             this.health = 1;
         }
     }
+
+    //Accessor methods
     getHealth() {
         return this.health;
     }
+
     isFull() {
         return this.health > 17;
     }
     isDead() {
         return this.health < 2;
     }
+
+    //Draws the healthbar in the corner of the screen.
     draw(ctx) {
         if (this.health > 18) this.health = 18;
         if (this.health < 1) this.health = 1;

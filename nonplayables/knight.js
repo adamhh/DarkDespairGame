@@ -1,3 +1,9 @@
+/**
+ * This class is for the knight enemy.  It handles the animation,
+ * updating, collision detection, and general behavior of the knight.
+ *
+ * @author Adam Hall
+ */
 class Knight {
     constructor(game, x, y, sh, sw) {
         Object.assign(this, {game, x, y, sh, sw});
@@ -33,6 +39,7 @@ class Knight {
         this.deathCount = 3;
     }
 
+    //load the animation from the spritesheet for each state and direction facing combination
     loadAnimations() {
         //initialize
         for (var i = 0; i < 3; i++) { //0 idle 1 running 2 attacking
@@ -77,6 +84,7 @@ class Knight {
             .15, 2, true, true);
     }
 
+    //set the bounding box based on state
     updateBB() {
         this.lastBB = this.BB;
         this.BB = new BoundingBox(this.x, this.y, this.width, this.height/2);
@@ -94,12 +102,14 @@ class Knight {
         }
     }
 
+    //called when entity is finished animating its death
     die() {
         this.BB = new BoundingBox(0,0,0,0);
         this.velocity.x = 0
         this.dead = true;
     }
 
+    //called when health = 0, to give time for death animation
     vanish() {
         this.BB = new BoundingBox(0,0,0,0);
         this.time1 = this.timer.getTime();
@@ -108,6 +118,7 @@ class Knight {
         this.updateBB();
     }
 
+    //called continuously to react to changing game state
     update() {
         if (this.velocity.y > 50) {
             this.vanish();
@@ -244,6 +255,7 @@ class Knight {
 
     }
 
+    //Draw the knight, offsetting x and y for direction facing and state
     draw(ctx) {
         let yOffset = 0;
         let xOffset = 0;

@@ -1,3 +1,8 @@
+/**
+ * This class handles the playable character of the game.  Animations are created for
+ * each state and direction facing, as well as updating location and state based on
+ * keyboard input.
+ */
 class Assassin {
     constructor(game, x, y, healthBar, weaponIcon) {
         Object.assign(this, {game, x, y, healthBar, weaponIcon});
@@ -10,8 +15,6 @@ class Assassin {
         this.setFields();
         this.updateBB();
         this.loadAnimations();
-
-
     };
 
     setFields() {
@@ -65,6 +68,7 @@ class Assassin {
 
     }
 
+    //Create the animation for each state, direction facing, and weapon equipped.
     loadAnimations() {
         for (var i = 0; i < 5; i++) {  //Action State: 0-idle,1-walking,2-attacking,3-jumping,4-running
             this.animations.push([]);
@@ -247,12 +251,12 @@ class Assassin {
 
     };
 
+    //Update the bounding box based on state and play sound effects.
     updateBB() {
         this.lastBB = this.BB;
         this.BB = new BoundingBox(this.x + 15, this.y, 45, 85);
         if (this.attackWindow) {
             let xOff = 0;
-            let yOff = 0;
             switch (this.weapon) {
                 case 0:
                     ASSET_MANAGER.playAsset("./audio/kick.mp3")
@@ -284,6 +288,8 @@ class Assassin {
 
     };
 
+
+    //Called continuously to update player based on changing game state.
     update() {
         if (this.y > this.yFallBounds[this.phase]) {
             this.healthBar.updateHealth(-18);
@@ -297,11 +303,8 @@ class Assassin {
             this.deadCount+= this.game.clockTick;
             if (this.deadCount > 1.5) {
                 PARAMS.GAMEOVER = true;
-
             }
-
         }
-
 
         //-------------adjust constants to alter physics-----------
         //run
@@ -322,7 +325,6 @@ class Assassin {
         const STOP_FALL = 1575;
         //in air deceleration
         const AIR_DEC = 1;
-        // console.log("(" + Math.floor(this.x) + "," + this.y + ")");
         if (PARAMS.START && !PARAMS.PAUSE) {
             if (this.dead) {
                 this.velocity.y = 0;
@@ -606,7 +608,7 @@ class Assassin {
         }
     };
 
-
+    //Draw the player on the canvas, offsetting based on state and direction facing.
     draw(ctx) {
         let xOffset = 0;
         let yOffset = 0;
@@ -696,7 +698,5 @@ class Assassin {
             //ctx.arc()
             ctx.strokeRect(this.ABB.x - this.game.camera.x, this.ABB.y - this.game.camera.y, this.ABB.width, .25);
         }
-
-
     }
 };
